@@ -1,173 +1,69 @@
-import React, { useState, useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 
-interface Project {
-  id: number;
-  title: string;
-  category: string;
-  image: string;
-  description: string;
-  modelUrl?: string;
-}
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Projects: React.FC = () => {
+  const [filter, setFilter] = useState('all');
+  const navigate = useNavigate();
+
   const projectsData = [
     {
       id: 1,
       title: "Web Design",
       category: "design",
       image: "/placeholder.svg",
-      description: "User-centered web design solutions"
+      description: "User-centered web design solutions",
+      slug: "web-design"
     },
     {
       id: 2,
+      title: "UI/UX Design",
+      category: "design",
+      image: "/placeholder.svg",
+      description: "Creating intuitive user experiences",
+      slug: "ui-ux-design"
+    },
+    {
+      id: 3,
       title: "3D Design",
       category: "3D",
       image: "/project2.jpg",
       description: "3DCGを活用したビジュアルデザイン",
-      modelUrl: "/model.glb"
-    },
-    {
-      id: 3,
-      title: "Metaverse",
-      category: "VR",
-      image: "/placeholder.svg",
-      description: "メタバース空間のデザインと開発"
+      slug: "3d-design"
     },
     {
       id: 4,
-      title: "Character/Avatar Design",
-      category: "3D",
+      title: "Metaverse",
+      category: "VR",
       image: "/placeholder.svg",
-      description: "キャラクターとアバターのデザイン"
+      description: "メタバース空間のデザインと開発",
+      slug: "metaverse"
     },
     {
       id: 5,
-      title: "Digital Twin",
-      category: "VR",
+      title: "Character/Avatar Design",
+      category: "3D",
       image: "/placeholder.svg",
-      description: "デジタルツインとVR技術の活用"
+      description: "キャラクターとアバターのデザイン",
+      slug: "3d-design"
     },
     {
       id: 6,
-      title: "AR Experience",
+      title: "AR Development",
       category: "AR",
       image: "/placeholder.svg",
-      description: "AR技術を活用したプロジェクト開発"
+      description: "AR技術を活用したプロジェクト開発",
+      slug: "ar-development"
     },
     {
       id: 7,
-      title: "3D Animation",
-      category: "3D",
-      image: "/placeholder.svg",
-      description: "3DCGアニメーションの制作"
-    },
-    {
-      id: 8,
-      title: "Voxel Art",
-      category: "3D",
-      image: "/placeholder.svg",
-      description: "ボクセルアートの制作"
-    },
-    {
-      id: 9,
       title: "NFT Collection",
       category: "NFT",
       image: "/placeholder.svg",
-      description: "NFTデジタルアートの制作"
+      description: "NFTデジタルアートの制作",
+      slug: "nft"
     }
   ];
-
-  const [filter, setFilter] = useState('all');
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const modelContainerRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const controlsRef = useRef<OrbitControls | null>(null);
-
-  useEffect(() => {
-    if (!selectedProject?.modelUrl) return;
-    
-    const initThreeJS = () => {
-      if (!modelContainerRef.current) return;
-
-      // Scene setup
-      const scene = new THREE.Scene();
-      sceneRef.current = scene;
-
-      // Camera setup
-      const camera = new THREE.PerspectiveCamera(
-        75,
-        modelContainerRef.current.clientWidth / modelContainerRef.current.clientHeight,
-        0.1,
-        1000
-      );
-      camera.position.z = 5;
-      cameraRef.current = camera;
-
-      // Renderer setup
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setSize(modelContainerRef.current.clientWidth, modelContainerRef.current.clientHeight);
-      renderer.setClearColor(0xf8f7f4); // Nordic off-white background
-      modelContainerRef.current.innerHTML = '';
-      modelContainerRef.current.appendChild(renderer.domElement);
-      rendererRef.current = renderer;
-
-      // Lighting
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-      scene.add(ambientLight);
-
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-      directionalLight.position.set(5, 5, 5);
-      scene.add(directionalLight);
-
-      // Controls
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controlsRef.current = controls;
-
-      // Load 3D model
-      const fileExtension = selectedProject.modelUrl.split('.').pop()?.toLowerCase();
-      
-      if (fileExtension === 'glb') {
-        const loader = new GLTFLoader();
-        loader.load(selectedProject.modelUrl, (gltf) => {
-          scene.add(gltf.scene);
-          renderer.render(scene, camera);
-        });
-      } else if (fileExtension === 'fbx') {
-        const loader = new FBXLoader();
-        loader.load(selectedProject.modelUrl, (object) => {
-          scene.add(object);
-          renderer.render(scene, camera);
-        });
-      }
-
-      // Animation loop
-      const animate = () => {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
-      };
-      animate();
-    };
-
-    initThreeJS();
-
-    // Cleanup
-    return () => {
-      if (rendererRef.current) {
-        rendererRef.current.dispose();
-      }
-      if (modelContainerRef.current) {
-        modelContainerRef.current.innerHTML = '';
-      }
-    };
-  }, [selectedProject]);
 
   const filteredProjects = filter === 'all' 
     ? projectsData 
@@ -198,27 +94,12 @@ const Projects: React.FC = () => {
           ))}
         </div>
 
-        {selectedProject?.modelUrl && (
-          <div className="mb-12">
-            <div 
-              ref={modelContainerRef}
-              className="w-full aspect-video bg-nordic-offwhite rounded-lg shadow-sm"
-            />
-            <button
-              onClick={() => setSelectedProject(null)}
-              className="mt-4 px-4 py-2 bg-nordic-beige rounded-md hover:bg-opacity-80 transition-all"
-            >
-              Close 3D Viewer
-            </button>
-          </div>
-        )}
-
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map(project => (
             <div 
               key={project.id} 
               className="project-card group cursor-pointer"
-              onClick={() => setSelectedProject(project)}
+              onClick={() => navigate(`/project/${project.slug}`)}
             >
               <div className="aspect-[4/3] relative overflow-hidden">
                 <img 
@@ -235,11 +116,6 @@ const Projects: React.FC = () => {
               <div className="p-6 bg-white">
                 <h3 className="font-medium text-lg mb-2">{project.title}</h3>
                 <p className="text-nordic-dark/70 text-sm">{project.description}</p>
-                {project.modelUrl && (
-                  <p className="text-nordic-blue text-sm mt-2">
-                    Click to view 3D model
-                  </p>
-                )}
               </div>
             </div>
           ))}

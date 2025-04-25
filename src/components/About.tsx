@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const About: React.FC = () => {
@@ -48,7 +47,7 @@ const About: React.FC = () => {
             </div>
             <div className="bg-nordic-blue p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">XR</h3>
-              <p className="text-sm text-nordic-dark/70">Virtual & Augmented Reality</p>
+              <p className="text-sm text-nordic-dark/70">Virtual, Augmented & Mixed Reality</p>
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">UI/UX</h3>
