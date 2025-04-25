@@ -14,18 +14,18 @@ interface Project {
 }
 
 const Projects: React.FC = () => {
-  const projectsData: Project[] = [
+  const projectsData = [
     {
       id: 1,
-      title: "UI/UX Design",
+      title: "Web Design",
       category: "design",
       image: "/placeholder.svg",
-      description: "ユーザー体験を重視したデザイン設計"
+      description: "User-centered web design solutions"
     },
     {
       id: 2,
-      title: "3DCG Design",
-      category: "3d",
+      title: "3D Design",
+      category: "3D",
       image: "/project2.jpg",
       description: "3DCGを活用したビジュアルデザイン",
       modelUrl: "/model.glb"
@@ -33,49 +33,49 @@ const Projects: React.FC = () => {
     {
       id: 3,
       title: "Metaverse",
-      category: "vr",
+      category: "VR",
       image: "/placeholder.svg",
       description: "メタバース空間のデザインと開発"
     },
     {
       id: 4,
       title: "Character/Avatar Design",
-      category: "design",
+      category: "3D",
       image: "/placeholder.svg",
       description: "キャラクターとアバターのデザイン"
     },
     {
       id: 5,
-      title: "Digital Twin / VR",
-      category: "vr",
+      title: "Digital Twin",
+      category: "VR",
       image: "/placeholder.svg",
       description: "デジタルツインとVR技術の活用"
     },
     {
       id: 6,
-      title: "AR Project",
-      category: "ar",
+      title: "AR Experience",
+      category: "AR",
       image: "/placeholder.svg",
       description: "AR技術を活用したプロジェクト開発"
     },
     {
       id: 7,
-      title: "3DCG Animation",
-      category: "3d",
+      title: "3D Animation",
+      category: "3D",
       image: "/placeholder.svg",
       description: "3DCGアニメーションの制作"
     },
     {
       id: 8,
       title: "Voxel Art",
-      category: "3d",
+      category: "3D",
       image: "/placeholder.svg",
       description: "ボクセルアートの制作"
     },
     {
       id: 9,
-      title: "NFT",
-      category: "blockchain",
+      title: "NFT Collection",
+      category: "NFT",
       image: "/placeholder.svg",
       description: "NFTデジタルアートの制作"
     }
@@ -177,12 +177,13 @@ const Projects: React.FC = () => {
     <section id="projects" className="section bg-nordic-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-medium mb-4">Portfolio</h2>
+          <h2 className="text-3xl md:text-4xl font-medium mb-4">Projects</h2>
+          <p className="text-nordic-dark/70 mb-8">Explore my latest works and creative endeavors</p>
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
         <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {['all', 'design', '3d', 'vr', 'ar', 'blockchain'].map(category => (
+          {['all', 'design', '3D', 'VR', 'AR', 'NFT'].map((category) => (
             <button
               key={category}
               onClick={() => setFilter(category)}

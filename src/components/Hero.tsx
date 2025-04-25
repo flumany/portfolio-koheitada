@@ -17,10 +17,10 @@ const Hero: React.FC = () => {
 
       <div className="container-custom relative z-10">
         <div className="grid md:grid-cols-12 gap-12 items-center">
-          <div className="md:col-span-8 space-y-6">
+          <div className="md:col-span-8 space-y-8">
             <h1 className="text-4xl md:text-6xl font-medium text-nordic-dark leading-tight animate-fade-in">
               多田 浩平<br />
-              <span className="text-nordic-blue text-2xl md:text-3xl leading-relaxed">
+              <span className="text-xl md:text-2xl leading-relaxed text-nordic-blue mt-4 block">
                 Service/Product Designer specializing in UI, UX, 3D, XR, Physical Products || Certified Human Centered Design Specialist
               </span>
             </h1>
@@ -34,7 +34,7 @@ const Hero: React.FC = () => {
                 onClick={scrollToProjects}
                 className="group flex items-center space-x-2 bg-nordic-beige px-6 py-3 rounded-md hover:bg-opacity-80 transition-all"
               >
-                <span>作品を見る</span>
+                <span>View Projects</span>
                 <ArrowRight className="transition-transform group-hover:translate-x-1" size={18} />
               </button>
             </div>
@@ -43,14 +43,14 @@ const Hero: React.FC = () => {
           <div className="md:col-span-4">
             <Card className="overflow-hidden bg-gradient-to-br from-nordic-blue/5 to-nordic-blue/20 border-none animate-fade-in backdrop-blur-sm shadow-xl" style={{animationDelay: '0.6s'}}>
               <CardContent className="p-6">
-                <div className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
+                <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
                   <div className="aspect-square bg-gradient-to-br from-nordic-blue/10 to-nordic-beige/20 rounded-md mb-4 flex items-center justify-center relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-tr from-nordic-blue/20 via-transparent to-nordic-beige/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <span className="text-4xl text-nordic-dark/40 font-medium relative z-10">多田</span>
                   </div>
                   <h3 className="font-medium text-lg mb-3 text-nordic-dark">Professional Profile</h3>
                   <p className="text-sm text-nordic-dark/70 leading-relaxed">
-                    3D設計とメタバース開発の経験を活かし、次世代のデジタル体験を創造しています。
+                    Creating next-generation digital experiences with expertise in 3D design and XR development.
                   </p>
                 </div>
               </CardContent>

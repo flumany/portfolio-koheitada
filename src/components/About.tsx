@@ -6,7 +6,8 @@ const About: React.FC = () => {
     <section id="about" className="section bg-nordic-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-medium mb-4">自己紹介</h2>
+          <h2 className="text-3xl md:text-4xl font-medium mb-4">About Me</h2>
+          <p className="text-nordic-dark/70 mb-8">Passionate about creating meaningful digital experiences</p>
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
@@ -17,7 +18,7 @@ const About: React.FC = () => {
                 建築学を学んだ後、主にインテリアメーカーのデザイン研究開発職としての幅広く経験値を蓄えました。
               </p>
               <p className="text-sm text-nordic-dark/70 italic">
-                After studying architecture, I gained a wide of experience mainly in design research and development at an interior manufacturing company.
+                After studying architecture, I gained extensive experience in design research and development at an interior manufacturing company.
               </p>
             </div>
 
@@ -26,7 +27,7 @@ const About: React.FC = () => {
                 その中で3Dデータや3Dデザインソフトを使用した開発等も行っていたため、3Dにおける知識は人一倍備わっていると自負しております。
               </p>
               <p className="text-sm text-nordic-dark/70 italic">
-                I am proud to say that I have more knowledge of 3D than most people because I also worked with 3D data and development using 3D design software.
+                Through my work with 3D data and design software, I've developed deep expertise in 3D technologies and applications.
               </p>
             </div>
 
@@ -35,7 +36,7 @@ const About: React.FC = () => {
                 現在はこれまでの経験を生かして、3DCG制作やメタバースにおけるデザイン制作などを行っています。
               </p>
               <p className="text-sm text-nordic-dark/70 italic">
-                Currently, I am making use of my experience in 3DCG production and design production in the Metaverse.
+                Currently, I leverage my experience in 3DCG production and metaverse design creation.
               </p>
             </div>
           </div>
@@ -43,19 +44,19 @@ const About: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-nordic-beige p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">3D Design</h3>
-              <p className="text-sm text-nordic-dark/70">3DCG・モデリング</p>
+              <p className="text-sm text-nordic-dark/70">3DCG & Modeling</p>
             </div>
             <div className="bg-nordic-blue p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">VR/AR</h3>
-              <p className="text-sm text-nordic-dark/70">仮想現実・拡張現実</p>
+              <h3 className="font-medium text-xl mb-2">XR</h3>
+              <p className="text-sm text-nordic-dark/70">Virtual & Augmented Reality</p>
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">Metaverse</h3>
-              <p className="text-sm text-nordic-dark/70">メタバース開発</p>
+              <h3 className="font-medium text-xl mb-2">UI/UX</h3>
+              <p className="text-sm text-nordic-dark/70">Interface Design</p>
             </div>
             <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">UI/UX</h3>
-              <p className="text-sm text-nordic-dark/70">インターフェース設計</p>
+              <h3 className="font-medium text-xl mb-2">Web Design</h3>
+              <p className="text-sm text-nordic-dark/70">Digital Experience</p>
             </div>
           </div>
         </div>

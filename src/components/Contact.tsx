@@ -7,11 +7,11 @@ const Contact: React.FC = () => {
     <section id="contact" className="section bg-nordic-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-medium mb-4">お問い合わせ</h2>
-          <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
+          <h2 className="text-3xl md:text-4xl font-medium mb-4">Contact</h2>
           <p className="text-nordic-dark/70">
-            プロジェクトのご相談やお問い合わせはこちらからお願いいたします。
+            Let's discuss your project ideas and create something amazing together
           </p>
+          <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
         <div className="grid md:grid-cols-12 gap-8">
