@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Card, CardContent } from "./ui/card";
 
 const Hero: React.FC = () => {
   const scrollToProjects = () => {
@@ -37,15 +39,19 @@ const Hero: React.FC = () => {
           </div>
           
           <div className="md:col-span-4">
-            <div className="bg-nordic-blue rounded-lg p-8 animate-fade-in" style={{animationDelay: '0.6s'}}>
-              <div className="bg-nordic-white rounded-lg p-6 shadow-sm">
-                <div className="aspect-square bg-nordic-gray/20 rounded-md mb-4" />
-                <h3 className="font-medium text-lg mb-2">Professional Profile</h3>
-                <p className="text-sm text-nordic-dark/70">
-                  3D設計とメタバース開発の経験を活かし、次世代のデジタル体験を創造しています。
-                </p>
-              </div>
-            </div>
+            <Card className="overflow-hidden bg-gradient-to-br from-nordic-blue/10 to-nordic-blue/30 border-none animate-fade-in shadow-lg" style={{animationDelay: '0.6s'}}>
+              <CardContent className="p-6">
+                <div className="bg-white rounded-lg p-6 shadow-sm">
+                  <div className="aspect-square bg-gradient-to-br from-nordic-blue/20 to-nordic-beige/30 rounded-md mb-4 flex items-center justify-center">
+                    <span className="text-4xl text-nordic-dark/40">多田</span>
+                  </div>
+                  <h3 className="font-medium text-lg mb-3 text-nordic-dark">Professional Profile</h3>
+                  <p className="text-sm text-nordic-dark/70 leading-relaxed">
+                    3D設計とメタバース開発の経験を活かし、次世代のデジタル体験を創造しています。
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

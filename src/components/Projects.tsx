@@ -1,5 +1,8 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 
 interface Project {
   id: number;
@@ -7,6 +10,7 @@ interface Project {
   category: string;
   image: string;
   description: string;
+  modelUrl?: string;
 }
 
 const Projects: React.FC = () => {
@@ -22,8 +26,9 @@ const Projects: React.FC = () => {
       id: 2,
       title: "3DCG Design",
       category: "3d",
-      image: "/placeholder.svg",
-      description: "3DCGを活用したビジュアルデザイン"
+      image: "/project2.jpg",
+      description: "3DCGを活用したビジュアルデザイン",
+      modelUrl: "/model.glb"
     },
     {
       id: 3,
@@ -77,7 +82,92 @@ const Projects: React.FC = () => {
   ];
 
   const [filter, setFilter] = useState('all');
-  const categories = ['all', 'design', '3d', 'vr', 'ar', 'blockchain'];
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const modelContainerRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<THREE.Scene | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const controlsRef = useRef<OrbitControls | null>(null);
+
+  useEffect(() => {
+    if (!selectedProject?.modelUrl) return;
+    
+    const initThreeJS = () => {
+      if (!modelContainerRef.current) return;
+
+      // Scene setup
+      const scene = new THREE.Scene();
+      sceneRef.current = scene;
+
+      // Camera setup
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        modelContainerRef.current.clientWidth / modelContainerRef.current.clientHeight,
+        0.1,
+        1000
+      );
+      camera.position.z = 5;
+      cameraRef.current = camera;
+
+      // Renderer setup
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(modelContainerRef.current.clientWidth, modelContainerRef.current.clientHeight);
+      renderer.setClearColor(0xf8f7f4); // Nordic off-white background
+      modelContainerRef.current.innerHTML = '';
+      modelContainerRef.current.appendChild(renderer.domElement);
+      rendererRef.current = renderer;
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(5, 5, 5);
+      scene.add(directionalLight);
+
+      // Controls
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controlsRef.current = controls;
+
+      // Load 3D model
+      const fileExtension = selectedProject.modelUrl.split('.').pop()?.toLowerCase();
+      
+      if (fileExtension === 'glb') {
+        const loader = new GLTFLoader();
+        loader.load(selectedProject.modelUrl, (gltf) => {
+          scene.add(gltf.scene);
+          renderer.render(scene, camera);
+        });
+      } else if (fileExtension === 'fbx') {
+        const loader = new FBXLoader();
+        loader.load(selectedProject.modelUrl, (object) => {
+          scene.add(object);
+          renderer.render(scene, camera);
+        });
+      }
+
+      // Animation loop
+      const animate = () => {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      };
+      animate();
+    };
+
+    initThreeJS();
+
+    // Cleanup
+    return () => {
+      if (rendererRef.current) {
+        rendererRef.current.dispose();
+      }
+      if (modelContainerRef.current) {
+        modelContainerRef.current.innerHTML = '';
+      }
+    };
+  }, [selectedProject]);
 
   const filteredProjects = filter === 'all' 
     ? projectsData 
@@ -92,7 +182,7 @@ const Projects: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {categories.map(category => (
+          {['all', 'design', '3d', 'vr', 'ar', 'blockchain'].map(category => (
             <button
               key={category}
               onClick={() => setFilter(category)}
@@ -107,9 +197,28 @@ const Projects: React.FC = () => {
           ))}
         </div>
 
+        {selectedProject?.modelUrl && (
+          <div className="mb-12">
+            <div 
+              ref={modelContainerRef}
+              className="w-full aspect-video bg-nordic-offwhite rounded-lg shadow-sm"
+            />
+            <button
+              onClick={() => setSelectedProject(null)}
+              className="mt-4 px-4 py-2 bg-nordic-beige rounded-md hover:bg-opacity-80 transition-all"
+            >
+              Close 3D Viewer
+            </button>
+          </div>
+        )}
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map(project => (
-            <div key={project.id} className="project-card group">
+            <div 
+              key={project.id} 
+              className="project-card group cursor-pointer"
+              onClick={() => setSelectedProject(project)}
+            >
               <div className="aspect-[4/3] relative overflow-hidden">
                 <img 
                   src={project.image} 
@@ -125,6 +234,11 @@ const Projects: React.FC = () => {
               <div className="p-6 bg-white">
                 <h3 className="font-medium text-lg mb-2">{project.title}</h3>
                 <p className="text-nordic-dark/70 text-sm">{project.description}</p>
+                {project.modelUrl && (
+                  <p className="text-nordic-blue text-sm mt-2">
+                    Click to view 3D model
+                  </p>
+                )}
               </div>
             </div>
           ))}

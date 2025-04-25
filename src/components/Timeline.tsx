@@ -86,14 +86,19 @@ const Timeline: React.FC = () => {
     },
     {
       year: "2022年12月",
-      title: "色彩検定2級",
-      description: "Test in Color Coordination - UC Grade",
+      title: "Test in color coordination Grade 2",
+      description: "色彩検定2級",
+      certifyingBody: "色彩検定協会",
+    },
+    {
+      year: "2022年12月",
+      title: "Test in Color Coordination - UC Grade",
+      description: "色彩検定UC級",
       certifyingBody: "色彩検定協会",
     },
     {
       year: "2022年8月",
-      title: "CG制作専門家検定",
-      description: "CG Creator Certification Expert",
+      title: "CG Creator Certification Expert",
       certifyingBody: "Computer Graphic Arts Society",
     }
   ];
