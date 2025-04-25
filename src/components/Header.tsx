@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
@@ -10,7 +9,6 @@ const Header: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -29,7 +27,7 @@ const Header: React.FC = () => {
     if (element) {
       const offsetTop = element.offsetTop;
       window.scrollTo({
-        top: offsetTop - 80, // Account for header height
+        top: offsetTop - 80,
         behavior: "smooth"
       });
       setIsOpen(false);
@@ -43,16 +41,13 @@ const Header: React.FC = () => {
           <span className="text-2xl font-poppins font-medium">Portfolio</span>
         </div>
 
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
           <button onClick={() => scrollToSection('about')} className="nav-link">About</button>
           <button onClick={() => scrollToSection('experience')} className="nav-link">Experience</button>
           <button onClick={() => scrollToSection('projects')} className="nav-link">Projects</button>
-          <button onClick={() => scrollToSection('models')} className="nav-link">3D Models</button>
           <button onClick={() => scrollToSection('contact')} className="nav-link">Contact</button>
         </nav>
 
-        {/* Mobile menu button */}
         <button 
           className="md:hidden text-nordic-dark focus:outline-none" 
           onClick={toggleMenu}
@@ -62,14 +57,12 @@ const Header: React.FC = () => {
         </button>
       </div>
 
-      {/* Mobile Navigation */}
       {isOpen && (
         <div className="md:hidden bg-nordic-white py-4 animate-fade-in">
           <div className="container-custom flex flex-col space-y-4">
             <button onClick={() => scrollToSection('about')} className="nav-link py-2 text-left">About</button>
             <button onClick={() => scrollToSection('experience')} className="nav-link py-2 text-left">Experience</button>
             <button onClick={() => scrollToSection('projects')} className="nav-link py-2 text-left">Projects</button>
-            <button onClick={() => scrollToSection('models')} className="nav-link py-2 text-left">3D Models</button>
             <button onClick={() => scrollToSection('contact')} className="nav-link py-2 text-left">Contact</button>
           </div>
         </div>

@@ -20,11 +20,13 @@ const Hero: React.FC = () => {
           <div className="md:col-span-8 space-y-6">
             <h1 className="text-4xl md:text-6xl font-medium text-nordic-dark leading-tight animate-fade-in">
               多田 浩平<br />
-              <span className="text-nordic-blue">3D Designer / Developer</span>
+              <span className="text-nordic-blue text-2xl md:text-3xl leading-relaxed">
+                Service/Product Designer specializing in UI, UX, 3D, XR, Physical Products || Certified Human Centered Design Specialist
+              </span>
             </h1>
             
-            <p className="text-lg text-nordic-dark/80 max-w-lg animate-fade-in" style={{animationDelay: '0.2s'}}>
-              3DCG・メタバースデザイナー / 開発者として、革新的なデジタル体験の創造に取り組んでいます。
+            <p className="text-lg text-nordic-dark/80 max-w-xl animate-fade-in leading-relaxed" style={{animationDelay: '0.2s'}}>
+              人々の生活の豊かさや利便性を向上したいという変わらない強い思いを胸に、日々新たな可能性に向けて邁進しています。常に相手の立場に立って思考することができ、直感的な洞察力で本質的なニーズを見抜き、最適な価値を創出することができます。
             </p>
             
             <div className="pt-4 animate-fade-in" style={{animationDelay: '0.4s'}}>
@@ -39,11 +41,12 @@ const Hero: React.FC = () => {
           </div>
           
           <div className="md:col-span-4">
-            <Card className="overflow-hidden bg-gradient-to-br from-nordic-blue/10 to-nordic-blue/30 border-none animate-fade-in shadow-lg" style={{animationDelay: '0.6s'}}>
+            <Card className="overflow-hidden bg-gradient-to-br from-nordic-blue/5 to-nordic-blue/20 border-none animate-fade-in backdrop-blur-sm shadow-xl" style={{animationDelay: '0.6s'}}>
               <CardContent className="p-6">
-                <div className="bg-white rounded-lg p-6 shadow-sm">
-                  <div className="aspect-square bg-gradient-to-br from-nordic-blue/20 to-nordic-beige/30 rounded-md mb-4 flex items-center justify-center">
-                    <span className="text-4xl text-nordic-dark/40">多田</span>
+                <div className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="aspect-square bg-gradient-to-br from-nordic-blue/10 to-nordic-beige/20 rounded-md mb-4 flex items-center justify-center relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-nordic-blue/20 via-transparent to-nordic-beige/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <span className="text-4xl text-nordic-dark/40 font-medium relative z-10">多田</span>
                   </div>
                   <h3 className="font-medium text-lg mb-3 text-nordic-dark">Professional Profile</h3>
                   <p className="text-sm text-nordic-dark/70 leading-relaxed">

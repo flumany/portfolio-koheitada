@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
       <div className="container-custom">
         <div className="flex justify-center items-center">
           <p className="text-nordic-dark/80">
-            &copy; {new Date().getFullYear()} 多田 浩平
+            © 多田 浩平
           </p>
         </div>
       </div>
