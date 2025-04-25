@@ -6,52 +6,48 @@ const About: React.FC = () => {
     <section id="about" className="section bg-nordic-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-medium mb-4">About Me</h2>
+          <h2 className="text-3xl md:text-4xl font-medium mb-4">自己紹介</h2>
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <p className="text-lg">
-              I'm a designer and developer focused on creating minimal, functional interfaces
-              that embody the principles of Scandinavian design: simplicity, minimalism,
-              and functionality.
+              はじめまして、多田耕平と申します。フロントエンド開発とUI/UXデザインを専門とするWeb開発者です。
             </p>
             <p>
-              Working at the intersection of design and technology, I blend clean aesthetics 
-              with intuitive interactions. I believe that good design should be both beautiful
-              and useful, with every element having a clear purpose.
+              JavaScriptフレームワーク（React, Vue.js）を用いたフロントエンド開発を中心に、
+              使いやすく美しいWebアプリケーションの開発に取り組んでいます。
             </p>
             <p>
-              My approach is influenced by the Nordic philosophy of "lagom" — not too much, 
-              not too little, just right — creating balanced designs that are aesthetically 
-              pleasing without unnecessary elements.
+              ユーザー体験を最優先に考え、シンプルで直感的なインターフェースデザインを心がけています。
+              また、アクセシビリティやパフォーマンスの最適化にも注力しています。
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-nordic-beige p-6 rounded-lg">
-              <h3 className="font-poppins text-xl mb-2">UI Design</h3>
+              <h3 className="font-poppins text-xl mb-2">フロントエンド開発</h3>
               <p className="text-sm text-nordic-dark/70">
-                Clean interfaces with intuitive interactions
+                React, Vue.jsでの開発
               </p>
             </div>
             <div className="bg-nordic-blue p-6 rounded-lg">
-              <h3 className="font-poppins text-xl mb-2">UX Research</h3>
+              <h3 className="font-poppins text-xl mb-2">UI/UXデザイン</h3>
               <p className="text-sm text-nordic-dark/70">
-                User-centered design processes
+                ユーザー中心設計
               </p>
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
-              <h3 className="font-poppins text-xl mb-2">3D Design</h3>
+              <h3 className="font-poppins text-xl mb-2">バックエンド開発</h3>
               <p className="text-sm text-nordic-dark/70">
-                Minimalist 3D modeling and visualization
+                Node.js, PHPでの開発
               </p>
             </div>
             <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
-              <h3 className="font-poppins text-xl mb-2">Development</h3>
+              <h3 className="font-poppins text-xl mb-2">データベース</h3>
               <p className="text-sm text-nordic-dark/70">
-                Frontend development with modern tools
+                MySQL, MongoDBの設計・運用
               </p>
             </div>
           </div>

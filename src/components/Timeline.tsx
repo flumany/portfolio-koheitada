@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface TimelineItemProps {
@@ -23,42 +22,37 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ year, title, description })
 const Timeline: React.FC = () => {
   const experiences = [
     {
-      year: "2023 - Present",
-      title: "Senior UX Designer",
-      description: "Leading design for multiple products with a focus on clean, minimalist interfaces that prioritize user experience."
+      year: "2023 - 現在",
+      title: "フリーランス Web開発者",
+      description: "React, Vue.jsを用いたフロントエンド開発を中心に、複数のプロジェクトに参画。"
     },
     {
-      year: "2020 - 2023",
-      title: "UI/UX Designer",
-      description: "Designed interfaces for web and mobile applications, focusing on creating intuitive and aesthetically pleasing experiences."
+      year: "2021 - 2023",
+      title: "株式会社ABC システムエンジニア",
+      description: "業務系Webアプリケーションの設計・開発に従事。フロントエンド開発とバックエンド開発を担当。"
     },
     {
-      year: "2018 - 2020",
-      title: "Web Designer",
-      description: "Developed responsive websites and implemented design systems that improved consistency across platforms."
-    },
-    {
-      year: "2016 - 2018",
-      title: "Graphic Designer",
-      description: "Created visual assets and branding materials for various clients, focusing on clean and minimalist designs."
+      year: "2019 - 2021",
+      title: "株式会社XYZ Webエンジニア",
+      description: "ECサイトのフロントエンド開発を担当。UI/UXの改善施策を実施。"
     }
   ];
 
   const qualifications = [
     {
       year: "2022",
-      title: "Advanced UX Certification",
-      description: "Specialized training in user research methodologies and advanced interaction design patterns."
+      title: "AWS 認定ソリューションアーキテクト",
+      description: "クラウドインフラストラクチャの設計・構築に関する専門知識を習得。"
+    },
+    {
+      year: "2020",
+      title: "情報処理安全確保支援士",
+      description: "情報セキュリティに関する高度な知識とスキルを保有。"
     },
     {
       year: "2019",
-      title: "UI/UX Design Certificate",
-      description: "Professional certification focusing on user-centered design processes and interface design principles."
-    },
-    {
-      year: "2016",
-      title: "Bachelor's Degree in Design",
-      description: "Graduated with honors, specialized in digital media and interactive design."
+      title: "応用情報技術者",
+      description: "ITスキル標準におけるハイレベルな知識を習得。"
     }
   ];
 

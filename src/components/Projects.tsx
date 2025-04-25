@@ -13,46 +13,46 @@ const Projects: React.FC = () => {
   const projectsData: Project[] = [
     {
       id: 1,
-      title: "Minimalist Living Space",
-      category: "interior",
+      title: "ECサイトリニューアル",
+      category: "web",
       image: "/placeholder.svg",
-      description: "Clean interior design concept inspired by Nordic simplicity."
+      description: "React.jsを使用したECサイトのフロントエンド開発"
     },
     {
       id: 2,
-      title: "Brand Identity System",
-      category: "branding",
+      title: "社内業務システム開発",
+      category: "web",
       image: "/placeholder.svg",
-      description: "Comprehensive brand system with minimalist aesthetic."
+      description: "Vue.jsとLaravelを使用した業務効率化システムの開発"
     },
     {
       id: 3,
-      title: "E-commerce Website",
-      category: "web",
+      title: "チャットアプリケーション",
+      category: "mobile",
       image: "/placeholder.svg",
-      description: "User-friendly shopping experience with clean interface."
+      description: "WebSocketを使用したリアルタイムチャットアプリの開発"
     },
     {
       id: 4,
-      title: "Mobile App Design",
-      category: "mobile",
+      title: "顧客管理システム",
+      category: "web",
       image: "/placeholder.svg",
-      description: "Intuitive app interface with focus on usability."
+      description: "Node.jsとMySQLを使用した顧客管理システムの開発"
     },
     {
       id: 5,
-      title: "Furniture Collection",
-      category: "interior",
+      title: "ポートフォリオサイト",
+      category: "web",
       image: "/placeholder.svg",
-      description: "Scandinavian-inspired furniture designs."
+      description: "React.jsとTailwind CSSを使用した個人ポートフォリオの制作"
     },
     {
       id: 6,
-      title: "Photography Portfolio",
+      title: "予約管理システム",
       category: "web",
       image: "/placeholder.svg",
-      description: "Minimalist website design for a photographer."
-    },
+      description: "Vue.jsとFirebaseを使用した予約システムの開発"
+    }
   ];
 
   const [filter, setFilter] = useState('all');
