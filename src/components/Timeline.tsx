@@ -1,20 +1,35 @@
+
 import React from 'react';
 
 interface TimelineItemProps {
   year: string;
   title: string;
   description: string;
+  subtitle?: string;
+  certifyingBody?: string;
 }
 
-const TimelineItem: React.FC<TimelineItemProps> = ({ year, title, description }) => {
+const TimelineItem: React.FC<TimelineItemProps> = ({ 
+  year, 
+  title, 
+  description, 
+  subtitle,
+  certifyingBody 
+}) => {
   return (
-    <div className="timeline-item">
+    <div className="timeline-item mb-8">
       <div className="timeline-dot" />
-      <div className="mb-1 flex flex-col sm:flex-row sm:items-center">
-        <span className="text-sm font-medium text-nordic-blue">{year}</span>
-        <h3 className="text-lg font-medium sm:ml-4">{title}</h3>
+      <div className="mb-1">
+        <span className="text-sm font-medium text-nordic-blue block mb-1">{year}</span>
+        <h3 className="text-lg font-medium">{title}</h3>
+        {subtitle && <p className="text-nordic-dark/90 mt-1">{subtitle}</p>}
+        <p className="text-nordic-dark/70 mt-1">{description}</p>
+        {certifyingBody && (
+          <p className="text-sm text-nordic-dark/60 mt-1">
+            Certifying Body: {certifyingBody}
+          </p>
+        )}
       </div>
-      <p className="text-nordic-dark/70">{description}</p>
     </div>
   );
 };
@@ -22,37 +37,82 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ year, title, description })
 const Timeline: React.FC = () => {
   const experiences = [
     {
-      year: "2023 - 現在",
-      title: "フリーランス Web開発者",
-      description: "React, Vue.jsを用いたフロントエンド開発を中心に、複数のプロジェクトに参画。"
+      year: "2022年8月 - 現在",
+      title: "METABIRDS Co., Ltd.",
+      description: "3D Generalist and Research & Development",
     },
     {
-      year: "2021 - 2023",
-      title: "株式会社ABC システムエンジニア",
-      description: "業務系Webアプリケーションの設計・開発に従事。フロントエンド開発とバックエンド開発を担当。"
+      year: "2019年1月 - 2022年7月",
+      title: "INOAC CORPORATION",
+      description: "Bedding Products Planning and Research & Development Specialist",
     },
     {
-      year: "2019 - 2021",
-      title: "株式会社XYZ Webエンジニア",
-      description: "ECサイトのフロントエンド開発を担当。UI/UXの改善施策を実施。"
+      year: "2014年4月 - 2018年12月",
+      title: "KARIMOKU FURNITURE INC.",
+      description: "Furniture Advanced Development and Research Specialist",
+    }
+  ];
+
+  const education = [
+    {
+      year: "2010年4月 - 2014年3月",
+      title: "大阪工業大学",
+      description: "Osaka Institute of Technology",
+    },
+    {
+      year: "2007年4月 - 2010年3月",
+      title: "兵庫県立明石西高等学校",
+      description: "Hyogo Prefectural Akashi Nishi Senior High School",
     }
   ];
 
   const qualifications = [
     {
-      year: "2022",
-      title: "AWS 認定ソリューションアーキテクト",
-      description: "クラウドインフラストラクチャの設計・構築に関する専門知識を習得。"
+      year: "2023年4月",
+      title: "Certified Human Centered Design Specialist",
+      description: "HCD-Net認定 人間中心設計スペシャリスト",
+      certifyingBody: "Human-Centered Design Organization (HCD-Net)",
     },
     {
-      year: "2020",
-      title: "情報処理安全確保支援士",
-      description: "情報セキュリティに関する高度な知識とスキルを保有。"
+      year: "2023年2月",
+      title: "Tableau Desktop Specialist",
+      certifyingBody: "Salesforce",
     },
     {
-      year: "2019",
-      title: "応用情報技術者",
-      description: "ITスキル標準におけるハイレベルな知識を習得。"
+      year: "2023年1月",
+      title: "上級バーチャルリアリティ技術者",
+      description: "Senior Virtual Reality Specialist",
+      certifyingBody: "The Virtual Reality Society of Japan",
+    },
+    {
+      year: "2022年12月",
+      title: "色彩検定2級",
+      description: "Test in Color Coordination - UC Grade",
+      certifyingBody: "色彩検定協会",
+    },
+    {
+      year: "2022年8月",
+      title: "CG制作専門家検定",
+      description: "CG Creator Certification Expert",
+      certifyingBody: "Computer Graphic Arts Society",
+    }
+  ];
+
+  const languages = [
+    {
+      year: "現在",
+      title: "Japanese",
+      description: "Native/Bilingual (ILR Level 5)",
+    },
+    {
+      year: "現在",
+      title: "English",
+      description: "Professional Working Proficiency (ILR Level 3)",
+    },
+    {
+      year: "Near-future",
+      title: "IELTS",
+      description: "Band score of 7.0 or higher (Target)",
     }
   ];
 
@@ -66,7 +126,7 @@ const Timeline: React.FC = () => {
 
         <div className="grid md:grid-cols-2 gap-12">
           <div>
-            <h3 className="text-2xl font-medium mb-6">Professional Experience</h3>
+            <h3 className="text-2xl font-medium mb-6">Work Experience</h3>
             <div className="ml-2">
               {experiences.map((exp, index) => (
                 <TimelineItem
@@ -77,10 +137,22 @@ const Timeline: React.FC = () => {
                 />
               ))}
             </div>
+
+            <h3 className="text-2xl font-medium mb-6 mt-12">Education</h3>
+            <div className="ml-2">
+              {education.map((edu, index) => (
+                <TimelineItem
+                  key={index}
+                  year={edu.year}
+                  title={edu.title}
+                  description={edu.description}
+                />
+              ))}
+            </div>
           </div>
 
           <div>
-            <h3 className="text-2xl font-medium mb-6">Education & Certificates</h3>
+            <h3 className="text-2xl font-medium mb-6">Qualifications</h3>
             <div className="ml-2">
               {qualifications.map((qual, index) => (
                 <TimelineItem
@@ -88,6 +160,19 @@ const Timeline: React.FC = () => {
                   year={qual.year}
                   title={qual.title}
                   description={qual.description}
+                  certifyingBody={qual.certifyingBody}
+                />
+              ))}
+            </div>
+
+            <h3 className="text-2xl font-medium mb-6 mt-12">Languages</h3>
+            <div className="ml-2">
+              {languages.map((lang, index) => (
+                <TimelineItem
+                  key={index}
+                  year={lang.year}
+                  title={lang.title}
+                  description={lang.description}
                 />
               ))}
             </div>

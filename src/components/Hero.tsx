@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 
@@ -18,13 +17,12 @@ const Hero: React.FC = () => {
         <div className="grid md:grid-cols-12 gap-12 items-center">
           <div className="md:col-span-8 space-y-6">
             <h1 className="text-4xl md:text-6xl font-medium text-nordic-dark leading-tight animate-fade-in">
-              多田 耕平<br />
-              <span className="text-nordic-blue">Web Developer</span>
+              多田 浩平<br />
+              <span className="text-nordic-blue">3D Designer / Developer</span>
             </h1>
             
             <p className="text-lg text-nordic-dark/80 max-w-lg animate-fade-in" style={{animationDelay: '0.2s'}}>
-              フロントエンド開発とUI/UXデザインを専門とするWeb開発者です。
-              ユーザー体験を重視した、シンプルで使いやすいWebアプリケーションの開発に取り組んでいます。
+              3DCG・メタバースデザイナー / 開発者として、革新的なデジタル体験の創造に取り組んでいます。
             </p>
             
             <div className="pt-4 animate-fade-in" style={{animationDelay: '0.4s'}}>
@@ -32,7 +30,7 @@ const Hero: React.FC = () => {
                 onClick={scrollToProjects}
                 className="group flex items-center space-x-2 bg-nordic-beige px-6 py-3 rounded-md hover:bg-opacity-80 transition-all"
               >
-                <span>プロジェクトを見る</span>
+                <span>作品を見る</span>
                 <ArrowRight className="transition-transform group-hover:translate-x-1" size={18} />
               </button>
             </div>
@@ -42,9 +40,9 @@ const Hero: React.FC = () => {
             <div className="bg-nordic-blue rounded-lg p-8 animate-fade-in" style={{animationDelay: '0.6s'}}>
               <div className="bg-nordic-white rounded-lg p-6 shadow-sm">
                 <div className="aspect-square bg-nordic-gray/20 rounded-md mb-4" />
-                <h3 className="font-poppins text-lg mb-2">Developer Profile</h3>
+                <h3 className="font-medium text-lg mb-2">Professional Profile</h3>
                 <p className="text-sm text-nordic-dark/70">
-                  フロントエンド開発とUI/UXデザインを専門に、使いやすさと見やすさを重視したWebアプリケーションの開発に従事しています。
+                  3D設計とメタバース開発の経験を活かし、次世代のデジタル体験を創造しています。
                 </p>
               </div>
             </div>

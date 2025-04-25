@@ -12,43 +12,50 @@ const About: React.FC = () => {
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <p className="text-lg">
-              はじめまして、多田耕平と申します。フロントエンド開発とUI/UXデザインを専門とするWeb開発者です。
-            </p>
-            <p>
-              JavaScriptフレームワーク（React, Vue.js）を用いたフロントエンド開発を中心に、
-              使いやすく美しいWebアプリケーションの開発に取り組んでいます。
-            </p>
-            <p>
-              ユーザー体験を最優先に考え、シンプルで直感的なインターフェースデザインを心がけています。
-              また、アクセシビリティやパフォーマンスの最適化にも注力しています。
-            </p>
+            <div className="space-y-4">
+              <p className="text-lg text-nordic-dark/80 mb-2">
+                建築学を学んだ後、主にインテリアメーカーのデザイン研究開発職としての幅広く経験値を蓄えました。
+              </p>
+              <p className="text-sm text-nordic-dark/70 italic">
+                After studying architecture, I gained a wide of experience mainly in design research and development at an interior manufacturing company.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-lg text-nordic-dark/80 mb-2">
+                その中で3Dデータや3Dデザインソフトを使用した開発等も行っていたため、3Dにおける知識は人一倍備わっていると自負しております。
+              </p>
+              <p className="text-sm text-nordic-dark/70 italic">
+                I am proud to say that I have more knowledge of 3D than most people because I also worked with 3D data and development using 3D design software.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-lg text-nordic-dark/80 mb-2">
+                現在はこれまでの経験を生かして、3DCG制作やメタバースにおけるデザイン制作などを行っています。
+              </p>
+              <p className="text-sm text-nordic-dark/70 italic">
+                Currently, I am making use of my experience in 3DCG production and design production in the Metaverse.
+              </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-nordic-beige p-6 rounded-lg">
-              <h3 className="font-poppins text-xl mb-2">フロントエンド開発</h3>
-              <p className="text-sm text-nordic-dark/70">
-                React, Vue.jsでの開発
-              </p>
+              <h3 className="font-medium text-xl mb-2">3D Design</h3>
+              <p className="text-sm text-nordic-dark/70">3DCG・モデリング</p>
             </div>
             <div className="bg-nordic-blue p-6 rounded-lg">
-              <h3 className="font-poppins text-xl mb-2">UI/UXデザイン</h3>
-              <p className="text-sm text-nordic-dark/70">
-                ユーザー中心設計
-              </p>
+              <h3 className="font-medium text-xl mb-2">VR/AR</h3>
+              <p className="text-sm text-nordic-dark/70">仮想現実・拡張現実</p>
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
-              <h3 className="font-poppins text-xl mb-2">バックエンド開発</h3>
-              <p className="text-sm text-nordic-dark/70">
-                Node.js, PHPでの開発
-              </p>
+              <h3 className="font-medium text-xl mb-2">Metaverse</h3>
+              <p className="text-sm text-nordic-dark/70">メタバース開発</p>
             </div>
             <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
-              <h3 className="font-poppins text-xl mb-2">データベース</h3>
-              <p className="text-sm text-nordic-dark/70">
-                MySQL, MongoDBの設計・運用
-              </p>
+              <h3 className="font-medium text-xl mb-2">UI/UX</h3>
+              <p className="text-sm text-nordic-dark/70">インターフェース設計</p>
             </div>
           </div>
         </div>

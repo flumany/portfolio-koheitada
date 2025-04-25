@@ -13,50 +13,71 @@ const Projects: React.FC = () => {
   const projectsData: Project[] = [
     {
       id: 1,
-      title: "ECサイトリニューアル",
-      category: "web",
+      title: "UI/UX Design",
+      category: "design",
       image: "/placeholder.svg",
-      description: "React.jsを使用したECサイトのフロントエンド開発"
+      description: "ユーザー体験を重視したデザイン設計"
     },
     {
       id: 2,
-      title: "社内業務システム開発",
-      category: "web",
+      title: "3DCG Design",
+      category: "3d",
       image: "/placeholder.svg",
-      description: "Vue.jsとLaravelを使用した業務効率化システムの開発"
+      description: "3DCGを活用したビジュアルデザイン"
     },
     {
       id: 3,
-      title: "チャットアプリケーション",
-      category: "mobile",
+      title: "Metaverse",
+      category: "vr",
       image: "/placeholder.svg",
-      description: "WebSocketを使用したリアルタイムチャットアプリの開発"
+      description: "メタバース空間のデザインと開発"
     },
     {
       id: 4,
-      title: "顧客管理システム",
-      category: "web",
+      title: "Character/Avatar Design",
+      category: "design",
       image: "/placeholder.svg",
-      description: "Node.jsとMySQLを使用した顧客管理システムの開発"
+      description: "キャラクターとアバターのデザイン"
     },
     {
       id: 5,
-      title: "ポートフォリオサイト",
-      category: "web",
+      title: "Digital Twin / VR",
+      category: "vr",
       image: "/placeholder.svg",
-      description: "React.jsとTailwind CSSを使用した個人ポートフォリオの制作"
+      description: "デジタルツインとVR技術の活用"
     },
     {
       id: 6,
-      title: "予約管理システム",
-      category: "web",
+      title: "AR Project",
+      category: "ar",
       image: "/placeholder.svg",
-      description: "Vue.jsとFirebaseを使用した予約システムの開発"
+      description: "AR技術を活用したプロジェクト開発"
+    },
+    {
+      id: 7,
+      title: "3DCG Animation",
+      category: "3d",
+      image: "/placeholder.svg",
+      description: "3DCGアニメーションの制作"
+    },
+    {
+      id: 8,
+      title: "Voxel Art",
+      category: "3d",
+      image: "/placeholder.svg",
+      description: "ボクセルアートの制作"
+    },
+    {
+      id: 9,
+      title: "NFT",
+      category: "blockchain",
+      image: "/placeholder.svg",
+      description: "NFTデジタルアートの制作"
     }
   ];
 
   const [filter, setFilter] = useState('all');
-  const categories = ['all', 'interior', 'branding', 'web', 'mobile'];
+  const categories = ['all', 'design', '3d', 'vr', 'ar', 'blockchain'];
 
   const filteredProjects = filter === 'all' 
     ? projectsData 
@@ -66,14 +87,10 @@ const Projects: React.FC = () => {
     <section id="projects" className="section bg-nordic-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-medium mb-4">Projects</h2>
+          <h2 className="text-3xl md:text-4xl font-medium mb-4">Portfolio</h2>
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
-          <p className="text-nordic-dark/70">
-            A selection of my work showcasing clean, minimal design with functionality at its core.
-          </p>
         </div>
 
-        {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-2 mb-12">
           {categories.map(category => (
             <button
@@ -90,7 +107,6 @@ const Projects: React.FC = () => {
           ))}
         </div>
 
-        {/* Projects Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map(project => (
             <div key={project.id} className="project-card group">
@@ -106,7 +122,7 @@ const Projects: React.FC = () => {
                   </span>
                 </div>
               </div>
-              <div className="p-6">
+              <div className="p-6 bg-white">
                 <h3 className="font-medium text-lg mb-2">{project.title}</h3>
                 <p className="text-nordic-dark/70 text-sm">{project.description}</p>
               </div>
