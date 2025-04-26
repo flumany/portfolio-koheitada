@@ -31,14 +31,14 @@ const ProjectDetail: React.FC = () => {
   const goToPreviousProject = () => {
     if (currentWorkIndex > 0) {
       setCurrentWorkIndex(currentWorkIndex - 1);
-      setActiveTab('images'); // Reset to images tab on project change
+      setActiveTab('images');
     }
   };
 
   const goToNextProject = () => {
     if (currentWorkIndex < works.length - 1) {
       setCurrentWorkIndex(currentWorkIndex + 1);
-      setActiveTab('images'); // Reset to images tab on project change
+      setActiveTab('images');
     }
   };
 
@@ -50,42 +50,14 @@ const ProjectDetail: React.FC = () => {
 
   return (
     <div className="container-custom py-20">
-      <div className="flex justify-between items-center mb-6">
-        <Button
-          variant="ghost"
-          className="flex items-center gap-2 hover:bg-nordic-beige/20"
-          onClick={() => navigate('/')}
-        >
-          <ArrowLeft size={20} />
-          Back to Projects
-        </Button>
-        
-        {works.length > 1 && (
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={goToPreviousProject}
-              disabled={currentWorkIndex === 0}
-            >
-              <ArrowLeft size={16} />
-              <span className="ml-1 hidden sm:inline">Previous</span>
-            </Button>
-            <span className="text-sm">
-              {currentWorkIndex + 1} / {works.length}
-            </span>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={goToNextProject}
-              disabled={currentWorkIndex === works.length - 1}
-            >
-              <span className="mr-1 hidden sm:inline">Next</span>
-              <ArrowRight size={16} />
-            </Button>
-          </div>
-        )}
-      </div>
+      <Button
+        variant="ghost"
+        className="flex items-center gap-2 hover:bg-nordic-beige/20 mb-6"
+        onClick={() => navigate('/')}
+      >
+        <ArrowLeft size={20} />
+        Back to Projects
+      </Button>
 
       <h1 className="text-3xl md:text-4xl font-medium mb-6 text-center">
         {category?.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
@@ -123,6 +95,34 @@ const ProjectDetail: React.FC = () => {
               )}
             </Tabs>
           </div>
+
+          {works.length > 1 && (
+            <div className="flex items-center justify-between gap-4 mb-6">
+              <Button 
+                variant="outline" 
+                size="lg"
+                onClick={goToPreviousProject}
+                disabled={currentWorkIndex === 0}
+                className="flex-1 py-8"
+              >
+                <ArrowLeft size={20} className="mr-2" />
+                Previous Project
+              </Button>
+              <span className="text-sm font-medium">
+                {currentWorkIndex + 1} of {works.length}
+              </span>
+              <Button 
+                variant="outline" 
+                size="lg"
+                onClick={goToNextProject}
+                disabled={currentWorkIndex === works.length - 1}
+                className="flex-1 py-8"
+              >
+                Next Project
+                <ArrowRight size={20} className="ml-2" />
+              </Button>
+            </div>
+          )}
         </div>
 
         <div className="md:col-span-4">
@@ -132,7 +132,7 @@ const ProjectDetail: React.FC = () => {
             currentWorkIndex={currentWorkIndex}
             onProjectChange={(index) => {
               setCurrentWorkIndex(index);
-              setActiveTab('images'); // Reset to images tab on project change
+              setActiveTab('images');
             }}
           />
         </div>
