@@ -19,6 +19,24 @@ interface ProjectCarouselProps {
 
 const ProjectCarousel = ({ images, title }: ProjectCarouselProps) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [emblaApi, setEmblaApi] = React.useState<UseEmblaCarouselType[1] | null>(null);
+  
+  // Update the current index when the carousel changes
+  React.useEffect(() => {
+    if (!emblaApi) return;
+    
+    const onSelect = () => {
+      setCurrentIndex(emblaApi.selectedScrollSnap());
+    };
+    
+    emblaApi.on('select', onSelect);
+    // Initial call to set the index
+    onSelect();
+    
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi]);
   
   return (
     <div className="relative">
@@ -28,10 +46,7 @@ const ProjectCarousel = ({ images, title }: ProjectCarouselProps) => {
           loop: true,
           align: "start",
         }}
-        onSelect={(api: UseEmblaCarouselType[1]) => {
-          // Using the proper typing for the Embla API
-          setCurrentIndex(api.selectedScrollSnap());
-        }}
+        setApi={setEmblaApi}
       >
         <CarouselContent>
           {images.map((image, index) => (
@@ -77,13 +92,8 @@ const ProjectCarousel = ({ images, title }: ProjectCarouselProps) => {
                 currentIndex === index ? "bg-nordic-blue w-4" : "bg-nordic-gray/40"
               )}
               onClick={() => {
-                const element = document.querySelector("[data-embla-container]");
-                if (element) {
-                  // Using type assertion for the Embla API
-                  const api = (element as any).__emblaApi__;
-                  if (api) {
-                    api.scrollTo(index);
-                  }
+                if (emblaApi) {
+                  emblaApi.scrollTo(index);
                 }
               }}
             />
