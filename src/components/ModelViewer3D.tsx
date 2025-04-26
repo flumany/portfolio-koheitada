@@ -1,4 +1,3 @@
-
 import React, { Suspense, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PresentationControls, useGLTF, Environment, Stage } from '@react-three/drei';
@@ -32,7 +31,7 @@ const Model = ({ url }: { url: string }) => {
     const { scene } = useGLTF(url, undefined, undefined, 
       (error) => {
         console.error('Error loading model:', error);
-        setError(`Failed to load model: ${error.message}`);
+        setError(`Failed to load model: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     );
     
