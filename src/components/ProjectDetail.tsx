@@ -9,6 +9,12 @@ import ProjectCarousel from './project/ProjectCarousel';
 import ProjectSidebar from './project/ProjectSidebar';
 import { projectsData } from '@/data/projectsData';
 
+// Helper function to check if URL is a valid 3D model format
+const is3DModelFormat = (url: string): boolean => {
+  const validExtensions = ['.glb', '.gltf', '.fbx', '.obj', '.stl', '.usdz'];
+  return validExtensions.some(ext => url.toLowerCase().endsWith(ext));
+};
+
 const ProjectDetail: React.FC = () => {
   const { category } = useParams();
   const navigate = useNavigate();
@@ -36,9 +42,10 @@ const ProjectDetail: React.FC = () => {
     }
   };
 
-  // Helper to determine if the project has 3D models
+  // Helper to determine if the project has valid 3D models
   const has3DModels = Boolean(
-    (currentWork.models && currentWork.models.length > 0) || currentWork.modelUrl
+    (currentWork.modelUrl && is3DModelFormat(currentWork.modelUrl)) || 
+    (currentWork.models && currentWork.models.some(url => is3DModelFormat(url)))
   );
 
   return (
@@ -99,7 +106,11 @@ const ProjectDetail: React.FC = () => {
               </TabsList>
               
               <TabsContent value="images" className="focus-visible:outline-none focus-visible:ring-0">
-                <ProjectCarousel images={currentWork.images} title={currentWork.title} />
+                <ProjectCarousel 
+                  images={currentWork.images} 
+                  iframes={currentWork.iframes}
+                  title={currentWork.title} 
+                />
               </TabsContent>
               
               {has3DModels && (

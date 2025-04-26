@@ -1,3 +1,4 @@
+
 import { ProjectData } from '../types/project';
 
 export const projectsData: ProjectData = {
@@ -61,7 +62,8 @@ export const projectsData: ProjectData = {
         '/placeholder.svg',
         'https://images.unsplash.com/photo-1483058712412-4245e9b90334'
       ],
-      models: ['/placeholder.svg', '/placeholder.svg'], // Multiple 3D models
+      models: [], // Remove placeholder SVGs as models
+      modelUrl: "https://models.readyplayer.me/63f0de5b31ccc3e9556a5c59.glb", // Example valid 3D model URL
       technologies: ['Blender', 'Cinema 4D', 'KeyShot', 'Substance Painter'],
       role: '3D Artist & Product Visualizer',
       duration: '3 weeks per product line',
@@ -77,7 +79,7 @@ export const projectsData: ProjectData = {
         'https://images.unsplash.com/photo-1527576539890-dfa815648363',
         '/placeholder.svg'
       ],
-      models: ['/placeholder.svg', '/placeholder.svg'], // Multiple 3D models
+      models: ["https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/fox/model.gltf"], // Example valid 3D model
       technologies: ['ZBrush', 'Maya', 'Substance Painter', 'Marvelous Designer'],
       role: 'Character Artist & Rigger',
       duration: '2 months',
@@ -93,7 +95,7 @@ export const projectsData: ProjectData = {
         'https://images.unsplash.com/photo-1487887235947-a955ef187fcc',
         '/placeholder.svg'
       ],
-      models: ['/placeholder.svg'],
+      models: ["https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/tree-beech/model.gltf"],
       technologies: ['3ds Max', 'V-Ray', 'Corona Renderer', 'Unreal Engine'],
       role: 'Architectural Visualizer',
       duration: '6 weeks',
@@ -131,7 +133,7 @@ export const projectsData: ProjectData = {
       title: 'Virtual Space', 
       description: 'Interactive virtual environment',
       images: ['/placeholder.svg', '/placeholder.svg'],
-      models: ['/placeholder.svg'],
+      models: ["https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/coffee-table/model.gltf"],
       technologies: ['Three.js', 'WebXR', 'JavaScript'],
       role: 'Metaverse Designer',
       duration: '2 months',
@@ -143,7 +145,7 @@ export const projectsData: ProjectData = {
       title: 'Digital Twin', 
       description: 'Virtual replica of physical space',
       images: ['/placeholder.svg', '/placeholder.svg'],
-      models: ['/placeholder.svg'],
+      models: ["https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/chair-wood/model.gltf"],
       technologies: ['Unity', 'Photogrammetry', 'C#'],
       role: 'Technical Director',
       duration: '4 months',
