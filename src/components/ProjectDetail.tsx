@@ -1,4 +1,3 @@
-
 import React, { Suspense, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Info } from 'lucide-react';
@@ -11,9 +10,7 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PresentationControls, useGLTF, Environment, Stage } from '@react-three/drei';
-import { Skeleton } from "@/components/ui/skeleton";
+import ModelViewer3D from './ModelViewer3D';
 
 interface ProjectWork {
   id: number;
@@ -27,12 +24,6 @@ interface ProjectWork {
   challenge?: string;
   solution?: string;
 }
-
-// Model component for 3D viewer
-const Model = ({ url }: { url: string }) => {
-  const { scene } = useGLTF(url);
-  return <primitive object={scene} scale={1} />;
-};
 
 const projectsData: Record<string, ProjectWork[]> = {
   'web-design': [
@@ -249,28 +240,7 @@ const ProjectDetail: React.FC = () => {
               
               {currentWork.modelUrl && (
                 <TabsContent value="3d-model" className="focus-visible:outline-none focus-visible:ring-0">
-                  <div className="w-full h-[400px] rounded-lg overflow-hidden bg-nordic-gray/10">
-                    <Suspense fallback={<Skeleton className="w-full h-full" />}>
-                      <Canvas dpr={[1, 2]} shadows>
-                        <color attach="background" args={['#f5f5f5']} />
-                        <PresentationControls
-                          global
-                          rotation={[0, 0, 0]}
-                          polar={[-Math.PI / 4, Math.PI / 4]}
-                          azimuth={[-Math.PI / 4, Math.PI / 4]}
-                        >
-                          <Stage environment="city" intensity={0.5}>
-                            <Model url={currentWork.modelUrl} />
-                          </Stage>
-                        </PresentationControls>
-                        <OrbitControls enableZoom={true} />
-                        <Environment preset="city" />
-                      </Canvas>
-                    </Suspense>
-                    <div className="absolute bottom-2 right-2 text-xs text-nordic-dark/50">
-                      Drag to rotate, scroll to zoom
-                    </div>
-                  </div>
+                  <ModelViewer3D modelUrl={currentWork.modelUrl} />
                 </TabsContent>
               )}
             </Tabs>
