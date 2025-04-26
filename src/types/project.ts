@@ -12,6 +12,7 @@ export interface ProjectWork {
   duration?: string;
   challenge?: string;
   solution?: string;
+  category?: string; // Adding category property to fix the error
 }
 
 export interface ProjectCategory {
