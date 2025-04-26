@@ -1,4 +1,3 @@
-
 import { ProjectData } from '../types/project';
 
 export const projectsData: ProjectData = {
@@ -7,7 +6,8 @@ export const projectsData: ProjectData = {
       id: 1, 
       title: 'Corporate Website', 
       description: 'Modern web design with focus on user experience',
-      images: ['/placeholder.svg', '/placeholder.svg'],
+      images: ['/placeholder.svg'],
+      iframes: ['https://example.com/preview1'],
       technologies: ['HTML5', 'CSS3', 'JavaScript'],
       role: 'UI/UX Designer',
       duration: '2 months',
@@ -31,7 +31,8 @@ export const projectsData: ProjectData = {
       id: 1, 
       title: 'Mobile App Design', 
       description: 'User-centered interface design',
-      images: ['/placeholder.svg', '/placeholder.svg'],
+      images: ['/placeholder.svg'],
+      iframes: ['https://example.com/preview2'],
       technologies: ['Figma', 'Adobe XD', 'Sketch'],
       role: 'UX Designer',
       duration: '6 weeks',

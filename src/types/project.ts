@@ -4,8 +4,9 @@ export interface ProjectWork {
   title: string;
   description: string;
   images: string[];
-  models?: string[]; // Array of 3D model URLs
-  modelUrl?: string; // Adding this for backward compatibility
+  iframes?: string[]; // Adding iframe support
+  models?: string[];
+  modelUrl?: string;
   technologies?: string[];
   role?: string;
   duration?: string;
