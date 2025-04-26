@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ModelViewer3D from './ModelViewer3D';
@@ -21,17 +21,59 @@ const ProjectDetail: React.FC = () => {
   }
 
   const currentWork = works[currentWorkIndex];
+  
+  const goToPreviousProject = () => {
+    if (currentWorkIndex > 0) {
+      setCurrentWorkIndex(currentWorkIndex - 1);
+      setActiveTab('images'); // Reset to images tab on project change
+    }
+  };
+
+  const goToNextProject = () => {
+    if (currentWorkIndex < works.length - 1) {
+      setCurrentWorkIndex(currentWorkIndex + 1);
+      setActiveTab('images'); // Reset to images tab on project change
+    }
+  };
 
   return (
     <div className="container-custom py-20">
-      <Button
-        variant="ghost"
-        className="mb-6 flex items-center gap-2 hover:bg-nordic-beige/20"
-        onClick={() => navigate('/')}
-      >
-        <ArrowLeft size={20} />
-        Back to Projects
-      </Button>
+      <div className="flex justify-between items-center mb-6">
+        <Button
+          variant="ghost"
+          className="flex items-center gap-2 hover:bg-nordic-beige/20"
+          onClick={() => navigate('/')}
+        >
+          <ArrowLeft size={20} />
+          Back to Projects
+        </Button>
+        
+        {works.length > 1 && (
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={goToPreviousProject}
+              disabled={currentWorkIndex === 0}
+            >
+              <ArrowLeft size={16} />
+              <span className="ml-1 hidden sm:inline">Previous</span>
+            </Button>
+            <span className="text-sm">
+              {currentWorkIndex + 1} / {works.length}
+            </span>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={goToNextProject}
+              disabled={currentWorkIndex === works.length - 1}
+            >
+              <span className="mr-1 hidden sm:inline">Next</span>
+              <ArrowRight size={16} />
+            </Button>
+          </div>
+        )}
+      </div>
 
       <h1 className="text-3xl md:text-4xl font-medium mb-6 text-center">
         {category?.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
@@ -46,7 +88,7 @@ const ProjectDetail: React.FC = () => {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-4">
               <TabsList className="mb-4">
                 <TabsTrigger value="images">Images</TabsTrigger>
-                {currentWork.modelUrl && (
+                {(currentWork.modelUrl || (currentWork.models && currentWork.models.length > 0)) && (
                   <TabsTrigger value="3d-model">3D Model</TabsTrigger>
                 )}
               </TabsList>
@@ -55,9 +97,12 @@ const ProjectDetail: React.FC = () => {
                 <ProjectCarousel images={currentWork.images} title={currentWork.title} />
               </TabsContent>
               
-              {currentWork.modelUrl && (
+              {(currentWork.modelUrl || (currentWork.models && currentWork.models.length > 0)) && (
                 <TabsContent value="3d-model" className="focus-visible:outline-none focus-visible:ring-0">
-                  <ModelViewer3D modelUrl={currentWork.modelUrl} />
+                  <ModelViewer3D 
+                    modelUrl={currentWork.modelUrl} 
+                    models={currentWork.models} 
+                  />
                 </TabsContent>
               )}
             </Tabs>
@@ -69,7 +114,10 @@ const ProjectDetail: React.FC = () => {
             works={works}
             currentWork={currentWork}
             currentWorkIndex={currentWorkIndex}
-            onProjectChange={setCurrentWorkIndex}
+            onProjectChange={(index) => {
+              setCurrentWorkIndex(index);
+              setActiveTab('images'); // Reset to images tab on project change
+            }}
           />
         </div>
       </div>

@@ -4,7 +4,7 @@ export interface ProjectWork {
   title: string;
   description: string;
   images: string[];
-  modelUrl?: string;
+  models?: string[]; // Changed from modelUrl to models array
   technologies?: string[];
   role?: string;
   duration?: string;
