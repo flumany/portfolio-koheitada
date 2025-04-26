@@ -6,7 +6,7 @@ const About: React.FC = () => {
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-medium mb-4">About Me</h2>
-          <p className="text-nordic-dark/70 mb-8">Passionate about creating meaningful digital experiences</p>
+          <p className="text-nordic-dark/70 mb-8">Passionate about creating meaningful experiences</p>
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
@@ -54,8 +54,8 @@ const About: React.FC = () => {
               <p className="text-sm text-nordic-dark/70">Interface Design</p>
             </div>
             <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">Web Design</h3>
-              <p className="text-sm text-nordic-dark/70">Digital Experience</p>
+              <h3 className="font-medium text-xl mb-2">Physical Products</h3>
+              <p className="text-sm text-nordic-dark/70">Product Design</p>
             </div>
           </div>
         </div>

@@ -19,10 +19,15 @@ const Hero: React.FC = () => {
         <div className="grid md:grid-cols-12 gap-12 items-center">
           <div className="md:col-span-8 space-y-8">
             <h1 className="text-4xl md:text-6xl font-medium text-nordic-dark leading-tight animate-fade-in">
-              多田 浩平<br />
-              <span className="text-xl md:text-2xl leading-relaxed text-nordic-blue mt-4 block">
-                Service/Product Designer specializing in UI, UX, 3D, XR, Physical Products || Certified Human Centered Design Specialist
-              </span>
+              Kohei Tada<br />
+              <div className="space-y-2">
+                <span className="text-xl md:text-2xl leading-relaxed text-nordic-blue mt-4 block">
+                  Service/Product Designer specializing in UI, UX, 3D, XR, Physical Products
+                </span>
+                <span className="text-lg md:text-xl leading-relaxed text-nordic-blue/80 block">
+                  Certified Human Centered Design Specialist
+                </span>
+              </div>
             </h1>
             
             <p className="text-lg text-nordic-dark/80 max-w-xl animate-fade-in leading-relaxed" style={{animationDelay: '0.2s'}}>
@@ -46,11 +51,11 @@ const Hero: React.FC = () => {
                 <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
                   <div className="aspect-square bg-gradient-to-br from-nordic-blue/10 to-nordic-beige/20 rounded-md mb-4 flex items-center justify-center relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-tr from-nordic-blue/20 via-transparent to-nordic-beige/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <span className="text-4xl text-nordic-dark/40 font-medium relative z-10">多田</span>
+                    <span className="text-4xl text-nordic-dark/40 font-medium relative z-10">KT</span>
                   </div>
                   <h3 className="font-medium text-lg mb-3 text-nordic-dark">Professional Profile</h3>
                   <p className="text-sm text-nordic-dark/70 leading-relaxed">
-                    Creating next-generation digital experiences with expertise in 3D design and XR development.
+                    Enhancing user experiences across physical and digital products through innovative design solutions.
                   </p>
                 </div>
               </CardContent>

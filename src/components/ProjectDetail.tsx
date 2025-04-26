@@ -1,6 +1,6 @@
-
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -8,6 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
 
 interface ProjectWork {
   id: number;
@@ -45,6 +46,7 @@ const projectsData: Record<string, ProjectWork[]> = {
 
 const ProjectDetail: React.FC = () => {
   const { category } = useParams();
+  const navigate = useNavigate();
   const works = category ? projectsData[category] : [];
 
   if (!works?.length) {
@@ -53,6 +55,15 @@ const ProjectDetail: React.FC = () => {
 
   return (
     <div className="container-custom py-20">
+      <Button
+        variant="ghost"
+        className="mb-6 flex items-center gap-2 hover:bg-nordic-beige/20"
+        onClick={() => navigate('/')}
+      >
+        <ArrowLeft size={20} />
+        Back to Projects
+      </Button>
+
       <h1 className="text-3xl md:text-4xl font-medium mb-12 text-center">
         {category?.split('-').map(word => word.toUpperCase()).join(' ')}
       </h1>
