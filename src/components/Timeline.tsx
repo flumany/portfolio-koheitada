@@ -105,17 +105,17 @@ const Timeline: React.FC = () => {
 
   const languages = [
     {
-      year: "現在",
+      year: "Present",
       title: "Japanese",
       description: "Native/Bilingual (ILR Level 5)",
     },
     {
-      year: "現在",
+      year: "Present",
       title: "English",
       description: "Professional Working Proficiency (ILR Level 3)",
     },
     {
-      year: "Near-future",
+      year: "Future Goal",
       title: "IELTS",
       description: "Band score of 7.0 or higher (Target)",
     }

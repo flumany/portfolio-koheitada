@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -24,6 +25,11 @@ const ProjectDetail: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentWorkIndex]);
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (!categoryData?.projects?.length) {
     return <div className="container-custom py-20">Project not found</div>;

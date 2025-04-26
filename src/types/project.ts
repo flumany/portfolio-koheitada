@@ -1,7 +1,6 @@
 
 export interface ProjectWork {
   id: number;
-  category: string;
   title: string;
   description: string;
   images: string[];
