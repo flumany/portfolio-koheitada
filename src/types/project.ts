@@ -1,10 +1,11 @@
 
 export interface ProjectWork {
   id: number;
+  category: string;
   title: string;
   description: string;
   images: string[];
-  iframes?: string[]; // Adding iframe support
+  iframes?: string[];
   models?: string[];
   modelUrl?: string;
   technologies?: string[];
@@ -14,5 +15,10 @@ export interface ProjectWork {
   solution?: string;
 }
 
-export type ProjectCategory = 'web-design' | 'ui-ux-design' | '3d-design' | 'ar-development' | 'metaverse' | 'nft';
-export type ProjectData = Record<string, ProjectWork[]>;
+export interface ProjectCategory {
+  title: string;
+  description: string;
+  projects: ProjectWork[];
+}
+
+export type ProjectData = Record<string, ProjectCategory>;

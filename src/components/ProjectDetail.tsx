@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -17,15 +17,19 @@ const is3DModelFormat = (url: string): boolean => {
 const ProjectDetail: React.FC = () => {
   const { category } = useParams();
   const navigate = useNavigate();
-  const works = category ? projectsData[category] : [];
+  const categoryData = category ? projectsData[category] : null;
   const [currentWorkIndex, setCurrentWorkIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('images');
 
-  if (!works?.length) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentWorkIndex]);
+
+  if (!categoryData?.projects?.length) {
     return <div className="container-custom py-20">Project not found</div>;
   }
 
-  const currentWork = works[currentWorkIndex];
+  const currentWork = categoryData.projects[currentWorkIndex];
   
   const has3DModels = Boolean(
     (currentWork.modelUrl && is3DModelFormat(currentWork.modelUrl)) || 
@@ -44,13 +48,13 @@ const ProjectDetail: React.FC = () => {
       </Button>
 
       <h1 className="text-3xl md:text-4xl font-medium mb-6 text-center">
-        {category?.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+        {categoryData.title}
       </h1>
 
-      {works.length > 1 && (
+      {categoryData.projects.length > 1 && (
         <ScrollArea className="w-full mb-6 pb-4">
           <div className="flex gap-4 px-4">
-            {works.map((work, index) => (
+            {categoryData.projects.map((work, index) => (
               <button
                 key={work.id}
                 onClick={() => {
@@ -115,7 +119,7 @@ const ProjectDetail: React.FC = () => {
 
         <div className="md:col-span-4">
           <ProjectSidebar 
-            works={works}
+            works={categoryData.projects}
             currentWork={currentWork}
             currentWorkIndex={currentWorkIndex}
             onProjectChange={(index) => {

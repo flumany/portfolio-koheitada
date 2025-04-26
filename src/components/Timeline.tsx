@@ -37,17 +37,17 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
 const Timeline: React.FC = () => {
   const experiences = [
     {
-      year: "2022年8月 - 現在",
+      year: "August 2022 - Present",
       title: "METABIRDS Co., Ltd.",
       description: "3D Generalist and Research & Development",
     },
     {
-      year: "2019年1月 - 2022年7月",
+      year: "January 2019 - July 2022",
       title: "INOAC CORPORATION",
       description: "Bedding Products Planning and Research & Development Specialist",
     },
     {
-      year: "2014年4月 - 2018年12月",
+      year: "April 2014 - December 2018",
       title: "KARIMOKU FURNITURE INC.",
       description: "Furniture Advanced Development and Research Specialist",
     }
@@ -55,49 +55,49 @@ const Timeline: React.FC = () => {
 
   const education = [
     {
-      year: "2010年4月 - 2014年3月",
-      title: "大阪工業大学",
-      description: "Osaka Institute of Technology",
+      year: "April 2010 - March 2014",
+      title: "Osaka Institute of Technology",
+      description: "大阪工業大学",
     },
     {
-      year: "2007年4月 - 2010年3月",
-      title: "兵庫県立明石西高等学校",
-      description: "Hyogo Prefectural Akashi Nishi Senior High School",
+      year: "April 2007 - March 2010",
+      title: "Hyogo Prefectural Akashi Nishi Senior High School",
+      description: "兵庫県立明石西高等学校",
     }
   ];
 
   const qualifications = [
     {
-      year: "2023年4月",
+      year: "April 2023",
       title: "Certified Human Centered Design Specialist",
       description: "HCD-Net認定 人間中心設計スペシャリスト",
       certifyingBody: "Human-Centered Design Organization (HCD-Net)",
     },
     {
-      year: "2023年2月",
+      year: "February 2023",
       title: "Tableau Desktop Specialist",
       certifyingBody: "Salesforce",
     },
     {
-      year: "2023年1月",
-      title: "上級バーチャルリアリティ技術者",
-      description: "Senior Virtual Reality Specialist",
+      year: "January 2023",
+      title: "Senior Virtual Reality Specialist",
+      description: "上級バーチャルリアリティ技術者",
       certifyingBody: "The Virtual Reality Society of Japan",
     },
     {
-      year: "2022年12月",
-      title: "Test in color coordination Grade 2",
+      year: "December 2022",
+      title: "Test in Color Coordination Grade 2",
       description: "色彩検定2級",
       certifyingBody: "色彩検定協会",
     },
     {
-      year: "2022年12月",
+      year: "December 2022",
       title: "Test in Color Coordination - UC Grade",
       description: "色彩検定UC級",
       certifyingBody: "色彩検定協会",
     },
     {
-      year: "2022年8月",
+      year: "August 2022",
       title: "CG Creator Certification Expert",
       certifyingBody: "Computer Graphic Arts Society",
     }
