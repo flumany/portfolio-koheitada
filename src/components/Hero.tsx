@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Card, CardContent } from "./ui/card";
@@ -20,11 +19,11 @@ const Hero: React.FC = () => {
           <div className="md:col-span-8 space-y-8">
             <h1 className="text-4xl md:text-6xl font-medium text-nordic-dark leading-tight animate-fade-in">
               Kohei Tada<br />
-              <div className="space-y-2">
-                <span className="text-xl md:text-2xl leading-relaxed text-nordic-blue mt-4 block">
+              <div className="flex flex-col gap-3 mt-4">
+                <span className="text-xl md:text-2xl leading-relaxed text-nordic-blue">
                   Service/Product Designer specializing in UI, UX, 3D, XR, Physical Products
                 </span>
-                <span className="text-lg md:text-xl leading-relaxed text-nordic-blue/80 block">
+                <span className="text-xl md:text-2xl leading-relaxed text-nordic-blue">
                   Certified Human Centered Design Specialist
                 </span>
               </div>
