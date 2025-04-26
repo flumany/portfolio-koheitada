@@ -1,15 +1,14 @@
-
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import ModelViewer3D from './ModelViewer3D';
 import ProjectCarousel from './project/ProjectCarousel';
 import ProjectSidebar from './project/ProjectSidebar';
 import { projectsData } from '@/data/projectsData';
 
-// Helper function to check if URL is a valid 3D model format
 const is3DModelFormat = (url: string): boolean => {
   const validExtensions = ['.glb', '.gltf', '.fbx', '.obj', '.stl', '.usdz'];
   return validExtensions.some(ext => url.toLowerCase().endsWith(ext));
@@ -28,21 +27,6 @@ const ProjectDetail: React.FC = () => {
 
   const currentWork = works[currentWorkIndex];
   
-  const goToPreviousProject = () => {
-    if (currentWorkIndex > 0) {
-      setCurrentWorkIndex(currentWorkIndex - 1);
-      setActiveTab('images');
-    }
-  };
-
-  const goToNextProject = () => {
-    if (currentWorkIndex < works.length - 1) {
-      setCurrentWorkIndex(currentWorkIndex + 1);
-      setActiveTab('images');
-    }
-  };
-
-  // Helper to determine if the project has valid 3D models
   const has3DModels = Boolean(
     (currentWork.modelUrl && is3DModelFormat(currentWork.modelUrl)) || 
     (currentWork.models && currentWork.models.some(url => is3DModelFormat(url)))
@@ -63,9 +47,41 @@ const ProjectDetail: React.FC = () => {
         {category?.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
       </h1>
 
+      {works.length > 1 && (
+        <ScrollArea className="w-full mb-6 pb-4">
+          <div className="flex gap-4 px-4">
+            {works.map((work, index) => (
+              <button
+                key={work.id}
+                onClick={() => {
+                  setCurrentWorkIndex(index);
+                  setActiveTab('images');
+                }}
+                className={`relative flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden transition-all ${
+                  currentWorkIndex === index 
+                    ? 'ring-4 ring-nordic-blue ring-offset-2' 
+                    : 'hover:ring-2 hover:ring-nordic-blue/50 hover:ring-offset-2'
+                }`}
+              >
+                <img
+                  src={work.images[0]}
+                  alt={work.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+                  <span className="text-white text-sm font-medium truncate">
+                    {work.title}
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </ScrollArea>
+      )}
+
       <div className="grid md:grid-cols-12 gap-8">
         <div className="md:col-span-8">
-          <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+          <div className="bg-white rounded-lg p-6 shadow-sm">
             <h2 className="text-2xl font-medium mb-3">{currentWork.title}</h2>
             <p className="text-nordic-dark/70 mb-4">{currentWork.description}</p>
             
@@ -95,34 +111,6 @@ const ProjectDetail: React.FC = () => {
               )}
             </Tabs>
           </div>
-
-          {works.length > 1 && (
-            <div className="flex items-center justify-between gap-4 mb-6">
-              <Button 
-                variant="outline" 
-                size="lg"
-                onClick={goToPreviousProject}
-                disabled={currentWorkIndex === 0}
-                className="flex-1 py-8"
-              >
-                <ArrowLeft size={20} className="mr-2" />
-                Previous Project
-              </Button>
-              <span className="text-sm font-medium">
-                {currentWorkIndex + 1} of {works.length}
-              </span>
-              <Button 
-                variant="outline" 
-                size="lg"
-                onClick={goToNextProject}
-                disabled={currentWorkIndex === works.length - 1}
-                className="flex-1 py-8"
-              >
-                Next Project
-                <ArrowRight size={20} className="ml-2" />
-              </Button>
-            </div>
-          )}
         </div>
 
         <div className="md:col-span-4">
