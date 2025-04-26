@@ -1,4 +1,3 @@
-
 import { ProjectData } from '../types/project';
 
 export const projectsData: ProjectData = {
@@ -63,7 +62,7 @@ export const projectsData: ProjectData = {
         'https://images.unsplash.com/photo-1483058712412-4245e9b90334'
       ],
       models: [], // Remove placeholder SVGs as models
-      modelUrl: "https://models.readyplayer.me/63f0de5b31ccc3e9556a5c59.glb", // Example valid 3D model URL
+      modelUrl: "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/coffee-table/model.gltf", // Replacing broken URL with a working model
       technologies: ['Blender', 'Cinema 4D', 'KeyShot', 'Substance Painter'],
       role: '3D Artist & Product Visualizer',
       duration: '3 weeks per product line',
