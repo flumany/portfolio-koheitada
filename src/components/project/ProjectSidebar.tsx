@@ -1,0 +1,86 @@
+
+import React from 'react';
+import { Info } from 'lucide-react';
+import { ProjectWork } from '@/types/project';
+
+interface ProjectSidebarProps {
+  works: ProjectWork[];
+  currentWork: ProjectWork;
+  currentWorkIndex: number;
+  onProjectChange: (index: number) => void;
+}
+
+const ProjectSidebar = ({ works, currentWork, currentWorkIndex, onProjectChange }: ProjectSidebarProps) => {
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-sm mb-6 sticky top-20">
+      <h3 className="text-xl font-medium mb-4 flex items-center gap-2">
+        <Info size={18} />
+        Project Details
+      </h3>
+
+      {works.length > 1 && (
+        <div className="mb-6">
+          <h4 className="text-sm font-medium text-nordic-dark/70 mb-2">Projects</h4>
+          <div className="flex flex-wrap gap-2">
+            {works.map((work, index) => (
+              <button
+                key={work.id}
+                onClick={() => onProjectChange(index)}
+                className={`px-3 py-1 text-sm rounded-full transition-all ${
+                  currentWorkIndex === index 
+                    ? 'bg-nordic-blue text-white' 
+                    : 'bg-nordic-gray/20 hover:bg-nordic-gray/30'
+                }`}
+              >
+                {work.title}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {currentWork.technologies && (
+        <div className="mb-4">
+          <h4 className="text-sm font-medium text-nordic-dark/70 mb-2">Technologies</h4>
+          <div className="flex flex-wrap gap-1">
+            {currentWork.technologies.map((tech, index) => (
+              <span key={index} className="bg-nordic-beige/50 px-2 py-1 text-xs rounded">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {currentWork.role && (
+        <div className="mb-4">
+          <h4 className="text-sm font-medium text-nordic-dark/70 mb-1">Role</h4>
+          <p className="text-sm">{currentWork.role}</p>
+        </div>
+      )}
+
+      {currentWork.duration && (
+        <div className="mb-4">
+          <h4 className="text-sm font-medium text-nordic-dark/70 mb-1">Duration</h4>
+          <p className="text-sm">{currentWork.duration}</p>
+        </div>
+      )}
+
+      {currentWork.challenge && (
+        <div className="mb-4">
+          <h4 className="text-sm font-medium text-nordic-dark/70 mb-1">Challenge</h4>
+          <p className="text-sm">{currentWork.challenge}</p>
+        </div>
+      )}
+
+      {currentWork.solution && (
+        <div className="mb-4">
+          <h4 className="text-sm font-medium text-nordic-dark/70 mb-1">Solution</h4>
+          <p className="text-sm">{currentWork.solution}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ProjectSidebar;
