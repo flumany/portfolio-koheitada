@@ -6,7 +6,8 @@ const Projects: React.FC = () => {
   const [filter, setFilter] = useState('all');
   const navigate = useNavigate();
 
-  const projectsData = [
+  // Updated projectsData with correct hierarchical structure
+  const projectsCategories = [
     {
       id: 1,
       title: "Web Design",
@@ -45,7 +46,7 @@ const Projects: React.FC = () => {
       category: "3D",
       image: "/placeholder.svg",
       description: "キャラクターとアバターのデザイン",
-      slug: "3d-design"
+      slug: "character-avatar-design" // Fixed this slug to be unique
     },
     {
       id: 6,
@@ -66,8 +67,8 @@ const Projects: React.FC = () => {
   ];
 
   const filteredProjects = filter === 'all' 
-    ? projectsData 
-    : projectsData.filter(project => project.category === filter);
+    ? projectsCategories 
+    : projectsCategories.filter(project => project.category === filter);
 
   return (
     <section id="projects" className="section bg-nordic-white">

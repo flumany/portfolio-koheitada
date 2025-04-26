@@ -1,3 +1,4 @@
+
 import { ProjectData } from '../types/project';
 
 export const projectsData: ProjectData = {
@@ -86,23 +87,6 @@ export const projectsData: ProjectData = {
         solution: 'Used physically-based rendering techniques with HDRI lighting and optimized material workflows.'
       },
       { 
-        id: 2, 
-        category: 'character-design',
-        title: 'Character Design', 
-        description: 'Stylized 3D character modeling and rigging for animation and games',
-        images: [
-          '/placeholder.svg',
-          'https://images.unsplash.com/photo-1527576539890-dfa815648363',
-          '/placeholder.svg'
-        ],
-        models: ["https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/fox/model.gltf"], // Example valid 3D model
-        technologies: ['ZBrush', 'Maya', 'Substance Painter', 'Marvelous Designer'],
-        role: 'Character Artist & Rigger',
-        duration: '2 months',
-        challenge: 'Creating expressive and animatable characters with efficient topology for game engines.',
-        solution: 'Developed a modular character system with detailed sculpts and optimized topology for real-time applications.'
-      },
-      { 
         id: 3, 
         category: 'architectural-visualization',
         title: 'Architectural Visualization', 
@@ -119,6 +103,29 @@ export const projectsData: ProjectData = {
         challenge: 'Creating photorealistic architectural visualizations that accurately represent the final built structure.',
         solution: 'Combined precise CAD data with advanced lighting techniques and environmental details to achieve photorealism.'
       },
+    ]
+  },
+  'character-avatar-design': { // Added new category with unique key
+    title: 'Character/Avatar Design',
+    description: 'Creating detailed 3D character and avatar models',
+    projects: [
+      { 
+        id: 2, 
+        category: 'character-design',
+        title: 'Character Design', 
+        description: 'Stylized 3D character modeling and rigging for animation and games',
+        images: [
+          '/placeholder.svg',
+          'https://images.unsplash.com/photo-1527576539890-dfa815648363',
+          '/placeholder.svg'
+        ],
+        models: ["https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/fox/model.gltf"],
+        technologies: ['ZBrush', 'Maya', 'Substance Painter', 'Marvelous Designer'],
+        role: 'Character Artist & Rigger',
+        duration: '2 months',
+        challenge: 'Creating expressive and animatable characters with efficient topology for game engines.',
+        solution: 'Developed a modular character system with detailed sculpts and optimized topology for real-time applications.'
+      }
     ]
   },
   'ar-development': {

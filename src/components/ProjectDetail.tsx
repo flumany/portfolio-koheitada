@@ -66,6 +66,11 @@ const ProjectDetail: React.FC = () => {
                 onClick={() => {
                   setCurrentWorkIndex(index);
                   setActiveTab('images');
+                  // Ensure scroll to top when selecting a project
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                  });
                 }}
                 className={`relative flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden transition-all ${
                   currentWorkIndex === index 
@@ -131,6 +136,11 @@ const ProjectDetail: React.FC = () => {
             onProjectChange={(index) => {
               setCurrentWorkIndex(index);
               setActiveTab('images');
+              // Ensure scroll to top when changing projects in sidebar
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              });
             }}
           />
         </div>
