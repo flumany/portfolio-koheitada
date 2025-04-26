@@ -130,7 +130,7 @@ export const projectsData: ProjectData = {
       title: 'Virtual Space', 
       description: 'Interactive virtual environment',
       images: ['/placeholder.svg', '/placeholder.svg'],
-      modelUrl: '/placeholder.svg', // replace with actual 3D model when available
+      models: ['/placeholder.svg'],
       technologies: ['Three.js', 'WebXR', 'JavaScript'],
       role: 'Metaverse Designer',
       duration: '2 months',
@@ -142,7 +142,7 @@ export const projectsData: ProjectData = {
       title: 'Digital Twin', 
       description: 'Virtual replica of physical space',
       images: ['/placeholder.svg', '/placeholder.svg'],
-      modelUrl: '/placeholder.svg', // replace with actual 3D model when available
+      models: ['/placeholder.svg'],
       technologies: ['Unity', 'Photogrammetry', 'C#'],
       role: 'Technical Director',
       duration: '4 months',

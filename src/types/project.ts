@@ -4,7 +4,8 @@ export interface ProjectWork {
   title: string;
   description: string;
   images: string[];
-  models?: string[]; // Changed from modelUrl to models array
+  models?: string[]; // Array of 3D model URLs
+  modelUrl?: string; // Adding this for backward compatibility
   technologies?: string[];
   role?: string;
   duration?: string;

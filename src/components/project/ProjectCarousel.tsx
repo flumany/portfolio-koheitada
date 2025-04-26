@@ -10,6 +10,7 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { Image } from "lucide-react";
+import type { EmblaCarouselType } from 'embla-carousel-react';
 
 interface ProjectCarouselProps {
   images: string[];
@@ -27,7 +28,10 @@ const ProjectCarousel = ({ images, title }: ProjectCarouselProps) => {
           loop: true,
           align: "start",
         }}
-        onSelect={(api) => setCurrentIndex(api?.selectedScrollSnap() || 0)}
+        onSelect={(api: EmblaCarouselType) => {
+          // Using the proper typing for the Embla API
+          setCurrentIndex(api.selectedScrollSnap());
+        }}
       >
         <CarouselContent>
           {images.map((image, index) => (
@@ -73,8 +77,14 @@ const ProjectCarousel = ({ images, title }: ProjectCarouselProps) => {
                 currentIndex === index ? "bg-nordic-blue w-4" : "bg-nordic-gray/40"
               )}
               onClick={() => {
-                const api = document.querySelector("[data-embla-container]")?.__emblaApi__;
-                api?.scrollTo(index);
+                const element = document.querySelector("[data-embla-container]");
+                if (element) {
+                  // Using type assertion for the Embla API
+                  const api = (element as any).__emblaApi__;
+                  if (api) {
+                    api.scrollTo(index);
+                  }
+                }
               }}
             />
           ))}

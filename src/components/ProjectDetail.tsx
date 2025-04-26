@@ -36,6 +36,11 @@ const ProjectDetail: React.FC = () => {
     }
   };
 
+  // Helper to determine if the project has 3D models
+  const has3DModels = Boolean(
+    (currentWork.models && currentWork.models.length > 0) || currentWork.modelUrl
+  );
+
   return (
     <div className="container-custom py-20">
       <div className="flex justify-between items-center mb-6">
@@ -88,7 +93,7 @@ const ProjectDetail: React.FC = () => {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-4">
               <TabsList className="mb-4">
                 <TabsTrigger value="images">Images</TabsTrigger>
-                {(currentWork.modelUrl || (currentWork.models && currentWork.models.length > 0)) && (
+                {has3DModels && (
                   <TabsTrigger value="3d-model">3D Model</TabsTrigger>
                 )}
               </TabsList>
@@ -97,7 +102,7 @@ const ProjectDetail: React.FC = () => {
                 <ProjectCarousel images={currentWork.images} title={currentWork.title} />
               </TabsContent>
               
-              {(currentWork.modelUrl || (currentWork.models && currentWork.models.length > 0)) && (
+              {has3DModels && (
                 <TabsContent value="3d-model" className="focus-visible:outline-none focus-visible:ring-0">
                   <ModelViewer3D 
                     modelUrl={currentWork.modelUrl} 
