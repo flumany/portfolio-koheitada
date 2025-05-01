@@ -36,6 +36,10 @@ const Projects: React.FC = () => {
             if (imageMedia) {
               const imageUrl = await getImageUrl(imageMedia.file_path);
               images[project.id] = imageUrl;
+            } else if (project.images && project.images.length > 0) {
+              // Fall back to legacy images array
+              const imageUrl = await getImageUrl(project.images[0]);
+              images[project.id] = imageUrl;
             } else {
               images[project.id] = '/placeholder.svg';
             }
@@ -147,6 +151,15 @@ const Projects: React.FC = () => {
               </div>
             </div>
           ))}
+          
+          {filteredProjects.length === 0 && !loading && (
+            <div className="col-span-3 text-center py-12">
+              <h3 className="text-xl font-medium mb-2">No projects found</h3>
+              <p className="text-nordic-dark/70">
+                {filter !== 'all' ? 'Try selecting a different category' : 'Projects will appear here once they are published'}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>
