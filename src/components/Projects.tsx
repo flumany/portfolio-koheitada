@@ -1,10 +1,15 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getImageUrl } from '@/lib/supabase';
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "@/components/ui/use-toast";
 
 const Projects: React.FC = () => {
   const [filter, setFilter] = useState('all');
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [projectImages, setProjectImages] = useState<{[key: string]: string}>({});
 
   // Updated projectsData with correct hierarchical structure
   const projectsCategories = [
@@ -66,6 +71,45 @@ const Projects: React.FC = () => {
     }
   ];
 
+  useEffect(() => {
+    const loadImages = async () => {
+      setLoading(true);
+      try {
+        const images: {[key: string]: string} = {};
+        
+        // Load all images in parallel
+        await Promise.all(
+          projectsCategories.map(async (project) => {
+            try {
+              if (project.image && !project.image.startsWith('http')) {
+                const url = await getImageUrl(project.image);
+                images[project.id] = url;
+              } else {
+                images[project.id] = project.image;
+              }
+            } catch (error) {
+              console.error(`Error loading image for project ${project.id}:`, error);
+              images[project.id] = '/placeholder.svg';
+            }
+          })
+        );
+        
+        setProjectImages(images);
+      } catch (error) {
+        console.error('Error loading project images:', error);
+        toast({
+          title: "エラーが発生しました",
+          description: "プロジェクト画像の読み込み中にエラーが発生しました。",
+          variant: "destructive"
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadImages();
+  }, []);
+
   const filteredProjects = filter === 'all' 
     ? projectsCategories 
     : projectsCategories.filter(project => project.category === filter);
@@ -103,11 +147,18 @@ const Projects: React.FC = () => {
               onClick={() => navigate(`/project/${project.slug}`)}
             >
               <div className="aspect-[4/3] relative overflow-hidden">
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
-                />
+                {loading ? (
+                  <Skeleton className="w-full h-full" />
+                ) : (
+                  <img 
+                    src={projectImages[project.id] || project.image || '/placeholder.svg'} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                    onError={(e) => {
+                      e.currentTarget.src = '/placeholder.svg';
+                    }}
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                   <span className="text-white text-sm font-medium uppercase tracking-wider">
                     {project.category}
