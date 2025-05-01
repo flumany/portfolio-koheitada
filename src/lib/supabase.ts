@@ -13,12 +13,12 @@ export const getImageUrl = async (path: string): Promise<string> => {
       return path; // 既にURLの場合はそのまま返す
     }
     
-    const { data, error } = await supabase.storage
+    const { data } = await supabase.storage
       .from('images')
       .getPublicUrl(path);
     
-    if (error) {
-      console.error('Error getting image URL:', error);
+    if (!data?.publicUrl) {
+      console.error('Error getting image URL: No public URL returned');
       return '/placeholder.svg'; // エラー時はプレースホルダー画像
     }
     
@@ -36,12 +36,12 @@ export const get3DModelUrl = async (path: string): Promise<string> => {
       return path; // 既にURLの場合はそのまま返す
     }
     
-    const { data, error } = await supabase.storage
+    const { data } = await supabase.storage
       .from('3ddata')
       .getPublicUrl(path);
     
-    if (error) {
-      console.error('Error getting 3D model URL:', error);
+    if (!data?.publicUrl) {
+      console.error('Error getting 3D model URL: No public URL returned');
       return ''; // エラー時は空文字
     }
     
