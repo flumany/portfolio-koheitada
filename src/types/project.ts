@@ -1,18 +1,31 @@
 
 export interface ProjectWork {
-  id: number;
+  id: string;
   title: string;
   description: string;
+  category: string;
+  slug: string;
+  published: boolean;
   images: string[];
-  iframes?: string[];
   models?: string[];
-  modelUrl?: string;
   technologies?: string[];
   role?: string;
   duration?: string;
   challenge?: string;
   solution?: string;
-  category?: string; // Adding category property to fix the error
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ProjectMedia {
+  id: string;
+  project_id: string;
+  type: 'image' | '3d_model';
+  file_path: string;
+  title?: string;
+  description?: string;
+  display_order: number;
+  created_at?: string;
 }
 
 export interface ProjectCategory {

@@ -1,68 +1,133 @@
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ProjectNavigator from './project/ProjectNavigator';
 import ProjectDisplay from './project/ProjectDisplay';
 import ProjectSidebar from './project/ProjectSidebar';
-import { projectsData } from '@/data/projectsData';
-import { useProjectMedia } from '@/hooks/useProjectMedia';
+import { fetchProjectBySlug, fetchProjectMedia } from '@/services/projectService';
+import { ProjectWork, ProjectMedia } from '@/types/project';
+import { getImageUrl, get3DModelUrl } from '@/lib/supabase';
+import { toast } from "@/components/ui/use-toast";
+import { Loader2 } from 'lucide-react';
 
 const ProjectDetail: React.FC = () => {
-  const { category } = useParams();
-  const categoryData = category ? projectsData[category] : null;
-  const [currentWorkIndex, setCurrentWorkIndex] = useState(0);
+  const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [project, setProject] = useState<ProjectWork | null>(null);
+  const [projectImages, setProjectImages] = useState<string[]>([]);
+  const [projectModels, setProjectModels] = useState<string[]>([]);
+  const [media, setMedia] = useState<ProjectMedia[]>([]);
   
-  const { loading, projectImages, projectModels } = useProjectMedia(categoryData);
-
-  // Scroll to top when component mounts or project changes
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [category, currentWorkIndex]);
+    const loadProject = async () => {
+      if (!slug) {
+        navigate('/');
+        return;
+      }
+      
+      setLoading(true);
+      
+      try {
+        // Fetch project data
+        const projectData = await fetchProjectBySlug(slug);
+        
+        // If project is not published, redirect to home
+        if (!projectData.published) {
+          navigate('/');
+          toast({
+            title: "Not Found",
+            description: "The requested project is not available."
+          });
+          return;
+        }
+        
+        setProject(projectData);
+        
+        // Fetch project media
+        const mediaData = await fetchProjectMedia(projectData.id);
+        setMedia(mediaData);
+        
+        // Process media into image URLs and model URLs
+        const images: string[] = [];
+        const models: string[] = [];
+        
+        for (const item of mediaData) {
+          try {
+            if (item.type === 'image') {
+              const imageUrl = await getImageUrl(item.file_path);
+              images.push(imageUrl);
+            } else {
+              const modelUrl = await get3DModelUrl(item.file_path);
+              models.push(modelUrl);
+            }
+          } catch (error) {
+            console.error(`Error processing media ${item.id}:`, error);
+          }
+        }
+        
+        setProjectImages(images);
+        setProjectModels(models);
+        
+      } catch (error) {
+        console.error('Error loading project:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load project data.",
+          variant: "destructive"
+        });
+        navigate('/');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadProject();
+  }, [slug, navigate]);
 
-  if (!categoryData?.projects?.length) {
-    return <div className="container-custom py-20">Project not found</div>;
+  if (loading) {
+    return (
+      <div className="container-custom py-20 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
   }
 
-  const currentWork = categoryData.projects[currentWorkIndex];
-  const currentImages = projectImages[currentWork.id] || currentWork.images || [];
-  const currentModels = projectModels[currentWork.id] || [];
-
-  const handleProjectSelect = (index: number) => {
-    setCurrentWorkIndex(index);
-    // Ensure scroll to top when selecting a project
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
+  if (!project) {
+    return (
+      <div className="container-custom py-20">
+        Project not found
+      </div>
+    );
+  }
 
   return (
     <div className="container-custom py-20">
       <ProjectNavigator 
-        categoryTitle={categoryData.title}
-        projects={categoryData.projects}
-        currentIndex={currentWorkIndex}
-        onProjectSelect={handleProjectSelect}
-        loading={loading}
-        projectImages={projectImages}
+        categoryTitle={project.category}
+        projects={[project]} // For now, only showing the current project
+        currentIndex={0}
+        onProjectSelect={() => {}}
+        loading={false}
+        projectImages={{[project.id]: projectImages}}
       />
 
       <div className="grid md:grid-cols-12 gap-8">
         <div className="md:col-span-8">
           <ProjectDisplay 
-            currentWork={currentWork}
-            currentImages={currentImages}
-            currentModels={currentModels}
-            loading={loading}
+            currentWork={project}
+            currentImages={projectImages}
+            currentModels={projectModels}
+            loading={false}
           />
         </div>
 
         <div className="md:col-span-4">
           <ProjectSidebar 
-            works={categoryData.projects}
-            currentWork={currentWork}
-            currentWorkIndex={currentWorkIndex}
-            onProjectChange={handleProjectSelect}
+            works={[project]}
+            currentWork={project}
+            currentWorkIndex={0}
+            onProjectChange={() => {}}
           />
         </div>
       </div>

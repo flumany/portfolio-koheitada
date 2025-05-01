@@ -4,105 +4,55 @@ import { useNavigate } from 'react-router-dom';
 import { getImageUrl } from '@/lib/supabase';
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
+import { fetchPublishedProjects, fetchProjectMedia } from '@/services/projectService';
+import { ProjectWork, ProjectMedia } from '@/types/project';
 
 const Projects: React.FC = () => {
   const [filter, setFilter] = useState('all');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<ProjectWork[]>([]);
   const [projectImages, setProjectImages] = useState<{[key: string]: string}>({});
   const [error, setError] = useState<string | null>(null);
 
-  // Updated projectsData with correct hierarchical structure
-  const projectsCategories = [
-    {
-      id: 1,
-      title: "Web Design",
-      category: "design",
-      image: "/placeholder.svg",
-      description: "User-centered web design solutions",
-      slug: "web-design"
-    },
-    {
-      id: 2,
-      title: "UI/UX Design",
-      category: "design",
-      image: "/placeholder.svg",
-      description: "Creating intuitive user experiences",
-      slug: "ui-ux-design"
-    },
-    {
-      id: 3,
-      title: "3D Design",
-      category: "3D",
-      image: "/project2.jpg",
-      description: "3DCGを活用したビジュアルデザイン",
-      slug: "3d-design"
-    },
-    {
-      id: 4,
-      title: "Metaverse",
-      category: "VR",
-      image: "/placeholder.svg",
-      description: "メタバース空間のデザインと開発",
-      slug: "metaverse"
-    },
-    {
-      id: 5,
-      title: "Character/Avatar Design",
-      category: "3D",
-      image: "/placeholder.svg",
-      description: "キャラクターとアバターのデザイン",
-      slug: "character-avatar-design" // Fixed this slug to be unique
-    },
-    {
-      id: 6,
-      title: "AR Development",
-      category: "AR",
-      image: "/placeholder.svg",
-      description: "AR技術を活用したプロジェクト開発",
-      slug: "ar-development"
-    },
-    {
-      id: 7,
-      title: "NFT Collection",
-      category: "NFT",
-      image: "/placeholder.svg",
-      description: "NFTデジタルアートの制作",
-      slug: "nft"
-    }
-  ];
-
   useEffect(() => {
-    const loadImages = async () => {
+    const loadProjects = async () => {
       setLoading(true);
       setError(null);
       try {
+        // Fetch published projects
+        const projectsData = await fetchPublishedProjects();
+        setProjects(projectsData);
+        
+        // Load thumbnail images for projects
         const images: {[key: string]: string} = {};
         
-        // Load all images in parallel
-        await Promise.all(
-          projectsCategories.map(async (project) => {
-            try {
-              if (project.image && !project.image.startsWith('http')) {
-                const url = await getImageUrl(project.image);
-                images[project.id] = url;
-              } else {
-                images[project.id] = project.image || '/placeholder.svg';
-              }
-            } catch (error) {
-              console.error(`Error loading image for project ${project.id}:`, error);
+        for (const project of projectsData) {
+          try {
+            // Fetch the first image for each project
+            const mediaData = await fetchProjectMedia(project.id);
+            const imageMedia = mediaData.filter(item => item.type === 'image')[0];
+            
+            if (imageMedia) {
+              const imageUrl = await getImageUrl(imageMedia.file_path);
+              images[project.id] = imageUrl;
+            } else {
               images[project.id] = '/placeholder.svg';
             }
-          })
-        );
+          } catch (error) {
+            console.error(`Error loading image for project ${project.id}:`, error);
+            images[project.id] = '/placeholder.svg';
+          }
+        }
         
         setProjectImages(images);
+        
       } catch (error) {
-        console.error('Error loading project images:', error);
-        setError('プロジェクト画像の読み込み中にエラーが発生しました。');
+        console.error('Error loading projects:', error);
+        setError('プロジェクトの読み込み中にエラーが発生しました。');
         toast({
           title: "エラーが発生しました",
-          description: "プロジェクト画像の読み込み中にエラーが発生しました。",
+          description: "プロジェクトの読み込み中にエラーが発生しました。",
           variant: "destructive"
         });
       } finally {
@@ -110,7 +60,7 @@ const Projects: React.FC = () => {
       }
     };
 
-    loadImages();
+    loadProjects();
   }, []);
 
   const handleProjectClick = (slug: string) => {
@@ -127,8 +77,11 @@ const Projects: React.FC = () => {
   };
 
   const filteredProjects = filter === 'all' 
-    ? projectsCategories 
-    : projectsCategories.filter(project => project.category === filter);
+    ? projects 
+    : projects.filter(project => project.category === filter);
+    
+  // Get unique categories from projects
+  const categories = ['all', ...new Set(projects.map(project => project.category))];
 
   return (
     <section id="projects" className="section bg-nordic-white">
@@ -140,7 +93,7 @@ const Projects: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {['all', 'design', '3D', 'VR', 'AR', 'NFT'].map((category) => (
+          {categories.map((category) => (
             <button
               key={category}
               onClick={() => setFilter(category)}
@@ -173,7 +126,7 @@ const Projects: React.FC = () => {
                   <Skeleton className="w-full h-full" />
                 ) : (
                   <img 
-                    src={projectImages[project.id] || project.image || '/placeholder.svg'} 
+                    src={projectImages[project.id] || '/placeholder.svg'} 
                     alt={project.title} 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                     onError={(e) => {

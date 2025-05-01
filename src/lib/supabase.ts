@@ -7,7 +7,7 @@ const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// ストレージからイメージURLを取得する関数
+// Get image URL from storage
 export const getImageUrl = async (path: string): Promise<string> => {
   try {
     if (!path || path === '') {
@@ -16,7 +16,7 @@ export const getImageUrl = async (path: string): Promise<string> => {
     }
     
     if (path.startsWith('http')) {
-      return path; // 既にURLの場合はそのまま返す
+      return path; // Already a URL, return as is
     }
     
     const { data } = await supabase.storage
@@ -25,7 +25,7 @@ export const getImageUrl = async (path: string): Promise<string> => {
     
     if (!data?.publicUrl) {
       console.error('Error getting image URL: No public URL returned');
-      return '/placeholder.svg'; // エラー時はプレースホルダー画像
+      return '/placeholder.svg'; // Placeholder image on error
     }
     
     return data.publicUrl;
@@ -35,7 +35,7 @@ export const getImageUrl = async (path: string): Promise<string> => {
   }
 };
 
-// 3Dモデルのデータを取得する関数
+// Get 3D model URL from storage
 export const get3DModelUrl = async (path: string): Promise<string> => {
   try {
     if (!path || path === '') {
@@ -44,7 +44,7 @@ export const get3DModelUrl = async (path: string): Promise<string> => {
     }
     
     if (path.startsWith('http')) {
-      return path; // 既にURLの場合はそのまま返す
+      return path; // Already a URL, return as is
     }
     
     const { data } = await supabase.storage
@@ -53,7 +53,7 @@ export const get3DModelUrl = async (path: string): Promise<string> => {
     
     if (!data?.publicUrl) {
       console.error('Error getting 3D model URL: No public URL returned');
-      return ''; // エラー時は空文字
+      return ''; // Empty string on error
     }
     
     return data.publicUrl;
