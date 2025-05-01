@@ -7,7 +7,7 @@ export const projectsData: ProjectData = {
     description: 'Modern web solutions with focus on user experience',
     projects: [
       {
-        id: 1,
+        id: "1",
         category: 'corporate-websites',
         title: 'Corporate Website',
         description: 'Modern web design with focus on user experience',
@@ -20,7 +20,7 @@ export const projectsData: ProjectData = {
         solution: 'Implemented a clean, minimalist design with intuitive navigation.'
       },
       {
-        id: 2,
+        id: "2",
         category: 'e-commerce',
         title: 'E-commerce Platform',
         description: 'Intuitive shopping experience',
@@ -38,7 +38,7 @@ export const projectsData: ProjectData = {
     description: 'Creating intuitive and engaging user experiences',
     projects: [
       {
-        id: 1,
+        id: "1",
         category: 'mobile-apps',
         title: 'Mobile App Design',
         description: 'User-centered interface design',
@@ -51,7 +51,7 @@ export const projectsData: ProjectData = {
         solution: 'Employed progressive disclosure and gestural interactions.'
       },
       {
-        id: 2,
+        id: "2",
         category: 'design-systems',
         title: 'Design System',
         description: 'Comprehensive UI component library',
@@ -69,7 +69,7 @@ export const projectsData: ProjectData = {
     description: 'Creating immersive 3D experiences and visualizations',
     projects: [
       {
-        id: 1,
+        id: "1",
         category: 'product-visualization',
         title: '3D Product Visualization',
         description: 'Photorealistic 3D renderings for product marketing and presentations',
@@ -87,7 +87,7 @@ export const projectsData: ProjectData = {
         solution: 'Used physically-based rendering techniques with HDRI lighting and optimized material workflows.'
       },
       { 
-        id: 3, 
+        id: "3", 
         category: 'architectural-visualization',
         title: 'Architectural Visualization', 
         description: 'Immersive 3D architectural environments and walkthroughs',

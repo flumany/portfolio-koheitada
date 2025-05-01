@@ -15,7 +15,7 @@ import {
 } from '@/services/projectService';
 import { uploadImage, upload3DModel, deleteFile } from '@/services/fileUploadService';
 import { ProjectMedia } from '@/types/project';
-import { Loader2, ImageIcon, Upload, Trash2, CubeIcon } from 'lucide-react';
+import { Loader2, ImageIcon, Upload, Trash2, Cube } from 'lucide-react';
 import { getImageUrl, get3DModelUrl } from '@/lib/supabase';
 
 interface MediaManagerProps {
@@ -320,7 +320,7 @@ const MediaManager: React.FC<MediaManagerProps> = ({ projectId, initialMedia }) 
                 .map(item => (
                   <div key={item.id} className="relative group overflow-hidden rounded-md border">
                     <div className="aspect-square flex items-center justify-center bg-gray-100">
-                      <CubeIcon className="h-16 w-16 text-gray-400" />
+                      <Cube className="h-16 w-16 text-gray-400" />
                     </div>
                     <div className="p-3">
                       <h4 className="font-medium text-sm truncate">{item.title || 'Untitled'}</h4>
@@ -345,7 +345,7 @@ const MediaManager: React.FC<MediaManagerProps> = ({ projectId, initialMedia }) 
                 
               {media.filter(item => item.type === '3d_model').length === 0 && (
                 <div className="col-span-full text-center p-8 border rounded-lg">
-                  <CubeIcon className="mx-auto h-12 w-12 text-gray-400" />
+                  <Cube className="mx-auto h-12 w-12 text-gray-400" />
                   <h3 className="mt-2 text-sm font-medium text-gray-900">No 3D models yet</h3>
                   <p className="mt-1 text-sm text-gray-500">
                     Get started by uploading your first 3D model.

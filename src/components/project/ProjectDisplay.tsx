@@ -50,7 +50,7 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
           <TabsContent value="images" className="focus-visible:outline-none focus-visible:ring-0">
             <ProjectCarousel 
               images={currentImages} 
-              iframes={currentWork.iframes}
+              iframes={currentWork.iframes || []}
               title={currentWork.title} 
             />
           </TabsContent>

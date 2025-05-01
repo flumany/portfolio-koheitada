@@ -15,6 +15,8 @@ export interface ProjectWork {
   solution?: string;
   created_at?: string;
   updated_at?: string;
+  modelUrl?: string;
+  iframes?: string[];
 }
 
 export interface ProjectMedia {
