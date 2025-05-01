@@ -10,6 +10,7 @@ const Projects: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [projectImages, setProjectImages] = useState<{[key: string]: string}>({});
+  const [error, setError] = useState<string | null>(null);
 
   // Updated projectsData with correct hierarchical structure
   const projectsCategories = [
@@ -74,6 +75,7 @@ const Projects: React.FC = () => {
   useEffect(() => {
     const loadImages = async () => {
       setLoading(true);
+      setError(null);
       try {
         const images: {[key: string]: string} = {};
         
@@ -85,7 +87,7 @@ const Projects: React.FC = () => {
                 const url = await getImageUrl(project.image);
                 images[project.id] = url;
               } else {
-                images[project.id] = project.image;
+                images[project.id] = project.image || '/placeholder.svg';
               }
             } catch (error) {
               console.error(`Error loading image for project ${project.id}:`, error);
@@ -97,6 +99,7 @@ const Projects: React.FC = () => {
         setProjectImages(images);
       } catch (error) {
         console.error('Error loading project images:', error);
+        setError('プロジェクト画像の読み込み中にエラーが発生しました。');
         toast({
           title: "エラーが発生しました",
           description: "プロジェクト画像の読み込み中にエラーが発生しました。",
@@ -109,6 +112,19 @@ const Projects: React.FC = () => {
 
     loadImages();
   }, []);
+
+  const handleProjectClick = (slug: string) => {
+    try {
+      navigate(`/project/${slug}`);
+    } catch (error) {
+      console.error('Navigation error:', error);
+      toast({
+        title: "エラーが発生しました",
+        description: "プロジェクトページへの移動中にエラーが発生しました。",
+        variant: "destructive"
+      });
+    }
+  };
 
   const filteredProjects = filter === 'all' 
     ? projectsCategories 
@@ -139,12 +155,18 @@ const Projects: React.FC = () => {
           ))}
         </div>
 
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            <p>{error}</p>
+          </div>
+        )}
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map(project => (
             <div 
               key={project.id} 
               className="project-card group cursor-pointer"
-              onClick={() => navigate(`/project/${project.slug}`)}
+              onClick={() => handleProjectClick(project.slug)}
             >
               <div className="aspect-[4/3] relative overflow-hidden">
                 {loading ? (
@@ -156,6 +178,7 @@ const Projects: React.FC = () => {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                     onError={(e) => {
                       e.currentTarget.src = '/placeholder.svg';
+                      console.log(`Image error, using placeholder for ${project.title}`);
                     }}
                   />
                 )}

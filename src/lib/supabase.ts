@@ -9,6 +9,11 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // ストレージからイメージURLを取得する関数
 export const getImageUrl = async (path: string): Promise<string> => {
   try {
+    if (!path || path === '') {
+      console.error('Empty path provided to getImageUrl');
+      return '/placeholder.svg';
+    }
+    
     if (path.startsWith('http')) {
       return path; // 既にURLの場合はそのまま返す
     }
@@ -32,6 +37,11 @@ export const getImageUrl = async (path: string): Promise<string> => {
 // 3Dモデルのデータを取得する関数
 export const get3DModelUrl = async (path: string): Promise<string> => {
   try {
+    if (!path || path === '') {
+      console.error('Empty path provided to get3DModelUrl');
+      return '';
+    }
+    
     if (path.startsWith('http')) {
       return path; // 既にURLの場合はそのまま返す
     }
