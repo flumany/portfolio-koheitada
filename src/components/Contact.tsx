@@ -9,7 +9,7 @@ const Contact: React.FC = () => {
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-medium mb-4">Contact</h2>
           <p className="text-nordic-dark/70">
-            I'm interested in new opportunities and would be delighted to discuss how my skills could benefit your team
+            Feel free to reach out if you're interested in my work or have any questions
           </p>
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
