@@ -24,10 +24,10 @@ const About: React.FC = () => {
 
             <div className="space-y-4">
               <p className="text-lg text-nordic-dark/80 mb-2">
-                その中で3Dデータや3Dデザインソフトを使用した開発等も行っていたため、現在はこれまでの経験を生かして、3DCG制作やメタバースにおけるデザイン制作などを行っています。
+                その中で得た3Dデータの知見とデザインソフトの経験を活かし、現在は3DデザインやXR開発、AIサービス開発におけるのUI/UXデザイン等に携わっています。
               </p>
               <p className="text-sm text-nordic-dark/70 italic">
-                Through my work with 3D data and design software, I've developed expertise in 3D technologies, which I now use in 3DCG production and metaverse design creation.
+                Utilizing my knowledge of 3D data and experience with design software, I now work on 3D design, XR development, and UI/UX design for AI services.
               </p>
             </div>
 
@@ -44,7 +44,7 @@ const About: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-nordic-beige p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">3D Design</h3>
-              <p className="text-sm text-nordic-dark/70">3DCG & Modeling</p>
+              <p className="text-sm text-nordic-dark/70">Space & Digital Twin & Character Design</p>
             </div>
             <div className="bg-nordic-blue p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">XR</h3>
