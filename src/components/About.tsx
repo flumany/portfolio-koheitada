@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const About: React.FC = () => {
@@ -23,19 +24,19 @@ const About: React.FC = () => {
 
             <div className="space-y-4">
               <p className="text-lg text-nordic-dark/80 mb-2">
-                その中で3Dデータや3Dデザインソフトを使用した開発等も行っていたため、3Dにおける知識は人一倍備わっていると自負しております。
+                その中で3Dデータや3Dデザインソフトを使用した開発等も行っていたため、現在はこれまでの経験を生かして、3DCG制作やメタバースにおけるデザイン制作などを行っています。
               </p>
               <p className="text-sm text-nordic-dark/70 italic">
-                Through my work with 3D data and design software, I've developed deep expertise in 3D technologies and applications.
+                Through my work with 3D data and design software, I've developed expertise in 3D technologies, which I now use in 3DCG production and metaverse design creation.
               </p>
             </div>
 
             <div className="space-y-4">
               <p className="text-lg text-nordic-dark/80 mb-2">
-                現在はこれまでの経験を生かして、3DCG制作やメタバースにおけるデザイン制作などを行っています。
+                これまでに得た経験を活かしつつ向上し、世の中に提供するより良い製品やサービスを創造していくことを目指しています。
               </p>
               <p className="text-sm text-nordic-dark/70 italic">
-                Currently, I leverage my experience in 3DCG production and metaverse design creation.
+                My goal is to grow with my experiences and create better products and services for society.
               </p>
             </div>
           </div>

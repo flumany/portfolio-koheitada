@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Mail, MapPin, Phone, Github, Linkedin } from 'lucide-react';
+import { Mail, Phone, Github, Linkedin } from 'lucide-react';
 
 const Contact: React.FC = () => {
   return (
@@ -22,7 +22,7 @@ const Contact: React.FC = () => {
               </div>
               <div className="ml-4">
                 <h3 className="font-medium">Email</h3>
-                <p className="text-nordic-dark/70">contact@example.com</p>
+                <p className="text-nordic-dark/70">tadakohei.0120@gmail.com</p>
               </div>
             </div>
             
@@ -32,27 +32,17 @@ const Contact: React.FC = () => {
               </div>
               <div className="ml-4">
                 <h3 className="font-medium">Phone</h3>
-                <p className="text-nordic-dark/70">+1 (123) 456-7890</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start">
-              <div className="bg-nordic-beige p-3 rounded-full">
-                <MapPin size={20} />
-              </div>
-              <div className="ml-4">
-                <h3 className="font-medium">Location</h3>
-                <p className="text-nordic-dark/70">Stockholm, Sweden</p>
+                <p className="text-nordic-dark/70">+81 80-4841-4120</p>
               </div>
             </div>
 
             <div className="pt-6">
               <h3 className="font-medium mb-4">Connect with me</h3>
               <div className="flex space-x-4">
-                <a href="#" className="bg-nordic-gray/20 hover:bg-nordic-blue hover:text-white p-3 rounded-full transition-all">
+                <a href="https://github.com/flumany/" target="_blank" rel="noopener noreferrer" className="bg-nordic-gray/20 hover:bg-nordic-blue hover:text-white p-3 rounded-full transition-all">
                   <Github size={20} />
                 </a>
-                <a href="#" className="bg-nordic-gray/20 hover:bg-nordic-blue hover:text-white p-3 rounded-full transition-all">
+                <a href="https://www.linkedin.com/in/koheitada/" target="_blank" rel="noopener noreferrer" className="bg-nordic-gray/20 hover:bg-nordic-blue hover:text-white p-3 rounded-full transition-all">
                   <Linkedin size={20} />
                 </a>
               </div>
@@ -62,7 +52,7 @@ const Contact: React.FC = () => {
           <div className="md:col-span-7">
             <div className="bg-nordic-offwhite p-6 rounded-lg">
               <h3 className="font-medium mb-4">Send a Message</h3>
-              <form className="space-y-4">
+              <form className="space-y-4" action="mailto:tadakohei.0120+contact@gmail.com" method="post" encType="text/plain">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-1">
                     Name
@@ -70,6 +60,7 @@ const Contact: React.FC = () => {
                   <input
                     type="text"
                     id="name"
+                    name="name"
                     className="w-full px-4 py-2 rounded-md border border-nordic-gray/30 focus:outline-none focus:ring-1 focus:ring-nordic-blue"
                     placeholder="Your name"
                   />
@@ -82,6 +73,7 @@ const Contact: React.FC = () => {
                   <input
                     type="email"
                     id="email"
+                    name="email"
                     className="w-full px-4 py-2 rounded-md border border-nordic-gray/30 focus:outline-none focus:ring-1 focus:ring-nordic-blue"
                     placeholder="Your email"
                   />
@@ -93,6 +85,7 @@ const Contact: React.FC = () => {
                   </label>
                   <textarea
                     id="message"
+                    name="message"
                     rows={4}
                     className="w-full px-4 py-2 rounded-md border border-nordic-gray/30 focus:outline-none focus:ring-1 focus:ring-nordic-blue"
                     placeholder="Your message"
