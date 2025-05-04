@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Card, CardContent } from "./ui/card";
@@ -48,9 +49,13 @@ const Hero: React.FC = () => {
             <Card className="overflow-hidden bg-gradient-to-br from-nordic-blue/5 to-nordic-blue/20 border-none animate-fade-in backdrop-blur-sm shadow-xl" style={{animationDelay: '0.6s'}}>
               <CardContent className="p-6">
                 <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="aspect-square bg-gradient-to-br from-nordic-blue/10 to-nordic-beige/20 rounded-md mb-4 flex items-center justify-center relative overflow-hidden group">
+                  <div className="aspect-square rounded-md mb-4 flex items-center justify-center relative overflow-hidden group">
+                    <img 
+                      src="/lovable-uploads/1f814fdf-d820-4075-94dc-db2f878d6252.png" 
+                      alt="Kohei Tada profile" 
+                      className="w-full h-full object-cover rounded-md"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-tr from-nordic-blue/20 via-transparent to-nordic-beige/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <span className="text-4xl text-nordic-dark/40 font-medium relative z-10">KT</span>
                   </div>
                   <h3 className="font-medium text-lg mb-3 text-nordic-dark">Professional Profile</h3>
                   <p className="text-sm text-nordic-dark/70 leading-relaxed">

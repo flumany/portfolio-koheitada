@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
       <div className="container-custom">
         <div className="flex justify-center items-center">
           <p className="text-nordic-dark/80">
-            © 多田 浩平
+            © Kohei Tada
           </p>
         </div>
       </div>
