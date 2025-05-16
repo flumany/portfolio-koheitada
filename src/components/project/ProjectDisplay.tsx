@@ -7,6 +7,7 @@ import { is3DModelFormat } from '@/utils/3dUtils';
 import { ProjectWork } from '@/types/project';
 import { Skeleton } from "@/components/ui/skeleton";
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface ProjectDisplayProps {
   currentWork: ProjectWork;
@@ -33,8 +34,12 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
     <div className="bg-white rounded-lg p-6 shadow-sm">
       <h2 className="text-2xl font-medium mb-3">{currentWork.title}</h2>
       {/* DescriptionのMarkdown対応・空行/改行が反映されるように */}
-      <div className="prose prose-neutral max-w-none mb-4">
-        <ReactMarkdown>{currentWork.description || ''}</ReactMarkdown>
+      <div className="prose prose-neutral max-w-none mb-4 whitespace-pre-line">
+        <ReactMarkdown 
+          remarkPlugins={[remarkGfm]} 
+        >
+          {currentWork.description || ''}
+        </ReactMarkdown>
       </div>
       
       {loading ? (
