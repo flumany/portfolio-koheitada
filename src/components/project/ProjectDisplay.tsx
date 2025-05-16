@@ -6,6 +6,7 @@ import ModelViewer3D from '../ModelViewer3D';
 import { is3DModelFormat } from '@/utils/3dUtils';
 import { ProjectWork } from '@/types/project';
 import { Skeleton } from "@/components/ui/skeleton";
+import ReactMarkdown from 'react-markdown';
 
 interface ProjectDisplayProps {
   currentWork: ProjectWork;
@@ -31,7 +32,10 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm">
       <h2 className="text-2xl font-medium mb-3">{currentWork.title}</h2>
-      <p className="text-nordic-dark/70 mb-4">{currentWork.description}</p>
+      {/* DescriptionのMarkdown対応・空行/改行が反映されるように */}
+      <div className="prose prose-neutral max-w-none mb-4">
+        <ReactMarkdown>{currentWork.description || ''}</ReactMarkdown>
+      </div>
       
       {loading ? (
         <div className="space-y-4">
@@ -70,3 +74,4 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
 };
 
 export default ProjectDisplay;
+
