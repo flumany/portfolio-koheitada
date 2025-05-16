@@ -51,12 +51,12 @@ const About: React.FC = () => {
               <p className="text-sm text-nordic-dark/70">Virtual, Augmented & Mixed Reality</p>
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">UI/UX</h3>
-              <p className="text-sm text-nordic-dark/70">Interface Design</p>
+              <h3 className="font-medium text-xl mb-2">UX Design</h3>
+              <p className="text-sm text-nordic-dark/70">Product Planning & Design Thinking & Human Centered Design</p>
             </div>
             <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">Physical Products</h3>
-              <p className="text-sm text-nordic-dark/70">Product Design</p>
+              <p className="text-sm text-nordic-dark/70">Product Planning and Design and Development</p>
             </div>
           </div>
         </div>
