@@ -21,10 +21,10 @@ const Hero: React.FC = () => {
             <h1 className="text-4xl md:text-6xl font-medium text-nordic-dark leading-tight animate-fade-in">
               Kohei Tada<br />
               <div className="flex flex-col gap-3 mt-4">
-                <span className="text-xl md:text-2xl leading-relaxed text-nordic-blue">
+                <span className="text-xl md:text-2xl leading-relaxed font-semibold text-[#8B5CF6]">
                   Service/Product Designer specializing in UI, UX, 3D, XR, Physical Products
                 </span>
-                <span className="text-xl md:text-2xl leading-relaxed text-nordic-blue">
+                <span className="text-xl md:text-2xl leading-relaxed font-semibold text-[#8B5CF6]">
                   Certified Human Centered Design Specialist
                 </span>
               </div>
