@@ -6,11 +6,10 @@ const About: React.FC = () => {
     <section id="about" className="section bg-nordic-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-medium mb-4 tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-poppins font-medium mb-4 tracking-tight"> {/* 統一font */}
             About Me
           </h2>
-          {/* セクションタイトルは他のセクションとフォントを統一 */}
-          <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
+          <div className="w-16 h-1 bg-nordic-purple mx-auto mb-8" /> {/* 紫に変更 */}
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -46,9 +45,9 @@ const About: React.FC = () => {
               <h3 className="font-medium text-xl mb-2">3D Design</h3>
               <p className="text-sm text-nordic-dark/70">Space & Digital Twin & Character Design</p>
             </div>
-            <div className="bg-nordic-blue p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">XR Development</h3>
-              <p className="text-sm text-nordic-dark/70">Virtual, Augmented & Mixed Reality</p>
+            <div className="bg-nordic-purple p-6 rounded-lg">
+              <h3 className="font-medium text-xl mb-2 text-white">XR Development</h3>
+              <p className="text-sm text-white/90">Virtual, Augmented & Mixed Reality</p>
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">UX Design</h3>
@@ -61,9 +60,9 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* デザイン差別化した最下部メッセージ（先ほどの正しい英語・日本語文に戻し、現行デザインを流用） */}
+        {/* 差別化：枠と紫帯・透明感をアップ、下部メッセ ージ */}
         <div className="max-w-3xl mx-auto mt-12">
-          <div className="rounded-xl border border-nordic-gray/40 bg-nordic-offwhite/80 px-6 py-7 md:py-9 shadow-sm backdrop-blur-[4px]">
+          <div className="rounded-xl border-2 border-nordic-purple bg-nordic-purple/10 px-6 py-8 md:py-10 shadow-lg backdrop-blur-[6px]">
             <p className="font-semibold text-base md:text-lg text-nordic-dark mb-2 tracking-wide">
               I can consistently support all phases of product and service development—including planning, visual design, 3D data, UI/UX, prototyping, and XR—with a particular focus on related domains.
             </p>

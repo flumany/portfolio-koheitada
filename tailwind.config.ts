@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -57,7 +56,9 @@ export default {
 					white: '#FFFFFF',
 					offwhite: '#F8F7F4',
 					beige: '#E6DFD4',
-					blue: '#D3E4FD',
+					blue: '#9b87f5',         // d3e4fd → 9b87f5 (Primary Purple)
+					purple: '#9b87f5',       // 新設: メインパープル（同じ値）
+					deepPurple: '#7E69AB',   // 新設: セカンダリーパープル
 					gray: '#ECECEC',
 					dark: '#333333',
 				},
