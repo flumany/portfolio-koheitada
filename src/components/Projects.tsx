@@ -91,7 +91,6 @@ const Projects: React.FC = () => {
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-medium mb-4">Projects</h2>
-          <p className="text-nordic-dark/70 mb-8">Explore my latest works and creative endeavors</p>
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 

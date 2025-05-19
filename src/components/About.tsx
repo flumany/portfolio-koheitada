@@ -7,19 +7,12 @@ const About: React.FC = () => {
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">About Me</h2>
-          {/* 英語→日本語の順、テキスト差し替え・調整 */}
-          <p className="font-semibold text-base md:text-lg text-nordic-dark mb-2">
-            I can consistently support all phases of product and service development—including planning, information architecture, visual design, 3D data, UI/UX, prototyping, and XR—with a particular focus on related domains.
-          </p>
-          <p className="text-xs md:text-sm text-nordic-dark/60 mb-8">
-            プロダクトやサービス開発に関わる領域を中心に、企画・情報設計・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。
-          </p>
+          {/* moved the introductory English/Japanese text to the bottom */}
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-10">
-
             <div>
               <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
                 After studying architecture, I gained extensive experience in design research and development at an interior manufacturing company.
@@ -28,7 +21,6 @@ const About: React.FC = () => {
                 建築学を学んだ後、主にインテリアメーカーのデザイン研究開発職としての幅広く経験値を蓄えました。
               </p>
             </div>
-
             <div>
               <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
                 Utilizing my knowledge of 3D data and experience with design software, I now work on 3D design, XR development, and UI/UX design for AI services.
@@ -37,7 +29,6 @@ const About: React.FC = () => {
                 その中で得た3Dデータの知見とデザインソフトの経験を活かし、現在は3DデザインやXR開発、AIサービス開発におけるのUI/UXデザイン等に携わっています。
               </p>
             </div>
-
             <div>
               <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
                 My goal is to grow with my experiences and create better products and services for society.
@@ -67,9 +58,20 @@ const About: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Add the introductory English/Japanese text to the bottom */}
+        <div className="max-w-3xl mx-auto text-center mt-12">
+          <p className="font-semibold text-base md:text-lg text-nordic-dark mb-2">
+            I can consistently support all phases of product and service development—including planning, information architecture, visual design, 3D data, UI/UX, prototyping, and XR—with a particular focus on related domains.
+          </p>
+          <p className="text-xs md:text-sm text-nordic-dark/60">
+            プロダクトやサービス開発に関わる領域を中心に、企画・情報設計・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。
+          </p>
+        </div>
       </div>
     </section>
   );
 };
 
 export default About;
+
