@@ -10,7 +10,7 @@ const About: React.FC = () => {
             About Me
           </h2>
           {/* セクションタイトルは他のセクションとフォントを統一 */}
-          <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
+          <div className="w-16 h-1 bg-accent-blue mx-auto mb-8" />
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -46,7 +46,7 @@ const About: React.FC = () => {
               <h3 className="font-medium text-xl mb-2">3D Design</h3>
               <p className="text-sm text-nordic-dark/70">Space & Digital Twin & Character Design</p>
             </div>
-            <div className="bg-nordic-blue p-6 rounded-lg">
+            <div className="bg-accent-blue p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">XR Development</h3>
               <p className="text-sm text-nordic-dark/70">Virtual, Augmented & Mixed Reality</p>
             </div>
@@ -61,11 +61,10 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* デザイン差別化した最下部メッセージ（先ほどの正しい英語・日本語文に戻し、現行デザインを流用） */}
         <div className="max-w-3xl mx-auto mt-12">
           <div className="rounded-xl border border-nordic-gray/40 bg-nordic-offwhite/80 px-6 py-7 md:py-9 shadow-sm backdrop-blur-[4px]">
             <p className="font-semibold text-base md:text-lg text-nordic-dark mb-2 tracking-wide">
-              I can consistently support all phases of product and service development—including planning, visual design, 3D data, UI/UX, prototyping, and XR—with a particular focus on related domains.
+              I can consistently support all phases of product and service development—from planning and visual design to 3D data, UI/UX, prototyping, and XR—in a comprehensive manner.
             </p>
             <p className="text-xs md:text-sm text-nordic-dark/60">
               プロダクトやサービス開発に関わる領域を中心に、企画・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。
