@@ -6,8 +6,10 @@ const About: React.FC = () => {
     <section id="about" className="section bg-nordic-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">About Me</h2>
-          {/* moved the introductory English/Japanese text to the bottom */}
+          <h2 className="font-poppins text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+            About Me
+          </h2>
+          {/* セクションタイトルはfont-poppinsで統一 */}
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
@@ -59,14 +61,16 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Add the introductory English/Japanese text to the bottom */}
-        <div className="max-w-3xl mx-auto text-center mt-12">
-          <p className="font-semibold text-base md:text-lg text-nordic-dark mb-2">
-            I can consistently support all phases of product and service development—including planning, information architecture, visual design, 3D data, UI/UX, prototyping, and XR—with a particular focus on related domains.
-          </p>
-          <p className="text-xs md:text-sm text-nordic-dark/60">
-            プロダクトやサービス開発に関わる領域を中心に、企画・情報設計・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。
-          </p>
+        {/* デザイン差別化した最下部メッセージ */}
+        <div className="max-w-3xl mx-auto mt-12">
+          <div className="rounded-xl border border-nordic-gray/40 bg-nordic-offwhite/80 px-6 py-7 md:py-9 shadow-sm backdrop-blur-[4px]">
+            <p className="font-semibold text-base md:text-lg text-nordic-dark mb-2 tracking-wide">
+              Passionate about creating meaningful experiences
+            </p>
+            <p className="text-xs md:text-sm text-nordic-dark/60">
+              意味のある体験を創出し続けることに情熱を持っています。
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -74,4 +78,3 @@ const About: React.FC = () => {
 };
 
 export default About;
-
