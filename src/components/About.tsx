@@ -7,8 +7,12 @@ const About: React.FC = () => {
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">About Me</h2>
-          <p className="text-nordic-dark/70 mb-8 text-base md:text-lg font-normal">
-            Passionate about creating meaningful experiences
+          {/* 英語→日本語の順、テキスト差し替え・調整 */}
+          <p className="font-semibold text-base md:text-lg text-nordic-dark mb-2">
+            I can consistently support all phases of product and service development—including planning, information architecture, visual design, 3D data, UI/UX, prototyping, and XR—with a particular focus on related domains.
+          </p>
+          <p className="text-xs md:text-sm text-nordic-dark/60 mb-8">
+            プロダクトやサービス開発に関わる領域を中心に、企画・情報設計・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。
           </p>
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
@@ -63,15 +67,9 @@ const About: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="max-w-2xl mx-auto mt-12">
-          <p className="text-xs md:text-sm text-nordic-dark/60 text-center leading-relaxed">
-            プロダクトやサービス開発に関わる領域を中心に、企画・情報設計・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。
-          </p>
-        </div>
       </div>
     </section>
   );
 };
 
 export default About;
-

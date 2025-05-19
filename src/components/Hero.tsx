@@ -57,9 +57,12 @@ const Hero: React.FC = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-tr from-nordic-blue/20 via-transparent to-nordic-beige/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
-                  <h3 className="font-medium text-lg mb-3 text-nordic-dark">Professional Profile</h3>
+                  {/* 「Professional Profile」という見出しを削除し、説明文（日本語も追加） */}
                   <p className="text-sm text-nordic-dark/70 leading-relaxed">
                     Enhancing user experiences across physical and digital products through innovative design solutions.
+                  </p>
+                  <p className="text-xs text-nordic-dark/50 leading-relaxed mt-2">
+                    革新的なデザインによって、フィジカルからデジタルまで領域を横断し、ユーザー体験の向上に貢献しています。
                   </p>
                 </div>
               </CardContent>
