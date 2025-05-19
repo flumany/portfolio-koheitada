@@ -6,37 +6,39 @@ const About: React.FC = () => {
     <section id="about" className="section bg-nordic-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-medium mb-4">About Me</h2>
-          <p className="text-nordic-dark/70 mb-8">Passionate about creating meaningful experiences</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">About Me</h2>
+          <p className="text-nordic-dark/70 mb-8 text-base md:text-lg font-normal">
+            Passionate about creating meaningful experiences
+          </p>
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <div className="space-y-4">
-              {/* 英語→日本語順 */}
-              <p className="text-sm text-nordic-dark/70 italic">
+          <div className="space-y-10">
+
+            <div>
+              <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
                 After studying architecture, I gained extensive experience in design research and development at an interior manufacturing company.
               </p>
-              <p className="text-lg text-nordic-dark/80 mb-2">
+              <p className="text-xs md:text-sm text-nordic-dark/60">
                 建築学を学んだ後、主にインテリアメーカーのデザイン研究開発職としての幅広く経験値を蓄えました。
               </p>
             </div>
 
-            <div className="space-y-4">
-              <p className="text-sm text-nordic-dark/70 italic">
+            <div>
+              <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
                 Utilizing my knowledge of 3D data and experience with design software, I now work on 3D design, XR development, and UI/UX design for AI services.
               </p>
-              <p className="text-lg text-nordic-dark/80 mb-2">
+              <p className="text-xs md:text-sm text-nordic-dark/60">
                 その中で得た3Dデータの知見とデザインソフトの経験を活かし、現在は3DデザインやXR開発、AIサービス開発におけるのUI/UXデザイン等に携わっています。
               </p>
             </div>
 
-            <div className="space-y-4">
-              <p className="text-sm text-nordic-dark/70 italic">
+            <div>
+              <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
                 My goal is to grow with my experiences and create better products and services for society.
               </p>
-              <p className="text-lg text-nordic-dark/80 mb-2">
+              <p className="text-xs md:text-sm text-nordic-dark/60">
                 これまでに得た経験を活かしつつ向上し、世の中に提供するより良い製品やサービスを創造していくことを目指しています。
               </p>
             </div>
@@ -60,6 +62,11 @@ const About: React.FC = () => {
               <p className="text-sm text-nordic-dark/70">Planning & Product Design and Development</p>
             </div>
           </div>
+        </div>
+        <div className="max-w-2xl mx-auto mt-12">
+          <p className="text-xs md:text-sm text-nordic-dark/60 text-center leading-relaxed">
+            プロダクトやサービス開発に関わる領域を中心に、企画・情報設計・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。
+          </p>
         </div>
       </div>
     </section>
