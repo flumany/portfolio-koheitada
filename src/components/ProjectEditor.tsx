@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "@/components/ui/use-toast";
@@ -44,6 +43,15 @@ const ProjectEditor: React.FC = () => {
     challenge: '',
     solution: ''
   });
+
+  // 追加: 技術スタック入力用一時状態(string)
+  const [technologiesInput, setTechnologiesInput] = useState('');
+
+  // プロジェクト読み込み時のみtechnologiesInputも文字列化して同期
+  useEffect(() => {
+    setTechnologiesInput((project.technologies || []).join(', '));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project.id]);
 
   // Load project data if editing an existing project
   useEffect(() => {
@@ -130,9 +138,18 @@ const ProjectEditor: React.FC = () => {
       
       let result: ProjectWork;
       
+      // 保存時のみtechnologiesInputを配列化して保持
+      const techArray = technologiesInput
+        .split(',')
+        .map(item => item.trim())
+        .filter(item => item);
+      
       if (!slug || slug === 'new') {
         // Create new project
-        result = await createProject(project as Omit<ProjectWork, 'id' | 'created_at' | 'updated_at'>);
+        result = await createProject({
+          ...project,
+          technologies: techArray,
+        } as Omit<ProjectWork, 'id' | 'created_at' | 'updated_at'>);
         toast({
           title: "Success",
           description: "Project created successfully."
@@ -141,7 +158,10 @@ const ProjectEditor: React.FC = () => {
         navigate(`/edit/${result.slug}`, { replace: true });
       } else {
         // Update existing project
-        result = await updateProject(project.id!, project);
+        result = await updateProject(project.id!, {
+          ...project,
+          technologies: techArray,
+        });
         toast({
           title: "Success",
           description: "Project updated successfully."
@@ -150,6 +170,7 @@ const ProjectEditor: React.FC = () => {
       
       // Update local state with the result
       setProject(result);
+      setTechnologiesInput((result.technologies || []).join(', '));
       
     } catch (error) {
       console.error('Failed to save project:', error);
@@ -344,8 +365,8 @@ const ProjectEditor: React.FC = () => {
                     <Input 
                       id="technologies"
                       name="technologies"
-                      value={project.technologies?.join(', ') || ''}
-                      onChange={(e) => handleArrayChange('technologies', e.target.value)}
+                      value={technologiesInput}
+                      onChange={(e) => setTechnologiesInput(e.target.value)}
                       placeholder="HTML, CSS, JavaScript"
                     />
                   </div>
