@@ -101,9 +101,17 @@ const Projects: React.FC = () => {
               onClick={() => setFilter(category)}
               className={`px-4 py-2 rounded-md transition-all ${
                 filter === category 
-                  ? 'bg-nordic-blue text-nordic-white' 
-                  : 'bg-nordic-gray/30 hover:bg-nordic-gray/50'
+                  ? 'text-white' 
+                  : 'text-nordic-dark'
               }`}
+              style={
+                filter === category
+                  ? {
+                      backgroundColor: "#a6bdfa",
+                      border: "1px solid #a6bdfa",
+                    }
+                  : { backgroundColor: "#ECECEC" }
+              }
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </button>

@@ -122,12 +122,12 @@ const Contact: React.FC = () => {
                   type="submit"
                   className={`w-full py-3 rounded-md transition-all ${
                     isComplete
-                      ? '' // Remove bg-nordic-blue to apply style below
+                      ? '' // 選択時の背景色/文字色を適用
                       : 'bg-nordic-blue text-white opacity-60 cursor-not-allowed'
                   }`}
                   style={{
                     backgroundColor: isComplete ? '#a6bdfa' : undefined,
-                    color: isComplete ? '#333' : undefined
+                    color: isComplete ? '#fff' : undefined
                   }}
                   disabled={!isComplete}
                 >
