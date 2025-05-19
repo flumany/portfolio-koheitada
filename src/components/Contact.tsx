@@ -1,8 +1,20 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, Phone, Github, Linkedin } from 'lucide-react';
 
 const Contact: React.FC = () => {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+
+  const isComplete = form.name.trim() && form.email.trim() && form.message.trim();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   return (
     <section id="contact" className="section bg-nordic-white">
       <div className="container-custom">
@@ -52,7 +64,15 @@ const Contact: React.FC = () => {
           <div className="md:col-span-7">
             <div className="bg-nordic-offwhite p-6 rounded-lg">
               <h3 className="font-medium mb-4">Send a Message</h3>
-              <form className="space-y-4" action="mailto:tadakohei.0120+contact@gmail.com" method="post" encType="text/plain">
+              <form 
+                className="space-y-4" 
+                action="mailto:tadakohei.0120+contact@gmail.com" 
+                method="post" 
+                encType="text/plain"
+                onSubmit={e => {
+                  if (!isComplete) e.preventDefault();
+                }}
+              >
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-1">
                     Name
@@ -61,6 +81,8 @@ const Contact: React.FC = () => {
                     type="text"
                     id="name"
                     name="name"
+                    value={form.name}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 rounded-md border border-nordic-gray/30 focus:outline-none focus:ring-1 focus:ring-nordic-blue"
                     placeholder="Your name"
                   />
@@ -74,6 +96,8 @@ const Contact: React.FC = () => {
                     type="email"
                     id="email"
                     name="email"
+                    value={form.email}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 rounded-md border border-nordic-gray/30 focus:outline-none focus:ring-1 focus:ring-nordic-blue"
                     placeholder="Your email"
                   />
@@ -87,14 +111,25 @@ const Contact: React.FC = () => {
                     id="message"
                     name="message"
                     rows={4}
+                    value={form.message}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 rounded-md border border-nordic-gray/30 focus:outline-none focus:ring-1 focus:ring-nordic-blue"
                     placeholder="Your message"
                   ></textarea>
                 </div>
                 
-                <button 
-                  type="submit" 
-                  className="w-full bg-nordic-blue text-white py-3 rounded-md hover:bg-opacity-90 transition-all"
+                <button
+                  type="submit"
+                  className={`w-full py-3 rounded-md transition-all ${
+                    isComplete
+                      ? '' // Remove bg-nordic-blue to apply style below
+                      : 'bg-nordic-blue text-white opacity-60 cursor-not-allowed'
+                  }`}
+                  style={{
+                    backgroundColor: isComplete ? '#a6bdfa' : undefined,
+                    color: isComplete ? '#333' : undefined
+                  }}
+                  disabled={!isComplete}
                 >
                   Send Message
                 </button>

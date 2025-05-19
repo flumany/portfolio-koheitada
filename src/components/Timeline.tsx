@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface TimelineItemProps {
@@ -20,7 +19,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
     <div className="timeline-item mb-8">
       <div className="timeline-dot" />
       <div className="mb-1">
-        <span className="text-sm font-medium text-nordic-blue block mb-1">{year}</span>
+        <span className="text-sm font-medium" style={{color: "#a6bdfa"}}>{year}</span>
         <h3 className="text-lg font-medium">{title}</h3>
         {subtitle && <p className="text-nordic-dark/90 mt-1">{subtitle}</p>}
         <p className="text-nordic-dark/70 mt-1">{description}</p>
@@ -142,7 +141,6 @@ const Timeline: React.FC = () => {
                 />
               ))}
             </div>
-
             <h3 className="text-2xl font-medium mb-6 mt-12">Education</h3>
             <div className="ml-2">
               {education.map((edu, index) => (
@@ -169,7 +167,6 @@ const Timeline: React.FC = () => {
                 />
               ))}
             </div>
-
             <h3 className="text-2xl font-medium mb-6 mt-12">Languages</h3>
             <div className="ml-2">
               {languages.map((lang, index) => (
