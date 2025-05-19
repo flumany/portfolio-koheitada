@@ -55,16 +55,22 @@ export default {
 				},
 				nordic: {
 					white: '#FFFFFF',
-					offwhite: '#F9F8F6',              // 柔らかいホワイト
-					beige: '#efe5da',                 // 新しいベージュ（旧E6DFD4よりやや暖色）
-					sand: '#e2d1c3',                  // 顔写真背景参照
-					ivory: '#fdfcfb',                 // 顔写真背景色まんま
-					blue: '#d6deed',                  // 淡い青味ベージュ
-					purple: '#9b87f5',                // アクセント紫、変更なし
-					deepPurple: '#7E69AB',
+					offwhite: '#F8F7F4',
+					beige: '#E6DFD4',
+					blue: '#D3E4FD',
 					gray: '#ECECEC',
 					dark: '#333333',
 				},
+				sidebar: {
+					DEFAULT: 'hsl(var(--sidebar-background))',
+					foreground: 'hsl(var(--sidebar-foreground))',
+					primary: 'hsl(var(--sidebar-primary))',
+					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+					accent: 'hsl(var(--sidebar-accent))',
+					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+					border: 'hsl(var(--sidebar-border))',
+					ring: 'hsl(var(--sidebar-ring))'
+				}
 			},
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'],
@@ -101,7 +107,6 @@ export default {
 			},
 			backgroundImage: {
 				'wood-pattern': "url('/wood-texture.jpg')",
-				'ivory-gradient': 'linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)',
 			},
 		}
 	},

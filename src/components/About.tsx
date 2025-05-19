@@ -3,14 +3,14 @@ import React from 'react';
 
 const About: React.FC = () => {
   return (
-    <section id="about" className="section">
+    <section id="about" className="section bg-nordic-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          {/* 統一されたセクションタイトル */}
-          <h2 className="text-3xl md:text-4xl font-poppins font-medium mb-4 tracking-tight text-nordic-dark">
+          <h2 className="text-3xl md:text-4xl font-medium mb-4 tracking-tight">
             About Me
           </h2>
-          <div className="w-16 h-1 rounded-full mx-auto mb-8 bg-gradient-to-r from-nordic-purple/80 via-nordic-sand to-nordic-purple/40" />
+          {/* セクションタイトルは他のセクションとフォントを統一 */}
+          <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -42,28 +42,28 @@ const About: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-nordic-beige p-6 rounded-lg shadow backdrop-blur-[2px]">
-              <h3 className="font-medium text-xl mb-2 text-nordic-dark">3D Design</h3>
+            <div className="bg-nordic-beige p-6 rounded-lg">
+              <h3 className="font-medium text-xl mb-2">3D Design</h3>
               <p className="text-sm text-nordic-dark/70">Space & Digital Twin & Character Design</p>
             </div>
-            <div className="bg-nordic-purple/90 p-6 rounded-lg shadow">
-              <h3 className="font-medium text-xl mb-2 text-white">XR Development</h3>
-              <p className="text-sm text-white/90">Virtual, Augmented & Mixed Reality</p>
+            <div className="bg-nordic-blue p-6 rounded-lg">
+              <h3 className="font-medium text-xl mb-2">XR Development</h3>
+              <p className="text-sm text-nordic-dark/70">Virtual, Augmented & Mixed Reality</p>
             </div>
-            <div className="bg-nordic-white border border-nordic-beige/60 p-6 rounded-lg shadow">
-              <h3 className="font-medium text-xl mb-2 text-nordic-dark">UX Design</h3>
+            <div className="bg-nordic-gray p-6 rounded-lg">
+              <h3 className="font-medium text-xl mb-2">UX Design</h3>
               <p className="text-sm text-nordic-dark/70">Design Thinking & Human Centered Design</p>
             </div>
-            <div className="bg-nordic-sand p-6 rounded-lg shadow">
-              <h3 className="font-medium text-xl mb-2 text-nordic-dark">Service Design</h3>
+            <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
+              <h3 className="font-medium text-xl mb-2">Service Design</h3>
               <p className="text-sm text-nordic-dark/70">Planning & Product Design and Development</p>
             </div>
           </div>
         </div>
 
-        {/* 差別化：枠と紫帯・透明感アップ、下部メッセージ：もとの文章を復元 */}
+        {/* デザイン差別化した最下部メッセージ（先ほどの正しい英語・日本語文に戻し、現行デザインを流用） */}
         <div className="max-w-3xl mx-auto mt-12">
-          <div className="rounded-xl border-2 border-nordic-purple bg-white/50 px-6 py-8 md:py-10 shadow-lg backdrop-blur-[6px]">
+          <div className="rounded-xl border border-nordic-gray/40 bg-nordic-offwhite/80 px-6 py-7 md:py-9 shadow-sm backdrop-blur-[4px]">
             <p className="font-semibold text-base md:text-lg text-nordic-dark mb-2 tracking-wide">
               I can consistently support all phases of product and service development—including planning, visual design, 3D data, UI/UX, prototyping, and XR—with a particular focus on related domains.
             </p>
@@ -78,3 +78,4 @@ const About: React.FC = () => {
 };
 
 export default About;
+

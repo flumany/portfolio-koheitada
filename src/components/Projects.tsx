@@ -90,8 +90,8 @@ const Projects: React.FC = () => {
     <section id="projects" className="section bg-nordic-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-poppins font-medium mb-4">Projects</h2>
-          <div className="w-16 h-1 bg-nordic-purple mx-auto mb-8" />
+          <h2 className="text-3xl md:text-4xl font-medium mb-4">Projects</h2>
+          <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
         <div className="flex flex-wrap justify-center gap-2 mb-12">
@@ -101,8 +101,8 @@ const Projects: React.FC = () => {
               onClick={() => setFilter(category)}
               className={`px-4 py-2 rounded-md transition-all ${
                 filter === category 
-                  ? 'bg-nordic-purple text-nordic-white' 
-                  : 'bg-nordic-gray/30 hover:bg-nordic-purple/10'
+                  ? 'bg-nordic-blue text-nordic-white' 
+                  : 'bg-nordic-gray/30 hover:bg-nordic-gray/50'
               }`}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -137,7 +137,7 @@ const Projects: React.FC = () => {
                     }}
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-nordic-purple/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                   <span className="text-white text-sm font-medium uppercase tracking-wider">
                     {project.category}
                   </span>

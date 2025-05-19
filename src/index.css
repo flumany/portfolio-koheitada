@@ -7,26 +7,35 @@
 
 @layer base {
   :root {
-    --background: 36 52% 98%;        /* ivoryベース */
+    --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-    --card: 36 52% 98%;              /* ivoryベース */
+
+    --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-    --popover: 36 52% 98%;
+
+    --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 257 83% 77%;          /* #9b87f5 アクセント紫そのまま */
+
+    --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 30 31% 90%;         /* サンドやベージュ */
+
+    --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 30 31% 93%;
+
+    --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 256 100% 92%;          /* 淡いパープル: #edeafd */
+
+    --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 28 31% 88%;
+
+    --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-    --radius: 0.62rem;
+
+    --radius: 0.5rem;
   }
 }
 
@@ -34,9 +43,11 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-nordic-ivory text-nordic-dark font-sans;
+    @apply bg-nordic-offwhite text-nordic-dark font-sans;
   }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-poppins font-medium;
   }
@@ -48,34 +59,35 @@
   }
   
   .section {
-    @apply py-16 md:py-24 bg-gradient-to-b from-nordic-ivory via-nordic-sand/60 to-nordic-offwhite;
+    @apply py-16 md:py-24;
   }
 
   .btn-primary {
-    @apply px-6 py-2.5 bg-nordic-purple text-nordic-white rounded-md hover:bg-nordic-purple/90 transition-all duration-300;
+    @apply px-6 py-2.5 bg-nordic-blue text-nordic-dark rounded-md hover:opacity-90 transition-all duration-300;
   }
 
   .nav-link {
-    @apply text-nordic-dark hover:text-nordic-purple transition-all duration-200 relative;
+    @apply text-nordic-dark hover:text-opacity-70 transition-all duration-200 relative;
   }
 
   .nav-link::after {
-    @apply content-[''] absolute w-0 h-0.5 bg-nordic-purple left-0 -bottom-1 transition-all duration-300;
+    @apply content-[''] absolute w-0 h-0.5 bg-nordic-blue left-0 -bottom-1 transition-all duration-300;
   }
+
   .nav-link:hover::after {
     @apply w-full;
   }
 
   .timeline-item {
-    @apply relative pl-8 pb-8 border-l border-nordic-sand last:border-0 last:pb-0;
+    @apply relative pl-8 pb-8 border-l border-nordic-gray last:border-0 last:pb-0;
   }
 
   .timeline-dot {
-    @apply absolute w-4 h-4 bg-nordic-purple rounded-full -left-2 top-1;
+    @apply absolute w-4 h-4 bg-nordic-blue rounded-full -left-2 top-1;
   }
 
   .project-card {
-    @apply bg-gradient-to-br from-nordic-sand/60 to-nordic-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-nordic-beige/50;
+    @apply bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300;
   }
 
   .wood-bg {
@@ -84,6 +96,7 @@
     background-position: center;
     position: relative;
   }
+
   .wood-bg::before {
     content: '';
     position: absolute;
@@ -91,7 +104,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
-    opacity: 0.8;
+    background-color: rgba(255, 255, 255, 0.7);
   }
 }
