@@ -46,7 +46,7 @@ const About: React.FC = () => {
               <h3 className="font-medium text-xl mb-2">3D Design</h3>
               <p className="text-sm text-nordic-dark/70">Space & Digital Twin & Character Design</p>
             </div>
-            <div className="bg-accent-blue p-6 rounded-lg">
+            <div className="bg-nordic-gray p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">XR Development</h3>
               <p className="text-sm text-nordic-dark/70">Virtual, Augmented & Mixed Reality</p>
             </div>
