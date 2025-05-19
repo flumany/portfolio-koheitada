@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getImageUrl } from '@/lib/supabase';
@@ -147,7 +146,6 @@ const Projects: React.FC = () => {
               </div>
               <div className="p-6 bg-white">
                 <h3 className="font-medium text-lg mb-2">{project.title}</h3>
-                <p className="text-nordic-dark/70 text-sm">{project.description}</p>
               </div>
             </div>
           ))}

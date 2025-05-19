@@ -14,29 +14,30 @@ const About: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <div className="space-y-4">
-              <p className="text-lg text-nordic-dark/80 mb-2">
-                建築学を学んだ後、主にインテリアメーカーのデザイン研究開発職としての幅広く経験値を蓄えました。
-              </p>
+              {/* 英語→日本語順 */}
               <p className="text-sm text-nordic-dark/70 italic">
                 After studying architecture, I gained extensive experience in design research and development at an interior manufacturing company.
               </p>
+              <p className="text-lg text-nordic-dark/80 mb-2">
+                建築学を学んだ後、主にインテリアメーカーのデザイン研究開発職としての幅広く経験値を蓄えました。
+              </p>
             </div>
 
             <div className="space-y-4">
-              <p className="text-lg text-nordic-dark/80 mb-2">
-                その中で得た3Dデータの知見とデザインソフトの経験を活かし、現在は3DデザインやXR開発、AIサービス開発におけるのUI/UXデザイン等に携わっています。
-              </p>
               <p className="text-sm text-nordic-dark/70 italic">
                 Utilizing my knowledge of 3D data and experience with design software, I now work on 3D design, XR development, and UI/UX design for AI services.
               </p>
+              <p className="text-lg text-nordic-dark/80 mb-2">
+                その中で得た3Dデータの知見とデザインソフトの経験を活かし、現在は3DデザインやXR開発、AIサービス開発におけるのUI/UXデザイン等に携わっています。
+              </p>
             </div>
 
             <div className="space-y-4">
-              <p className="text-lg text-nordic-dark/80 mb-2">
-                これまでに得た経験を活かしつつ向上し、世の中に提供するより良い製品やサービスを創造していくことを目指しています。
-              </p>
               <p className="text-sm text-nordic-dark/70 italic">
                 My goal is to grow with my experiences and create better products and services for society.
+              </p>
+              <p className="text-lg text-nordic-dark/80 mb-2">
+                これまでに得た経験を活かしつつ向上し、世の中に提供するより良い製品やサービスを創造していくことを目指しています。
               </p>
             </div>
           </div>
