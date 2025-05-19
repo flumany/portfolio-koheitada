@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   Carousel,
@@ -62,11 +63,14 @@ const ProjectCarousel = ({ images, iframes = [], title }: ProjectCarouselProps) 
                         title={`${title} - Preview ${index + 1}`}
                       />
                     ) : (
-                      <img 
-                        src={src} 
-                        alt={`${title} - Image ${index + 1}`} 
-                        className="w-full h-[400px] object-cover rounded-lg group-hover:opacity-90 transition-opacity cursor-pointer"
-                      />
+                      <div className="flex items-center justify-center w-full h-[400px] bg-nordic-offwhite rounded-lg">
+                        <img 
+                          src={src} 
+                          alt={`${title} - Image ${index + 1}`} 
+                          className="w-full h-full object-contain rounded-lg group-hover:opacity-90 transition-opacity cursor-pointer bg-nordic-offwhite"
+                          style={{ maxHeight: 400 }}
+                        />
+                      </div>
                     )}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <div className="bg-black/40 p-2 rounded-full">
@@ -84,11 +88,13 @@ const ProjectCarousel = ({ images, iframes = [], title }: ProjectCarouselProps) 
                       title={`${title} - Full View ${index + 1}`}
                     />
                   ) : (
-                    <img 
-                      src={src} 
-                      alt={`${title} - Image ${index + 1}`} 
-                      className="w-full object-contain max-h-[80vh]"
-                    />
+                    <div className="flex items-center justify-center w-full" style={{ minHeight: '60vh', background: '#F8F7F4' }}>
+                      <img 
+                        src={src} 
+                        alt={`${title} - Image ${index + 1}`} 
+                        className="w-full object-contain max-h-[75vh] bg-nordic-offwhite rounded"
+                      />
+                    </div>
                   )}
                   <div className="absolute top-1/2 -translate-y-1/2 flex justify-between w-full left-0 px-4">
                     <button 
@@ -140,3 +146,4 @@ const ProjectCarousel = ({ images, iframes = [], title }: ProjectCarouselProps) 
 };
 
 export default ProjectCarousel;
+
