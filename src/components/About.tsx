@@ -2,46 +2,58 @@
 import React from 'react';
 
 const aboutLinesEn = [
+  // 明示指定箇所のみ明示的改行、その他は元配列通り
   [
-    "After studying architecture, ",
-    "I gained extensive experience ",
-    "in design research and development ",
-    "at an interior manufacturing company."
+    <>
+      After studying architecture, <br />
+      I gained extensive experience <br />
+      in design research and development <br />
+      at an interior manufacturing company.
+    </>
   ],
   [
-    "Utilizing my knowledge of 3D data ",
-    "and experience with design software, ",
-    "I now work on 3D design, XR development, ",
-    "and UI/UX design for AI services."
+    <>
+      Utilizing my knowledge of 3D data <br />
+      and experience with design software, <br />
+      I now work on 3D design, XR development, <br />
+      and UI/UX design for AI services.
+    </>
   ],
   [
-    "I can consistently support all phases of product and service development—",
-    "from planning and visual design to 3D data, UI/UX, prototyping, and XR—",
-    "in a comprehensive manner."
+    <>
+      I can consistently support all phases of product and service development—
+      <br />from planning and visual design to 3D data, UI/UX, prototyping, and XR—
+      <br />in a comprehensive manner.
+    </>
   ]
 ];
 const aboutLinesJa = [
   [
-    "建築学を学んだ後、主にインテリアメーカーの",
-    "デザイン研究開発職としての幅広く経験値を蓄えました。"
+    <>
+      建築学を学んだ後、主にインテリアメーカーの<br />
+      デザイン研究開発職としての幅広く経験値を蓄えました。
+    </>
   ],
   [
-    "その中で得た3Dデータの知見とデザインソフトの経験を活かし、",
-    "現在は3DデザインやXR開発、AIサービス開発における",
-    "UI/UXデザイン等に携わっています。"
+    <>
+      その中で得た3Dデータの知見とデザインソフトの経験を活かし、<br />
+      現在は3DデザインやXR開発、AIサービス開発における<br />
+      UI/UXデザイン等に携わっています。
+    </>
   ],
   [
-    "プロダクトやサービス開発に関わる領域を中心に、",
-    "企画・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。"
+    <>
+      プロダクトやサービス開発に関わる領域を中心に、<br />
+      企画・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。
+    </>
   ]
 ];
 
-const renderWithBreaks = (lines: string[]) => (
+const renderWithBreaks = (lines: (string | JSX.Element)[]) => (
   <>
     {lines.map((line, idx) => (
       <React.Fragment key={idx}>
         {line}
-        {idx !== lines.length - 1 && <br />}
       </React.Fragment>
     ))}
   </>
@@ -114,4 +126,3 @@ const About: React.FC = () => {
 };
 
 export default About;
-

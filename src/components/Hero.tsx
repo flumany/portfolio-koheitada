@@ -4,32 +4,42 @@ import { ArrowRight } from 'lucide-react';
 import { Card, CardContent } from "./ui/card";
 
 const heroTitleLines = [
-  "Service/Product Designer specializing",
-  "in UI, UX, 3D, XR, Physical Products"
-];
-const heroDescJaLines = [
-  "人々の生活の豊かさや利便性を向上したいという変わらない",
-  "強い思いを胸に、日々新たな可能性に向けて邁進しています。",
-  "常に相手の立場に立って思考することができ、",
-  "直感的な洞察力で本質的なニーズを見抜き、",
-  "最適な価値を創出することができます。"
-];
-const heroProfileLines = [
-  "Enhancing user experiences across physical and digital products through innovative design solutions."
-];
-const heroProfileJaLines = [
-  "革新的なデザインによって、",
-  "フィジカルからデジタルまで領域を横断し、",
-  "ユーザー体験の向上に貢献しています。"
+  // 指定通り明示的改行挿入
+  <>
+    Service/Product Designer specializing<br />
+    in UI, UX, 3D, XR, Physical Products
+  </>
 ];
 
-const renderWithBreaks = (lines: string[]) => (
+const heroDescJaLines = [
+  // 指定に従って改行位置のみ調整・別の部分は維持
+  <>
+    人々の生活の豊かさや利便性を向上したいという変わらない<br />
+    強い思いを胸に、日々新たな可能性に向けて邁進しています。<br />
+    常に相手の立場に立って思考することができ、<br />
+    直感的な洞察力で本質的なニーズを見抜き、<br />
+    最適な価値を創出することができます。
+  </>
+];
+
+const heroProfileLines = [
+  // 元通り
+  "Enhancing user experiences across physical and digital products through innovative design solutions."
+];
+
+const heroProfileJaLines = [
+  // 明示指示通りのみ改行
+  <>
+    革新的なデザインによって、<br />
+    フィジカルからデジタルまで領域を横断し、<br />
+    ユーザー体験の向上に貢献しています。
+  </>
+];
+
+const renderArrayWithBreaks = (lines: (string | JSX.Element)[]) => (
   <>
     {lines.map((line, i) => (
-      <React.Fragment key={i}>
-        {line}
-        {i !== lines.length - 1 && <br />}
-      </React.Fragment>
+      <React.Fragment key={i}>{line}</React.Fragment>
     ))}
   </>
 );
@@ -53,7 +63,7 @@ const Hero: React.FC = () => {
               Kohei Tada<br />
               <div className="flex flex-col gap-3 mt-4">
                 <span className="text-xl md:text-2xl leading-relaxed font-semibold" style={{color: "#a6bdfa"}}>
-                  {renderWithBreaks(heroTitleLines)}
+                  {renderArrayWithBreaks(heroTitleLines)}
                 </span>
                 <span className="text-xl md:text-2xl leading-relaxed font-semibold" style={{color: "#a6bdfa"}}>
                   Certified Human Centered Design Specialist
@@ -61,7 +71,7 @@ const Hero: React.FC = () => {
               </div>
             </h1>
             <p className="text-lg text-nordic-dark/80 max-w-xl animate-fade-in leading-relaxed" style={{animationDelay: '0.2s'}}>
-              {renderWithBreaks(heroDescJaLines)}
+              {renderArrayWithBreaks(heroDescJaLines)}
             </p>
             <div className="pt-4 animate-fade-in" style={{animationDelay: '0.4s'}}>
               <button 
@@ -86,10 +96,10 @@ const Hero: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-tr from-nordic-blue/20 via-transparent to-nordic-beige/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
                   <p className="text-sm text-nordic-dark/70 leading-relaxed">
-                    {renderWithBreaks(heroProfileLines)}
+                    {renderArrayWithBreaks(heroProfileLines)}
                   </p>
                   <p className="text-xs text-nordic-dark/50 leading-relaxed mt-2">
-                    {renderWithBreaks(heroProfileJaLines)}
+                    {renderArrayWithBreaks(heroProfileJaLines)}
                   </p>
                 </div>
               </CardContent>
@@ -102,4 +112,3 @@ const Hero: React.FC = () => {
 };
 
 export default Hero;
-
