@@ -1,29 +1,51 @@
 
 import React from 'react';
-import { formatTextWithLineBreaks } from "@/lib/utils";
 
 const aboutLinesEn = [
-  "After studying architecture, I gained extensive experience in design research and development at an interior manufacturing company.",
-  "Utilizing my knowledge of 3D data and experience with design software, I now work on 3D design, XR development, and UI/UX design for AI services.",
-  "My goal is to grow with my experiences and create better products and services for society.",
-  "I can consistently support all phases of product and service development—from planning and visual design to 3D data, UI/UX, prototyping, and XR—in a comprehensive manner."
+  [
+    "After studying architecture, ",
+    "I gained extensive experience ",
+    "in design research and development ",
+    "at an interior manufacturing company."
+  ],
+  [
+    "Utilizing my knowledge of 3D data ",
+    "and experience with design software, ",
+    "I now work on 3D design, XR development, ",
+    "and UI/UX design for AI services."
+  ],
+  [
+    "I can consistently support all phases of product and service development—",
+    "from planning and visual design to 3D data, UI/UX, prototyping, and XR—",
+    "in a comprehensive manner."
+  ]
 ];
 const aboutLinesJa = [
-  "建築学を学んだ後、主にインテリアメーカーのデザイン研究開発職としての幅広く経験値を蓄えました。",
-  "その中で得た3Dデータの知見とデザインソフトの経験を活かし、現在は3DデザインやXR開発、AIサービス開発におけるのUI/UXデザイン等に携わっています。",
-  "これまでに得た経験を活かしつつ向上し、世の中に提供するより良い製品やサービスを創造していくことを目指しています。",
-  "プロダクトやサービス開発に関わる領域を中心に、企画・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。"
+  [
+    "建築学を学んだ後、主にインテリアメーカーの",
+    "デザイン研究開発職としての幅広く経験値を蓄えました。"
+  ],
+  [
+    "その中で得た3Dデータの知見とデザインソフトの経験を活かし、",
+    "現在は3DデザインやXR開発、AIサービス開発における",
+    "UI/UXデザイン等に携わっています。"
+  ],
+  [
+    "プロダクトやサービス開発に関わる領域を中心に、",
+    "企画・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。"
+  ]
 ];
 
-// 指定テキストに改行を差し込み <br> で出力
-function renderWithBreaks(text: string) {
-  return formatTextWithLineBreaks(text).split('\n').map((line, idx, arr) =>
-    <React.Fragment key={idx}>
-      {line}
-      {idx !== arr.length - 1 && <br />}
-    </React.Fragment>
-  );
-}
+const renderWithBreaks = (lines: string[]) => (
+  <>
+    {lines.map((line, idx) => (
+      <React.Fragment key={idx}>
+        {line}
+        {idx !== lines.length - 1 && <br />}
+      </React.Fragment>
+    ))}
+  </>
+);
 
 const About: React.FC = () => {
   return (
@@ -54,14 +76,6 @@ const About: React.FC = () => {
                 {renderWithBreaks(aboutLinesJa[1])}
               </p>
             </div>
-            <div>
-              <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
-                {renderWithBreaks(aboutLinesEn[2])}
-              </p>
-              <p className="text-xs md:text-sm text-nordic-dark/60">
-                {renderWithBreaks(aboutLinesJa[2])}
-              </p>
-            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -87,10 +101,10 @@ const About: React.FC = () => {
         <div className="max-w-3xl mx-auto mt-12">
           <div className="rounded-xl border border-nordic-gray/40 bg-nordic-offwhite/80 px-6 py-7 md:py-9 shadow-sm backdrop-blur-[4px]">
             <p className="font-semibold text-base md:text-lg text-nordic-dark mb-2 tracking-wide">
-              {renderWithBreaks(aboutLinesEn[3])}
+              {renderWithBreaks(aboutLinesEn[2])}
             </p>
             <p className="text-xs md:text-sm text-nordic-dark/60">
-              {renderWithBreaks(aboutLinesJa[3])}
+              {renderWithBreaks(aboutLinesJa[2])}
             </p>
           </div>
         </div>
@@ -100,3 +114,4 @@ const About: React.FC = () => {
 };
 
 export default About;
+

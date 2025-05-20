@@ -2,12 +2,37 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Card, CardContent } from "./ui/card";
-import { formatTextWithLineBreaks } from "@/lib/utils";
 
-const heroTitle = "Service/Product Designer specializing in UI, UX, 3D, XR, Physical Products";
-const heroDescJa = "人々の生活の豊かさや利便性を向上したいという変わらない強い思いを胸に、日々新たな可能性に向けて邁進しています。常に相手の立場に立って思考することができ、直感的な洞察力で本質的なニーズを見抜き、最適な価値を創出することができます。";
-const heroProfile = "Enhancing user experiences across physical and digital products through innovative design solutions.";
-const heroProfileJa = "革新的なデザインによって、フィジカルからデジタルまで領域を横断し、ユーザー体験の向上に貢献しています。";
+const heroTitleLines = [
+  "Service/Product Designer specializing",
+  "in UI, UX, 3D, XR, Physical Products"
+];
+const heroDescJaLines = [
+  "人々の生活の豊かさや利便性を向上したいという変わらない",
+  "強い思いを胸に、日々新たな可能性に向けて邁進しています。",
+  "常に相手の立場に立って思考することができ、",
+  "直感的な洞察力で本質的なニーズを見抜き、",
+  "最適な価値を創出することができます。"
+];
+const heroProfileLines = [
+  "Enhancing user experiences across physical and digital products through innovative design solutions."
+];
+const heroProfileJaLines = [
+  "革新的なデザインによって、",
+  "フィジカルからデジタルまで領域を横断し、",
+  "ユーザー体験の向上に貢献しています。"
+];
+
+const renderWithBreaks = (lines: string[]) => (
+  <>
+    {lines.map((line, i) => (
+      <React.Fragment key={i}>
+        {line}
+        {i !== lines.length - 1 && <br />}
+      </React.Fragment>
+    ))}
+  </>
+);
 
 const Hero: React.FC = () => {
   const scrollToProjects = () => {
@@ -16,22 +41,6 @@ const Hero: React.FC = () => {
       projectsSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  // テキストを自然な箇所で改行
-  const formattedTitle = formatTextWithLineBreaks(heroTitle);
-  const formattedDescJa = formatTextWithLineBreaks(heroDescJa);
-  const formattedProfile = formatTextWithLineBreaks(heroProfile);
-  const formattedProfileJa = formatTextWithLineBreaks(heroProfileJa);
-
-  // 改行したテキストを <br/> で実際に分割レンダリング
-  const renderWithBreaks = (text: string, className?: string) => (
-    text.split('\n').map((line, i) => (
-      <React.Fragment key={i}>
-        {line}
-        {i !== text.split('\n').length - 1 && <br />}
-      </React.Fragment>
-    ))
-  );
 
   return (
     <section className="min-h-screen flex items-center relative pt-20 overflow-hidden">
@@ -44,18 +53,16 @@ const Hero: React.FC = () => {
               Kohei Tada<br />
               <div className="flex flex-col gap-3 mt-4">
                 <span className="text-xl md:text-2xl leading-relaxed font-semibold" style={{color: "#a6bdfa"}}>
-                  {renderWithBreaks(formattedTitle)}
+                  {renderWithBreaks(heroTitleLines)}
                 </span>
                 <span className="text-xl md:text-2xl leading-relaxed font-semibold" style={{color: "#a6bdfa"}}>
                   Certified Human Centered Design Specialist
                 </span>
               </div>
             </h1>
-            
             <p className="text-lg text-nordic-dark/80 max-w-xl animate-fade-in leading-relaxed" style={{animationDelay: '0.2s'}}>
-              {renderWithBreaks(formattedDescJa)}
+              {renderWithBreaks(heroDescJaLines)}
             </p>
-            
             <div className="pt-4 animate-fade-in" style={{animationDelay: '0.4s'}}>
               <button 
                 onClick={scrollToProjects}
@@ -66,7 +73,6 @@ const Hero: React.FC = () => {
               </button>
             </div>
           </div>
-          
           <div className="md:col-span-4">
             <Card className="overflow-hidden bg-gradient-to-br from-nordic-blue/5 to-nordic-blue/20 border-none animate-fade-in backdrop-blur-sm shadow-xl" style={{animationDelay: '0.6s'}}>
               <CardContent className="p-6">
@@ -80,10 +86,10 @@ const Hero: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-tr from-nordic-blue/20 via-transparent to-nordic-beige/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
                   <p className="text-sm text-nordic-dark/70 leading-relaxed">
-                    {renderWithBreaks(formattedProfile)}
+                    {renderWithBreaks(heroProfileLines)}
                   </p>
                   <p className="text-xs text-nordic-dark/50 leading-relaxed mt-2">
-                    {renderWithBreaks(formattedProfileJa)}
+                    {renderWithBreaks(heroProfileJaLines)}
                   </p>
                 </div>
               </CardContent>
@@ -96,3 +102,4 @@ const Hero: React.FC = () => {
 };
 
 export default Hero;
+
