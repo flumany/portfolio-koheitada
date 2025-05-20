@@ -3,47 +3,6 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Card, CardContent } from "./ui/card";
 
-const heroTitleLines = [
-  <>
-    Service/Product Designer specializing<br />
-    in UI, UX, 3D, XR, Physical Products
-  </>
-];
-
-// 改行指示分のみ改行、それ以外は残す
-const heroDescJaLines = [
-  <>
-    人々の生活の豊かさや利便性を向上したいという変わらない<br />
-    強い思いを胸に、日々新たな可能性に向けて邁進しています。
-  </>,
-  <>
-    常に相手の立場に立って思考することができ、<br />
-    直感的な洞察力で本質的なニーズを見抜き、<br />
-    最適な価値を創出することができます。
-  </>
-];
-
-// 追加で消えていた英語プロフィール文も戻す
-const heroProfileLines = [
-  "Enhancing user experiences across physical and digital products through innovative design solutions."
-];
-
-const heroProfileJaLines = [
-  <>
-    革新的なデザインによって、<br />
-    フィジカルからデジタルまで領域を横断し、<br />
-    ユーザー体験の向上に貢献しています。
-  </>
-];
-
-const renderArrayWithBreaks = (lines: (string | JSX.Element)[]) => (
-  <>
-    {lines.map((line, i) => (
-      <React.Fragment key={i}>{line}</React.Fragment>
-    ))}
-  </>
-);
-
 const Hero: React.FC = () => {
   const scrollToProjects = () => {
     const projectsSection = document.getElementById('projects');
@@ -63,16 +22,18 @@ const Hero: React.FC = () => {
               Kohei Tada<br />
               <div className="flex flex-col gap-3 mt-4">
                 <span className="text-xl md:text-2xl leading-relaxed font-semibold" style={{color: "#a6bdfa"}}>
-                  {renderArrayWithBreaks(heroTitleLines)}
+                  Service/Product Designer specializing in UI, UX, 3D, XR, Physical Products
                 </span>
                 <span className="text-xl md:text-2xl leading-relaxed font-semibold" style={{color: "#a6bdfa"}}>
                   Certified Human Centered Design Specialist
                 </span>
               </div>
             </h1>
+            
             <p className="text-lg text-nordic-dark/80 max-w-xl animate-fade-in leading-relaxed" style={{animationDelay: '0.2s'}}>
-              {renderArrayWithBreaks(heroDescJaLines)}
+              人々の生活の豊かさや利便性を向上したいという変わらない強い思いを胸に、日々新たな可能性に向けて邁進しています。常に相手の立場に立って思考することができ、直感的な洞察力で本質的なニーズを見抜き、最適な価値を創出することができます。
             </p>
+            
             <div className="pt-4 animate-fade-in" style={{animationDelay: '0.4s'}}>
               <button 
                 onClick={scrollToProjects}
@@ -83,6 +44,7 @@ const Hero: React.FC = () => {
               </button>
             </div>
           </div>
+          
           <div className="md:col-span-4">
             <Card className="overflow-hidden bg-gradient-to-br from-nordic-blue/5 to-nordic-blue/20 border-none animate-fade-in backdrop-blur-sm shadow-xl" style={{animationDelay: '0.6s'}}>
               <CardContent className="p-6">
@@ -95,11 +57,12 @@ const Hero: React.FC = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-tr from-nordic-blue/20 via-transparent to-nordic-beige/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
+                  {/* 「Professional Profile」という見出しを削除し、説明文（日本語も追加） */}
                   <p className="text-sm text-nordic-dark/70 leading-relaxed">
-                    {renderArrayWithBreaks(heroProfileLines)}
+                    Enhancing user experiences across physical and digital products through innovative design solutions.
                   </p>
                   <p className="text-xs text-nordic-dark/50 leading-relaxed mt-2">
-                    {renderArrayWithBreaks(heroProfileJaLines)}
+                    革新的なデザインによって、フィジカルからデジタルまで領域を横断し、ユーザー体験の向上に貢献しています。
                   </p>
                 </div>
               </CardContent>
@@ -112,4 +75,3 @@ const Hero: React.FC = () => {
 };
 
 export default Hero;
-
