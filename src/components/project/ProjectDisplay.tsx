@@ -31,17 +31,31 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   );
 
   return (
-    <div className="bg-white rounded-lg p-6 shadow-sm">
-      <h2 className="text-2xl font-medium mb-3">{currentWork.title}</h2>
-      {/* DescriptionのMarkdown対応・空行/改行が反映されるように */}
-      <div className="prose prose-neutral max-w-none mb-4 whitespace-pre-line">
-        <ReactMarkdown 
-          remarkPlugins={[remarkGfm]} 
+    <div className="bg-white rounded-2xl p-8 shadow-md mb-8 border border-nordic-gray/30">
+      <h2 className="text-2xl md:text-3xl font-medium mb-6 tracking-tight">{currentWork.title}</h2>
+      {/* 説明文のデザイン・余白を調整*/}
+      <div
+        className="prose prose-neutral max-w-none mb-6 break-words"
+        style={{
+          fontSize: "1.1rem",
+          lineHeight: "2",
+          letterSpacing: "0.01em",
+          wordBreak: "break-word",
+        }}
+      >
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            p: ({ node, ...props }) => <p style={{ marginBottom: "1.3em", whiteSpace: 'pre-line' }} {...props} />,
+            ul: ({ node, ...props }) => <ul style={{ marginBottom: "1.3em", paddingLeft: '1.4em' }} {...props} />,
+            ol: ({ node, ...props }) => <ol style={{ marginBottom: "1.3em", paddingLeft: '1.4em' }} {...props} />,
+            strong: ({ node, ...props }) => <strong style={{ fontWeight: 600 }} {...props} />,
+            br: () => <br />,
+          }}
         >
           {currentWork.description || ''}
         </ReactMarkdown>
       </div>
-      
       {loading ? (
         <div className="space-y-4">
           <Skeleton className="h-72 w-full" />
@@ -49,13 +63,12 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
         </div>
       ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-4">
-          <TabsList className="mb-4">
-            <TabsTrigger value="images">Images</TabsTrigger>
+          <TabsList className="mb-6 bg-nordic-offwhite rounded-lg p-1 gap-2 border border-nordic-gray/30 shadow-none">
+            <TabsTrigger value="images" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent">Images</TabsTrigger>
             {has3DModels && (
-              <TabsTrigger value="3d-model">3D Model</TabsTrigger>
+              <TabsTrigger value="3d-model" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent">3D Model</TabsTrigger>
             )}
           </TabsList>
-          
           <TabsContent value="images" className="focus-visible:outline-none focus-visible:ring-0">
             <ProjectCarousel 
               images={currentImages} 
@@ -63,7 +76,6 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
               title={currentWork.title} 
             />
           </TabsContent>
-          
           {has3DModels && (
             <TabsContent value="3d-model" className="focus-visible:outline-none focus-visible:ring-0">
               <ModelViewer3D 
