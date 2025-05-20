@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const About: React.FC = () => {
@@ -62,14 +61,7 @@ const About: React.FC = () => {
         </div>
 
         <div className="max-w-3xl mx-auto mt-12">
-          <div className="rounded-xl border border-nordic-gray/40 bg-nordic-offwhite/80 px-6 py-7 md:py-9 shadow-sm backdrop-blur-[4px]">
-            <p className="font-semibold text-base md:text-lg text-nordic-dark mb-2 tracking-wide">
-              I can consistently support all phases of product and service development—from planning and visual design to 3D data, UI/UX, prototyping, and XR—in a comprehensive manner.
-            </p>
-            <p className="text-xs md:text-sm text-nordic-dark/60">
-              プロダクトやサービス開発に関わる領域を中心に、企画・ビジュアルデザイン・3DデータやUI/UX/プロトタイピング/XRまで一気通貫で対応可能です。
-            </p>
-          </div>
+          
         </div>
       </div>
     </section>
@@ -77,4 +69,3 @@ const About: React.FC = () => {
 };
 
 export default About;
-
