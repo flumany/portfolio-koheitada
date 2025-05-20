@@ -2,7 +2,6 @@
 import React from 'react';
 
 const aboutLinesEn = [
-  // 明示指定箇所のみ明示的改行、その他は元配列通り
   [
     <>
       After studying architecture, <br />
@@ -21,12 +20,13 @@ const aboutLinesEn = [
   ],
   [
     <>
-      I can consistently support all phases of product and service development—
-      <br />from planning and visual design to 3D data, UI/UX, prototyping, and XR—
-      <br />in a comprehensive manner.
+      I can consistently support all phases of product and service development—<br />
+      from planning and visual design to 3D data, UI/UX, prototyping, and XR—<br />
+      in a comprehensive manner.
     </>
   ]
 ];
+
 const aboutLinesJa = [
   [
     <>

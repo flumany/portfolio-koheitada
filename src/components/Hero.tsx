@@ -4,31 +4,31 @@ import { ArrowRight } from 'lucide-react';
 import { Card, CardContent } from "./ui/card";
 
 const heroTitleLines = [
-  // 指定通り明示的改行挿入
   <>
     Service/Product Designer specializing<br />
     in UI, UX, 3D, XR, Physical Products
   </>
 ];
 
+// 改行指示分のみ改行、それ以外は残す
 const heroDescJaLines = [
-  // 指定に従って改行位置のみ調整・別の部分は維持
   <>
     人々の生活の豊かさや利便性を向上したいという変わらない<br />
-    強い思いを胸に、日々新たな可能性に向けて邁進しています。<br />
+    強い思いを胸に、日々新たな可能性に向けて邁進しています。
+  </>,
+  <>
     常に相手の立場に立って思考することができ、<br />
     直感的な洞察力で本質的なニーズを見抜き、<br />
     最適な価値を創出することができます。
   </>
 ];
 
+// 追加で消えていた英語プロフィール文も戻す
 const heroProfileLines = [
-  // 元通り
   "Enhancing user experiences across physical and digital products through innovative design solutions."
 ];
 
 const heroProfileJaLines = [
-  // 明示指示通りのみ改行
   <>
     革新的なデザインによって、<br />
     フィジカルからデジタルまで領域を横断し、<br />
@@ -112,3 +112,4 @@ const Hero: React.FC = () => {
 };
 
 export default Hero;
+
