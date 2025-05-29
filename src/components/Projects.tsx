@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getImageUrl } from '@/lib/supabase';
@@ -6,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { fetchPublishedProjects, fetchProjectMedia } from '@/services/projectService';
+import { fetchPublishedProjectsWithOrder, fetchProjectMedia } from '@/services/projectService';
 import { ProjectWork, ProjectMedia } from '@/types/project';
 import { Monitor, Image as ImageIcon } from 'lucide-react';
 
@@ -23,8 +22,8 @@ const Projects: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        // Fetch published projects
-        const projectsData = await fetchPublishedProjects();
+        // Fetch published projects with proper category ordering
+        const projectsData = await fetchPublishedProjectsWithOrder();
         setProjects(projectsData);
         
         // Load thumbnail images for projects
@@ -90,19 +89,29 @@ const Projects: React.FC = () => {
   // Get unique categories from projects
   const categories = ['all', ...new Set(projects.map(project => project.category))];
 
-  // Group projects by category for display
+  // Group projects by category for display with preserved order
   const groupedProjects = useMemo(() => {
     if (filter !== 'all') {
       return [{ category: filter, projects: filteredProjects }];
     }
     
-    const grouped = categories.slice(1).map(category => ({
-      category,
-      projects: projects.filter(project => project.category === category)
-    })).filter(group => group.projects.length > 0);
+    // Preserve the order from fetchPublishedProjectsWithOrder
+    const categoryOrder: string[] = [];
+    const grouped: { [key: string]: ProjectWork[] } = {};
     
-    return grouped;
-  }, [filter, filteredProjects, categories, projects]);
+    projects.forEach(project => {
+      if (!grouped[project.category]) {
+        grouped[project.category] = [];
+        categoryOrder.push(project.category);
+      }
+      grouped[project.category].push(project);
+    });
+    
+    return categoryOrder.map(category => ({
+      category,
+      projects: grouped[category]
+    })).filter(group => group.projects.length > 0);
+  }, [filter, filteredProjects, projects]);
 
   // Check if project has iframe as primary content
   const hasIframePreview = (project: ProjectWork) => {

@@ -55,7 +55,6 @@ const SortableProjectRow: React.FC<SortableProjectRowProps> = ({
           <span className="font-medium">{project.title}</span>
         </div>
       </TableCell>
-      <TableCell>{project.category}</TableCell>
       <TableCell>
         <span 
           className={`px-2 py-1 text-xs rounded-full ${

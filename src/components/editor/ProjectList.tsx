@@ -3,16 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { 
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { ProjectWork } from '@/types/project';
-import { fetchProjects, deleteProject, togglePublishStatus, updateProjectOrder } from '@/services/projectService';
+import { 
+  fetchProjectsWithOrder, 
+  deleteProject, 
+  togglePublishStatus, 
+  updateProjectOrderInCategory,
+  updateCategoryOrder,
+  getCategoryOrder
+} from '@/services/projectService';
 import { Loader2, Plus } from 'lucide-react';
 import { 
   DndContext, 
@@ -29,12 +28,13 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import SortableProjectRow from './SortableProjectRow';
+import CategoryGroup from './CategoryGroup';
 
 const ProjectList: React.FC = () => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<ProjectWork[]>([]);
   const [loading, setLoading] = useState(true);
+  const [categoryOrder, setCategoryOrder] = useState<string[]>([]);
   
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -44,14 +44,28 @@ const ProjectList: React.FC = () => {
   );
   
   useEffect(() => {
-    loadProjects();
+    loadProjectsAndCategories();
   }, []);
   
-  const loadProjects = async () => {
+  const loadProjectsAndCategories = async () => {
     setLoading(true);
     try {
-      const data = await fetchProjects();
-      setProjects(data);
+      const [projectsData, categoryOrderData] = await Promise.all([
+        fetchProjectsWithOrder(),
+        getCategoryOrder()
+      ]);
+      
+      setProjects(projectsData);
+      
+      // Get current categories from projects
+      const currentCategories = [...new Set(projectsData.map(p => p.category))];
+      // Merge with saved order, putting new categories at the end
+      const mergedOrder = [
+        ...categoryOrderData.filter(cat => currentCategories.includes(cat)),
+        ...currentCategories.filter(cat => !categoryOrderData.includes(cat))
+      ];
+      
+      setCategoryOrder(mergedOrder);
     } catch (error) {
       console.error('Error loading projects:', error);
       toast({
@@ -63,34 +77,87 @@ const ProjectList: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // Group projects by category in the correct order
+  const groupedProjects = categoryOrder.map(category => ({
+    category,
+    projects: projects.filter(project => project.category === category)
+  })).filter(group => group.projects.length > 0);
   
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
 
-    if (active.id !== over?.id) {
-      const oldIndex = projects.findIndex((project) => project.id === active.id);
-      const newIndex = projects.findIndex((project) => project.id === over?.id);
+    if (!over || active.id === over.id) return;
 
-      const newProjects = arrayMove(projects, oldIndex, newIndex);
-      setProjects(newProjects);
+    const activeId = active.id as string;
+    const overId = over.id as string;
 
+    // Check if we're dragging categories
+    if (categoryOrder.includes(activeId) && categoryOrder.includes(overId)) {
+      const oldIndex = categoryOrder.indexOf(activeId);
+      const newIndex = categoryOrder.indexOf(overId);
+      const newCategoryOrder = arrayMove(categoryOrder, oldIndex, newIndex);
+      
+      setCategoryOrder(newCategoryOrder);
+      
       try {
-        // Update the order in the backend if you have such functionality
-        // await updateProjectOrder(newProjects.map(p => p.id));
+        await updateCategoryOrder(newCategoryOrder);
         toast({
           title: "Success",
-          description: "Project order updated successfully."
+          description: "Category order updated successfully."
         });
       } catch (error) {
-        // Revert on error
-        setProjects(projects);
-        console.error('Error updating project order:', error);
+        setCategoryOrder(categoryOrder); // Revert on error
+        console.error('Error updating category order:', error);
         toast({
           title: "Error",
-          description: "Failed to update project order.",
+          description: "Failed to update category order.",
           variant: "destructive"
         });
       }
+      return;
+    }
+
+    // Handle project reordering within categories
+    const activeProject = projects.find(p => p.id === activeId);
+    const overProject = projects.find(p => p.id === overId);
+    
+    if (!activeProject || !overProject) return;
+
+    // Only allow reordering within the same category
+    if (activeProject.category !== overProject.category) return;
+
+    const categoryProjects = projects.filter(p => p.category === activeProject.category);
+    const oldIndex = categoryProjects.findIndex(p => p.id === activeId);
+    const newIndex = categoryProjects.findIndex(p => p.id === overId);
+    
+    const reorderedProjects = arrayMove(categoryProjects, oldIndex, newIndex);
+    
+    // Update the full projects array
+    const updatedProjects = projects.map(project => {
+      if (project.category === activeProject.category) {
+        const newProject = reorderedProjects.find(p => p.id === project.id);
+        return newProject || project;
+      }
+      return project;
+    });
+    
+    setProjects(updatedProjects);
+
+    try {
+      await updateProjectOrderInCategory(reorderedProjects.map(p => p.id));
+      toast({
+        title: "Success",
+        description: "Project order updated successfully."
+      });
+    } catch (error) {
+      setProjects(projects); // Revert on error
+      console.error('Error updating project order:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update project order.",
+        variant: "destructive"
+      });
     }
   };
   
@@ -105,7 +172,7 @@ const ProjectList: React.FC = () => {
         title: "Success",
         description: "Project deleted successfully."
       });
-      loadProjects();
+      loadProjectsAndCategories();
     } catch (error) {
       console.error('Error deleting project:', error);
       toast({
@@ -123,7 +190,7 @@ const ProjectList: React.FC = () => {
         title: "Success",
         description: `Project ${!currentStatus ? 'published' : 'unpublished'} successfully.`
       });
-      loadProjects();
+      loadProjectsAndCategories();
     } catch (error) {
       console.error('Error toggling publish status:', error);
       toast({
@@ -170,42 +237,30 @@ const ProjectList: React.FC = () => {
           </Button>
         </div>
       ) : (
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Last Updated</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <DndContext 
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
-              >
-                <SortableContext 
-                  items={projects.map(p => p.id)}
-                  strategy={verticalListSortingStrategy}
-                >
-                  {projects.map((project) => (
-                    <SortableProjectRow
-                      key={project.id}
-                      project={project}
-                      onEdit={handleEdit}
-                      onDelete={handleDelete}
-                      onTogglePublish={handleTogglePublish}
-                      onView={handleView}
-                    />
-                  ))}
-                </SortableContext>
-              </DndContext>
-            </TableBody>
-          </Table>
-        </div>
+        <DndContext 
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext 
+            items={[...categoryOrder, ...projects.map(p => p.id)]}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="space-y-8">
+              {groupedProjects.map((group) => (
+                <CategoryGroup
+                  key={group.category}
+                  category={group.category}
+                  projects={group.projects}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  onTogglePublish={handleTogglePublish}
+                  onView={handleView}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       )}
     </div>
   );

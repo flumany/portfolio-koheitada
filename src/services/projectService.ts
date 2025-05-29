@@ -199,3 +199,117 @@ export async function updateProjectOrder(projectIds: string[]) {
     throw error;
   }
 }
+
+// Update project order within a category
+export async function updateProjectOrderInCategory(projectIds: string[]) {
+  const updates = projectIds.map((id, index) => 
+    supabase
+      .from('projects')
+      .update({ 
+        display_order: index,
+        updated_at: new Date().toISOString() 
+      })
+      .eq('id', id)
+  );
+
+  try {
+    await Promise.all(updates);
+    return true;
+  } catch (error) {
+    console.error('Error updating project order:', error);
+    throw error;
+  }
+}
+
+// Category order management
+export async function getCategoryOrder(): Promise<string[]> {
+  try {
+    const { data, error } = await supabase
+      .from('category_order')
+      .select('categories')
+      .single();
+    
+    if (error && error.code !== 'PGRST116') { // PGRST116 is "not found"
+      throw error;
+    }
+    
+    return data?.categories || [];
+  } catch (error) {
+    console.error('Error fetching category order:', error);
+    return [];
+  }
+}
+
+export async function updateCategoryOrder(categories: string[]): Promise<void> {
+  try {
+    const { error } = await supabase
+      .from('category_order')
+      .upsert({ 
+        id: 1, // Use a fixed ID since we only need one row
+        categories 
+      });
+    
+    if (error) {
+      throw error;
+    }
+  } catch (error) {
+    console.error('Error updating category order:', error);
+    throw error;
+  }
+}
+
+// Fetch projects with proper ordering
+export async function fetchProjectsWithOrder() {
+  try {
+    // Get category order
+    const categoryOrder = await getCategoryOrder();
+    
+    // Fetch all projects
+    const { data: projects, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('display_order', { ascending: true });
+
+    if (error) {
+      throw error;
+    }
+
+    // Group projects by category
+    const groupedProjects = projects.reduce((acc, project) => {
+      if (!acc[project.category]) {
+        acc[project.category] = [];
+      }
+      acc[project.category].push(project);
+      return acc;
+    }, {} as Record<string, ProjectWork[]>);
+
+    // Sort categories by saved order, then by name for new categories
+    const allCategories = Object.keys(groupedProjects);
+    const sortedCategories = [
+      ...categoryOrder.filter(cat => allCategories.includes(cat)),
+      ...allCategories.filter(cat => !categoryOrder.includes(cat)).sort()
+    ];
+
+    // Return projects in category order
+    const orderedProjects: ProjectWork[] = [];
+    sortedCategories.forEach(category => {
+      orderedProjects.push(...groupedProjects[category]);
+    });
+
+    return orderedProjects;
+  } catch (error) {
+    console.error('Error fetching projects with order:', error);
+    throw error;
+  }
+}
+
+// Fetch published projects with proper ordering
+export async function fetchPublishedProjectsWithOrder() {
+  try {
+    const projects = await fetchProjectsWithOrder();
+    return projects.filter(project => project.published);
+  } catch (error) {
+    console.error('Error fetching published projects with order:', error);
+    throw error;
+  }
+}
