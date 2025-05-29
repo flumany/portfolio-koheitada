@@ -75,10 +75,10 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
 
   return (
     <div className="bg-white rounded-2xl p-8 shadow-md mb-8 border border-nordic-gray/30">
-      <h2 className="text-2xl md:text-3xl font-medium mb-6 tracking-tight">{currentWork.title}</h2>
+      <h2 className="text-2xl md:text-3xl font-medium mb-6 tracking-tight text-nordic-dark">{currentWork.title}</h2>
       {/* 説明文のデザイン・余白・改行強化 */}
       <div
-        className="prose prose-neutral max-w-none mb-8"
+        className="prose prose-neutral max-w-none mb-8 text-nordic-dark"
         style={{
           fontSize: "1.13rem",
           lineHeight: "2.08",
@@ -95,6 +95,7 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
                   marginBottom: "1.65em",
                   whiteSpace: 'normal', // pre-line等はやめる
                   wordBreak: "normal",
+                  color: "#333333", // nordic-dark color
                 }}
                 {...props}
               />
@@ -105,6 +106,7 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
                   marginBottom: "1.4em",
                   paddingLeft: '1.45em',
                   wordBreak: "normal",
+                  color: "#333333", // nordic-dark color
                 }}
                 {...props}
               />
@@ -115,12 +117,13 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
                   marginBottom: "1.4em",
                   paddingLeft: '1.45em',
                   wordBreak: "normal",
+                  color: "#333333", // nordic-dark color
                 }}
                 {...props}
               />
             ),
             strong: ({ node, ...props }) => (
-              <strong style={{ fontWeight: 600 }} {...props} />
+              <strong style={{ fontWeight: 600, color: "#333333" }} {...props} />
             ),
             br: () => <br />,
           }}
@@ -137,17 +140,17 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-3">
           <TabsList className="mb-7 bg-nordic-offwhite rounded-lg p-1 gap-2 border border-nordic-gray/30 shadow-none">
             {hasIframes && (
-              <TabsTrigger value="web-embed" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
+              <TabsTrigger value="web-embed" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent data-[state=inactive]:text-nordic-dark transition-all">
                 Web Embed
               </TabsTrigger>
             )}
             {hasImages && (
-              <TabsTrigger value="images" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
+              <TabsTrigger value="images" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent data-[state=inactive]:text-nordic-dark transition-all">
                 Images
               </TabsTrigger>
             )}
             {has3DModels && (
-              <TabsTrigger value="3d-model" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
+              <TabsTrigger value="3d-model" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent data-[state=inactive]:text-nordic-dark transition-all">
                 3D Model
               </TabsTrigger>
             )}
@@ -155,16 +158,18 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
           
           {hasIframes && (
             <TabsContent value="web-embed" className="focus-visible:outline-none focus-visible:ring-0">
-              <div className="space-y-8">
+              <div className="space-y-12">
                 {currentWork.iframes?.map((iframe, index) => (
-                  <div key={index} className="w-full overflow-hidden">
+                  <div key={index} className="w-full bg-white">
                     <div 
                       dangerouslySetInnerHTML={{ __html: iframe }}
                       className="w-full"
                       style={{ 
                         display: 'flex', 
                         justifyContent: 'center',
-                        minHeight: 'auto'
+                        minHeight: 'auto',
+                        backgroundColor: 'white',
+                        padding: '0'
                       }}
                     />
                   </div>
