@@ -113,7 +113,7 @@ const ProjectList: React.FC = () => {
       const newIndex = categoryOrder.indexOf(overId);
       const newCategoryOrder = arrayMove(categoryOrder, oldIndex, newIndex);
       
-      // Optimistic update
+      // Update state immediately for UI feedback
       setCategoryOrder(newCategoryOrder);
       
       try {
@@ -126,7 +126,7 @@ const ProjectList: React.FC = () => {
         });
       } catch (error) {
         console.error('Error updating category order:', error);
-        // Revert optimistic update on error
+        // Revert on error
         setCategoryOrder(categoryOrder);
         toast({
           title: "Error",
@@ -156,12 +156,13 @@ const ProjectList: React.FC = () => {
       const categoryProjects = projects.filter(p => p.category === targetCategory);
       const newOrder = categoryProjects.length;
       
-      // Update project category and order
+      // Update project category and order immediately
       const updatedProject = { ...activeProject, category: targetCategory, display_order: newOrder };
       const updatedProjects = projects.map(p => 
         p.id === activeProject.id ? updatedProject : p
       );
       
+      // Update state immediately
       setProjects(updatedProjects);
       
       try {
@@ -171,7 +172,8 @@ const ProjectList: React.FC = () => {
           description: "Project moved successfully."
         });
       } catch (error) {
-        setProjects(projects); // Revert on error
+        // Revert on error
+        setProjects(projects);
         console.error('Error moving project:', error);
         toast({
           title: "Error",
@@ -202,7 +204,7 @@ const ProjectList: React.FC = () => {
     
     const reorderedProjects = arrayMove(categoryProjects, oldIndex, newIndex);
     
-    // Update projects with new display_order
+    // Update projects with new display_order immediately
     const updatedProjects = projects.map(project => {
       if (project.category === activeProject.category) {
         const index = reorderedProjects.findIndex(p => p.id === project.id);
@@ -213,6 +215,7 @@ const ProjectList: React.FC = () => {
       return project;
     });
     
+    // Update state immediately
     setProjects(updatedProjects);
 
     try {
@@ -223,7 +226,8 @@ const ProjectList: React.FC = () => {
         description: "Project order updated successfully."
       });
     } catch (error) {
-      setProjects(projects); // Revert on error
+      // Revert on error
+      setProjects(projects);
       console.error('Error updating project order:', error);
       toast({
         title: "Error",
@@ -244,6 +248,7 @@ const ProjectList: React.FC = () => {
         title: "Success",
         description: "Project deleted successfully."
       });
+      // Only reload after delete operation
       loadProjectsAndCategories();
     } catch (error) {
       console.error('Error deleting project:', error);
@@ -258,11 +263,20 @@ const ProjectList: React.FC = () => {
   const handleTogglePublish = async (id: string, currentStatus: boolean) => {
     try {
       await togglePublishStatus(id, !currentStatus);
+      
+      // Update local state immediately instead of reloading
+      setProjects(prevProjects => 
+        prevProjects.map(project => 
+          project.id === id 
+            ? { ...project, published: !currentStatus }
+            : project
+        )
+      );
+      
       toast({
         title: "Success",
         description: `Project ${!currentStatus ? 'published' : 'unpublished'} successfully.`
       });
-      loadProjectsAndCategories();
     } catch (error) {
       console.error('Error toggling publish status:', error);
       toast({
