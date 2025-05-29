@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectCarousel from './ProjectCarousel';
@@ -7,16 +8,9 @@ import { ProjectWork } from '@/types/project';
 import { Skeleton } from "@/components/ui/skeleton";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { UseEmblaCarouselType } from 'embla-carousel-react';
+import { cn } from "@/lib/utils";
 
 /**
  * 日本語は句読点のあと、英語はカンマ・セミコロン・コロンや主要前置詞/接続詞の前で改行。
@@ -78,27 +72,26 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   };
 
   const [activeTab, setActiveTab] = useState(getDefaultTab());
-  
-  const [iframeIndex, setIframeIndex] = useState(0);
-  const [iframeEmblaApi, setIframeEmblaApi] = useState<UseEmblaCarouselType[1] | null>(null);
-  
-  React.useEffect(() => {
-    if (!iframeEmblaApi) return;
-    
-    const onSelect = () => {
-      setIframeIndex(iframeEmblaApi.selectedScrollSnap());
-    };
-    
-    iframeEmblaApi.on('select', onSelect);
-    onSelect();
-    
-    return () => {
-      iframeEmblaApi.off('select', onSelect);
-    };
-  }, [iframeEmblaApi]);
+  const [currentPage, setCurrentPage] = useState(0);
   
   // 本文事前整形
   const formattedDescription = formatTextWithLineBreaks(currentWork.description || '');
+
+  const handlePrevPage = () => {
+    if (currentWork.iframes && currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentWork.iframes && currentPage < currentWork.iframes.length - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPage = (pageIndex: number) => {
+    setCurrentPage(pageIndex);
+  };
 
   return (
     <div className="bg-white rounded-2xl p-8 shadow-md mb-8 border border-nordic-gray/30">
@@ -183,53 +176,61 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
           {hasIframes && (
             <TabsContent value="web-embed" className="focus-visible:outline-none focus-visible:ring-0">
               <div className="relative">
-                <Carousel 
-                  className="w-full" 
-                  opts={{
-                    loop: true,
-                    align: "start",
-                  }}
-                  setApi={setIframeEmblaApi}
-                >
-                  <CarouselContent>
-                    {currentWork.iframes?.map((iframe, index) => (
-                      <CarouselItem key={index}>
-                        <div className="p-1">
-                          <div 
-                            dangerouslySetInnerHTML={{ __html: iframe }}
-                            className="w-full"
-                            style={{
-                              minHeight: '500px'
-                            }}
-                          />
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="left-2 bg-white/80 hover:bg-white">
-                    <ChevronLeft className="w-5 h-5" />
-                  </CarouselPrevious>
-                  <CarouselNext className="right-2 bg-white/80 hover:bg-white">
-                    <ChevronRight className="w-5 h-5" />
-                  </CarouselNext>
-                </Carousel>
-                
+                {/* Page Display */}
+                <div className="min-h-[500px] flex items-center justify-center">
+                  {currentWork.iframes && currentWork.iframes[currentPage] && (
+                    <div 
+                      dangerouslySetInnerHTML={{ __html: currentWork.iframes[currentPage] }}
+                      className="w-full flex justify-center"
+                    />
+                  )}
+                </div>
+
+                {/* Navigation Controls */}
                 {currentWork.iframes && currentWork.iframes.length > 1 && (
-                  <div className="flex justify-center mt-4 gap-2">
-                    {currentWork.iframes.map((_, index) => (
-                      <button
-                        key={index}
-                        className={cn(
-                          "w-2 h-2 rounded-full transition-all",
-                          iframeIndex === index ? "bg-nordic-blue w-4" : "bg-nordic-gray/40"
-                        )}
-                        onClick={() => {
-                          if (iframeEmblaApi) {
-                            iframeEmblaApi.scrollTo(index);
-                          }
-                        }}
-                      />
-                    ))}
+                  <div className="mt-6">
+                    {/* Previous/Next Buttons */}
+                    <div className="flex justify-between items-center mb-4">
+                      <Button
+                        variant="outline"
+                        onClick={handlePrevPage}
+                        disabled={currentPage === 0}
+                        className="flex items-center gap-2"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                        Previous
+                      </Button>
+                      
+                      <span className="text-sm text-gray-600">
+                        Page {currentPage + 1} of {currentWork.iframes.length}
+                      </span>
+                      
+                      <Button
+                        variant="outline"
+                        onClick={handleNextPage}
+                        disabled={currentPage === currentWork.iframes.length - 1}
+                        className="flex items-center gap-2"
+                      >
+                        Next
+                        <ChevronRight className="w-4 h-4" />
+                      </Button>
+                    </div>
+
+                    {/* Page Indicators */}
+                    <div className="flex justify-center gap-2">
+                      {currentWork.iframes.map((_, index) => (
+                        <button
+                          key={index}
+                          className={cn(
+                            "w-3 h-3 rounded-full transition-all cursor-pointer",
+                            currentPage === index 
+                              ? "bg-nordic-blue w-6" 
+                              : "bg-nordic-gray/40 hover:bg-nordic-gray/60"
+                          )}
+                          onClick={() => goToPage(index)}
+                        />
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
