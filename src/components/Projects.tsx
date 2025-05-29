@@ -88,16 +88,84 @@ const Projects: React.FC = () => {
   // Get unique categories from projects
   const categories = ['all', ...new Set(projects.map(project => project.category))];
 
+  // Group projects by category for display
+  const groupedProjects = () => {
+    if (filter !== 'all') {
+      return [{ category: filter, projects: filteredProjects }];
+    }
+    
+    const grouped = categories.slice(1).map(category => ({
+      category,
+      projects: projects.filter(project => project.category === category)
+    })).filter(group => group.projects.length > 0);
+    
+    return grouped;
+  };
+
   // Check if project has iframe as primary content
   const hasIframePreview = (project: ProjectWork) => {
     return project.iframes && project.iframes.length > 0;
   };
 
-  // Extract src from HTML embed code
-  const extractSrcFromEmbed = (embedCode: string): string => {
-    const match = embedCode.match(/src=["']([^"']+)["']/);
-    return match ? match[1] : '';
-  };
+  const renderProjectCard = (project: ProjectWork) => (
+    <div 
+      key={project.id} 
+      className="project-card group cursor-pointer"
+      onClick={() => handleProjectClick(project.slug)}
+    >
+      <div className="aspect-[4/3] relative overflow-hidden">
+        {loading ? (
+          <Skeleton className="w-full h-full" />
+        ) : hasIframePreview(project) ? (
+          // Display iframe preview from HTML embed code
+          <div className="relative w-full h-full">
+            <div 
+              dangerouslySetInnerHTML={{ 
+                __html: project.iframes![0].replace(
+                  /<iframe([^>]*)>/,
+                  '<iframe$1 class="w-full h-full object-cover border-0 pointer-events-none">'
+                )
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <div className="bg-white/90 p-3 rounded-full">
+                <Monitor className="text-nordic-dark" size={24} />
+              </div>
+            </div>
+            <div className="absolute top-2 right-2 bg-nordic-blue text-white px-2 py-1 rounded text-xs font-medium">
+              Web Embed
+            </div>
+          </div>
+        ) : (
+          // Display image preview
+          <>
+            <img 
+              src={projectImages[project.id] || '/placeholder.svg'} 
+              alt={project.title} 
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+              onError={(e) => {
+                e.currentTarget.src = '/placeholder.svg';
+                console.log(`Image error, using placeholder for ${project.title}`);
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <div className="bg-white/90 p-3 rounded-full">
+                <ImageIcon className="text-nordic-dark" size={24} />
+              </div>
+            </div>
+          </>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+          <span className="text-white text-sm font-medium uppercase tracking-wider">
+            {project.category}
+          </span>
+        </div>
+      </div>
+      <div className="p-6 bg-white">
+        <h3 className="font-medium text-lg mb-2">{project.title}</h3>
+      </div>
+    </div>
+  );
 
   return (
     <section id="projects" className="section bg-nordic-white">
@@ -137,76 +205,47 @@ const Projects: React.FC = () => {
           </div>
         )}
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map(project => (
-            <div 
-              key={project.id} 
-              className="project-card group cursor-pointer"
-              onClick={() => handleProjectClick(project.slug)}
-            >
-              <div className="aspect-[4/3] relative overflow-hidden">
-                {loading ? (
-                  <Skeleton className="w-full h-full" />
-                ) : hasIframePreview(project) ? (
-                  // Display iframe preview from HTML embed code
-                  <div className="relative w-full h-full">
-                    <div 
-                      dangerouslySetInnerHTML={{ 
-                        __html: project.iframes![0].replace(
-                          /<iframe([^>]*)>/,
-                          '<iframe$1 class="w-full h-full object-cover border-0 pointer-events-none">'
-                        )
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="bg-white/90 p-3 rounded-full">
-                        <Monitor className="text-nordic-dark" size={24} />
-                      </div>
-                    </div>
-                    <div className="absolute top-2 right-2 bg-nordic-blue text-white px-2 py-1 rounded text-xs font-medium">
-                      Web Embed
-                    </div>
-                  </div>
-                ) : (
-                  // Display image preview
-                  <>
-                    <img 
-                      src={projectImages[project.id] || '/placeholder.svg'} 
-                      alt={project.title} 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
-                      onError={(e) => {
-                        e.currentTarget.src = '/placeholder.svg';
-                        console.log(`Image error, using placeholder for ${project.title}`);
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="bg-white/90 p-3 rounded-full">
-                        <ImageIcon className="text-nordic-dark" size={24} />
-                      </div>
-                    </div>
-                  </>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                  <span className="text-white text-sm font-medium uppercase tracking-wider">
-                    {project.category}
-                  </span>
+        {filter === 'all' ? (
+          // Category-grouped display
+          <div className="space-y-16">
+            {groupedProjects().map((group) => (
+              <div key={group.category} className="space-y-6">
+                <div className="text-center">
+                  <h3 className="text-2xl font-medium mb-2 capitalize">
+                    {group.category.replace('-', ' ')}
+                  </h3>
+                  <div className="w-12 h-0.5 bg-nordic-blue mx-auto" />
+                </div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {group.projects.map(renderProjectCard)}
                 </div>
               </div>
-              <div className="p-6 bg-white">
-                <h3 className="font-medium text-lg mb-2">{project.title}</h3>
+            ))}
+            
+            {groupedProjects().length === 0 && !loading && (
+              <div className="text-center py-12">
+                <h3 className="text-xl font-medium mb-2">No projects found</h3>
+                <p className="text-nordic-dark/70">
+                  Projects will appear here once they are published
+                </p>
               </div>
-            </div>
-          ))}
-          
-          {filteredProjects.length === 0 && !loading && (
-            <div className="col-span-3 text-center py-12">
-              <h3 className="text-xl font-medium mb-2">No projects found</h3>
-              <p className="text-nordic-dark/70">
-                {filter !== 'all' ? 'Try selecting a different category' : 'Projects will appear here once they are published'}
-              </p>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        ) : (
+          // Single category display
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProjects.map(renderProjectCard)}
+            
+            {filteredProjects.length === 0 && !loading && (
+              <div className="col-span-3 text-center py-12">
+                <h3 className="text-xl font-medium mb-2">No projects found</h3>
+                <p className="text-nordic-dark/70">
+                  Try selecting a different category
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
