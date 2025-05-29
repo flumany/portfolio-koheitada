@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getImageUrl } from '@/lib/supabase';
@@ -5,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
 import { fetchPublishedProjects, fetchProjectMedia } from '@/services/projectService';
 import { ProjectWork, ProjectMedia } from '@/types/project';
+import { Monitor, Image as ImageIcon } from 'lucide-react';
 
 const Projects: React.FC = () => {
   const [filter, setFilter] = useState('all');
@@ -86,6 +88,11 @@ const Projects: React.FC = () => {
   // Get unique categories from projects
   const categories = ['all', ...new Set(projects.map(project => project.category))];
 
+  // Check if project has iframe as primary content
+  const hasIframePreview = (project: ProjectWork) => {
+    return project.iframes && project.iframes.length > 0;
+  };
+
   return (
     <section id="projects" className="section bg-nordic-white">
       <div className="container-custom">
@@ -134,16 +141,41 @@ const Projects: React.FC = () => {
               <div className="aspect-[4/3] relative overflow-hidden">
                 {loading ? (
                   <Skeleton className="w-full h-full" />
+                ) : hasIframePreview(project) ? (
+                  // Display iframe preview
+                  <div className="relative w-full h-full">
+                    <iframe 
+                      src={project.iframes![0]} 
+                      className="w-full h-full object-cover border-0 pointer-events-none"
+                      title={`${project.title} - Preview`}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="bg-white/90 p-3 rounded-full">
+                        <Monitor className="text-nordic-dark" size={24} />
+                      </div>
+                    </div>
+                    <div className="absolute top-2 right-2 bg-nordic-blue text-white px-2 py-1 rounded text-xs font-medium">
+                      Prototype
+                    </div>
+                  </div>
                 ) : (
-                  <img 
-                    src={projectImages[project.id] || '/placeholder.svg'} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
-                    onError={(e) => {
-                      e.currentTarget.src = '/placeholder.svg';
-                      console.log(`Image error, using placeholder for ${project.title}`);
-                    }}
-                  />
+                  // Display image preview
+                  <>
+                    <img 
+                      src={projectImages[project.id] || '/placeholder.svg'} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                      onError={(e) => {
+                        e.currentTarget.src = '/placeholder.svg';
+                        console.log(`Image error, using placeholder for ${project.title}`);
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="bg-white/90 p-3 rounded-full">
+                        <ImageIcon className="text-nordic-dark" size={24} />
+                      </div>
+                    </div>
+                  </>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                   <span className="text-white text-sm font-medium uppercase tracking-wider">
