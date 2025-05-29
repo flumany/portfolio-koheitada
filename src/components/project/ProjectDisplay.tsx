@@ -42,6 +42,19 @@ function formatTextWithLineBreaks(text: string): string {
   return formatted;
 }
 
+/**
+ * HTMLコンテンツをdivタグで分割してページごとに配列にする
+ */
+function parseIframeContent(htmlContent: string): string[] {
+  if (!htmlContent) return [];
+  
+  // divタグで囲まれた要素を抽出
+  const divRegex = /<div[^>]*>[\s\S]*?<\/div>/gi;
+  const matches = htmlContent.match(divRegex);
+  
+  return matches || [];
+}
+
 interface ProjectDisplayProps {
   currentWork: ProjectWork;
   currentImages: string[];
@@ -55,8 +68,12 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   currentModels,
   loading
 }) => {
-  // iframesがある場合のデフォルトタブを決定
-  const hasIframes = Boolean(currentWork.iframes && currentWork.iframes.length > 0);
+  // iframesコンテンツを解析してページごとに分割
+  const parsedPages = currentWork.iframes && currentWork.iframes.length > 0
+    ? currentWork.iframes.flatMap(iframe => parseIframeContent(iframe))
+    : [];
+
+  const hasIframes = Boolean(parsedPages.length > 0);
   const hasImages = Boolean(currentImages.length > 0);
   const has3DModels = Boolean(
     currentModels.length > 0 || 
@@ -78,13 +95,13 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   const formattedDescription = formatTextWithLineBreaks(currentWork.description || '');
 
   const handlePrevPage = () => {
-    if (currentWork.iframes && currentPage > 0) {
+    if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
     }
   };
 
   const handleNextPage = () => {
-    if (currentWork.iframes && currentPage < currentWork.iframes.length - 1) {
+    if (currentPage < parsedPages.length - 1) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -178,16 +195,16 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
               <div className="relative">
                 {/* Page Display */}
                 <div className="min-h-[500px] flex items-center justify-center">
-                  {currentWork.iframes && currentWork.iframes[currentPage] && (
+                  {parsedPages[currentPage] && (
                     <div 
-                      dangerouslySetInnerHTML={{ __html: currentWork.iframes[currentPage] }}
+                      dangerouslySetInnerHTML={{ __html: parsedPages[currentPage] }}
                       className="w-full flex justify-center"
                     />
                   )}
                 </div>
 
                 {/* Navigation Controls */}
-                {currentWork.iframes && currentWork.iframes.length > 1 && (
+                {parsedPages.length > 1 && (
                   <div className="mt-6">
                     {/* Previous/Next Buttons */}
                     <div className="flex justify-between items-center mb-4">
@@ -202,13 +219,13 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
                       </Button>
                       
                       <span className="text-sm text-gray-600">
-                        Page {currentPage + 1} of {currentWork.iframes.length}
+                        Page {currentPage + 1} of {parsedPages.length}
                       </span>
                       
                       <Button
                         variant="outline"
                         onClick={handleNextPage}
-                        disabled={currentPage === currentWork.iframes.length - 1}
+                        disabled={currentPage === parsedPages.length - 1}
                         className="flex items-center gap-2"
                       >
                         Next
@@ -218,7 +235,7 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
 
                     {/* Page Indicators */}
                     <div className="flex justify-center gap-2">
-                      {currentWork.iframes.map((_, index) => (
+                      {parsedPages.map((_, index) => (
                         <button
                           key={index}
                           className={cn(
