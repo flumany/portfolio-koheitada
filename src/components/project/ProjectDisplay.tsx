@@ -7,9 +7,16 @@ import { ProjectWork } from '@/types/project';
 import { Skeleton } from "@/components/ui/skeleton";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import type { UseEmblaCarouselType } from 'embla-carousel-react';
 
 /**
  * 日本語は句読点のあと、英語はカンマ・セミコロン・コロンや主要前置詞/接続詞の前で改行。
@@ -71,7 +78,24 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   };
 
   const [activeTab, setActiveTab] = useState(getDefaultTab());
-  const [currentIframePage, setCurrentIframePage] = useState(0);
+  
+  const [iframeIndex, setIframeIndex] = useState(0);
+  const [iframeEmblaApi, setIframeEmblaApi] = useState<UseEmblaCarouselType[1] | null>(null);
+  
+  React.useEffect(() => {
+    if (!iframeEmblaApi) return;
+    
+    const onSelect = () => {
+      setIframeIndex(iframeEmblaApi.selectedScrollSnap());
+    };
+    
+    iframeEmblaApi.on('select', onSelect);
+    onSelect();
+    
+    return () => {
+      iframeEmblaApi.off('select', onSelect);
+    };
+  }, [iframeEmblaApi]);
   
   // 本文事前整形
   const formattedDescription = formatTextWithLineBreaks(currentWork.description || '');
@@ -159,63 +183,53 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
           {hasIframes && (
             <TabsContent value="web-embed" className="focus-visible:outline-none focus-visible:ring-0">
               <div className="relative">
-                {/* Current iframe page */}
-                <div className="w-full mb-6">
-                  <div 
-                    dangerouslySetInnerHTML={{ 
-                      __html: currentWork.iframes?.[currentIframePage] || '' 
-                    }}
-                    className="w-full"
-                    style={{
-                      minHeight: '500px'
-                    }}
-                  />
-                </div>
-                
-                {/* Navigation controls */}
-                {currentWork.iframes && currentWork.iframes.length > 1 && (
-                  <div className="flex items-center justify-between">
-                    <Button
-                      variant="outline"
-                      onClick={() => setCurrentIframePage(prev => 
-                        prev > 0 ? prev - 1 : currentWork.iframes!.length - 1
-                      )}
-                      className="flex items-center gap-2"
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                      前のページ
-                    </Button>
-                    
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm text-gray-600">
-                        {currentIframePage + 1} / {currentWork.iframes.length}
-                      </span>
-                      
-                      {/* Page indicators */}
-                      <div className="flex gap-2">
-                        {currentWork.iframes.map((_, index) => (
-                          <button
-                            key={index}
-                            className={cn(
-                              "w-2 h-2 rounded-full transition-all",
-                              currentIframePage === index ? "bg-nordic-blue w-4" : "bg-nordic-gray/40"
-                            )}
-                            onClick={() => setCurrentIframePage(index)}
+                <Carousel 
+                  className="w-full" 
+                  opts={{
+                    loop: true,
+                    align: "start",
+                  }}
+                  setApi={setIframeEmblaApi}
+                >
+                  <CarouselContent>
+                    {currentWork.iframes?.map((iframe, index) => (
+                      <CarouselItem key={index}>
+                        <div className="p-1">
+                          <div 
+                            dangerouslySetInnerHTML={{ __html: iframe }}
+                            className="w-full"
+                            style={{
+                              minHeight: '500px'
+                            }}
                           />
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <Button
-                      variant="outline"
-                      onClick={() => setCurrentIframePage(prev => 
-                        prev < currentWork.iframes!.length - 1 ? prev + 1 : 0
-                      )}
-                      className="flex items-center gap-2"
-                    >
-                      次のページ
-                      <ChevronRight className="w-4 h-4" />
-                    </Button>
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-2 bg-white/80 hover:bg-white">
+                    <ChevronLeft className="w-5 h-5" />
+                  </CarouselPrevious>
+                  <CarouselNext className="right-2 bg-white/80 hover:bg-white">
+                    <ChevronRight className="w-5 h-5" />
+                  </CarouselNext>
+                </Carousel>
+                
+                {currentWork.iframes && currentWork.iframes.length > 1 && (
+                  <div className="flex justify-center mt-4 gap-2">
+                    {currentWork.iframes.map((_, index) => (
+                      <button
+                        key={index}
+                        className={cn(
+                          "w-2 h-2 rounded-full transition-all",
+                          iframeIndex === index ? "bg-nordic-blue w-4" : "bg-nordic-gray/40"
+                        )}
+                        onClick={() => {
+                          if (iframeEmblaApi) {
+                            iframeEmblaApi.scrollTo(index);
+                          }
+                        }}
+                      />
+                    ))}
                   </div>
                 )}
               </div>
