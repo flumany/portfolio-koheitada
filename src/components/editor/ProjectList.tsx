@@ -1,7 +1,6 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { ProjectWork } from '@/types/project';
 import { 
@@ -90,11 +89,15 @@ const ProjectList: React.FC = () => {
     }
   };
 
-  // Group projects by category in the correct order
-  const groupedProjects = categoryOrder.map(category => ({
-    category,
-    projects: projects.filter(project => project.category === category)
-  })).filter(group => group.projects.length > 0);
+  // Memoize grouped projects to ensure consistent updates
+  const groupedProjects = useMemo(() => {
+    return categoryOrder.map(category => ({
+      category,
+      projects: projects
+        .filter(project => project.category === category)
+        .sort((a, b) => (a.display_order || 0) - (b.display_order || 0))
+    })).filter(group => group.projects.length > 0);
+  }, [categoryOrder, projects]);
   
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
@@ -157,17 +160,14 @@ const ProjectList: React.FC = () => {
       const newOrder = categoryProjects.length;
       
       // Optimistic update: Update project category and order immediately
-      const updatedProject = { 
-        ...activeProject, 
-        category: targetCategory, 
-        display_order: newOrder 
-      };
+      const updatedProjects = projects.map(p => {
+        if (p.id === activeProject.id) {
+          return { ...p, category: targetCategory, display_order: newOrder };
+        }
+        return p;
+      });
       
-      const updatedProjects = projects.map(p => 
-        p.id === activeProject.id ? updatedProject : p
-      );
-      
-      // Update state immediately for instant visual feedback
+      console.log('Optimistic update - moving project to new category');
       setProjects(updatedProjects);
       
       try {
@@ -179,8 +179,8 @@ const ProjectList: React.FC = () => {
         });
       } catch (error) {
         // Revert on error
-        setProjects(projects);
         console.error('Error moving project:', error);
+        setProjects(projects);
         toast({
           title: "Error",
           description: "Failed to move project.",
@@ -213,15 +213,15 @@ const ProjectList: React.FC = () => {
     // Optimistic update: Update projects with new display_order immediately
     const updatedProjects = projects.map(project => {
       if (project.category === activeProject.category) {
-        const index = reorderedProjects.findIndex(p => p.id === project.id);
-        if (index !== -1) {
-          return { ...project, display_order: index };
+        const reorderedIndex = reorderedProjects.findIndex(p => p.id === project.id);
+        if (reorderedIndex !== -1) {
+          return { ...project, display_order: reorderedIndex };
         }
       }
       return project;
     });
     
-    // Update state immediately for instant visual feedback
+    console.log('Optimistic update - reordering within category');
     setProjects(updatedProjects);
 
     try {
@@ -234,8 +234,8 @@ const ProjectList: React.FC = () => {
       });
     } catch (error) {
       // Revert on error
-      setProjects(projects);
       console.error('Error updating project order:', error);
+      setProjects(projects);
       toast({
         title: "Error",
         description: "Failed to update project order.",
