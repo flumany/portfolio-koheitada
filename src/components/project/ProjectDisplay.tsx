@@ -7,6 +7,16 @@ import { ProjectWork } from '@/types/project';
 import { Skeleton } from "@/components/ui/skeleton";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { UseEmblaCarouselType } from 'embla-carousel-react';
 
 /**
  * 日本語は句読点のあと、英語はカンマ・セミコロン・コロンや主要前置詞/接続詞の前で改行。
@@ -68,6 +78,24 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   };
 
   const [activeTab, setActiveTab] = useState(getDefaultTab());
+  
+  const [iframeIndex, setIframeIndex] = useState(0);
+  const [iframeEmblaApi, setIframeEmblaApi] = useState<UseEmblaCarouselType[1] | null>(null);
+  
+  React.useEffect(() => {
+    if (!iframeEmblaApi) return;
+    
+    const onSelect = () => {
+      setIframeIndex(iframeEmblaApi.selectedScrollSnap());
+    };
+    
+    iframeEmblaApi.on('select', onSelect);
+    onSelect();
+    
+    return () => {
+      iframeEmblaApi.off('select', onSelect);
+    };
+  }, [iframeEmblaApi]);
   
   // 本文事前整形
   const formattedDescription = formatTextWithLineBreaks(currentWork.description || '');
@@ -154,18 +182,56 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
           
           {hasIframes && (
             <TabsContent value="web-embed" className="focus-visible:outline-none focus-visible:ring-0">
-              <div className="space-y-12">
-                {currentWork.iframes?.map((iframe, index) => (
-                  <div key={index} className="w-full">
-                    <div 
-                      dangerouslySetInnerHTML={{ __html: iframe }}
-                      className="w-full"
-                      style={{
-                        minHeight: '500px'
-                      }}
-                    />
+              <div className="relative">
+                <Carousel 
+                  className="w-full" 
+                  opts={{
+                    loop: true,
+                    align: "start",
+                  }}
+                  setApi={setIframeEmblaApi}
+                >
+                  <CarouselContent>
+                    {currentWork.iframes?.map((iframe, index) => (
+                      <CarouselItem key={index}>
+                        <div className="p-1">
+                          <div 
+                            dangerouslySetInnerHTML={{ __html: iframe }}
+                            className="w-full"
+                            style={{
+                              minHeight: '500px'
+                            }}
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-2 bg-white/80 hover:bg-white">
+                    <ChevronLeft className="w-5 h-5" />
+                  </CarouselPrevious>
+                  <CarouselNext className="right-2 bg-white/80 hover:bg-white">
+                    <ChevronRight className="w-5 h-5" />
+                  </CarouselNext>
+                </Carousel>
+                
+                {currentWork.iframes && currentWork.iframes.length > 1 && (
+                  <div className="flex justify-center mt-4 gap-2">
+                    {currentWork.iframes.map((_, index) => (
+                      <button
+                        key={index}
+                        className={cn(
+                          "w-2 h-2 rounded-full transition-all",
+                          iframeIndex === index ? "bg-nordic-blue w-4" : "bg-nordic-gray/40"
+                        )}
+                        onClick={() => {
+                          if (iframeEmblaApi) {
+                            iframeEmblaApi.scrollTo(index);
+                          }
+                        }}
+                      />
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
             </TabsContent>
           )}
