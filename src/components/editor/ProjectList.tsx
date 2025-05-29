@@ -113,7 +113,7 @@ const ProjectList: React.FC = () => {
       const newIndex = categoryOrder.indexOf(overId);
       const newCategoryOrder = arrayMove(categoryOrder, oldIndex, newIndex);
       
-      // Update state immediately for UI feedback
+      // Update state immediately for UI feedback (optimistic update)
       setCategoryOrder(newCategoryOrder);
       
       try {
@@ -156,17 +156,23 @@ const ProjectList: React.FC = () => {
       const categoryProjects = projects.filter(p => p.category === targetCategory);
       const newOrder = categoryProjects.length;
       
-      // Update project category and order immediately
-      const updatedProject = { ...activeProject, category: targetCategory, display_order: newOrder };
+      // Optimistic update: Update project category and order immediately
+      const updatedProject = { 
+        ...activeProject, 
+        category: targetCategory, 
+        display_order: newOrder 
+      };
+      
       const updatedProjects = projects.map(p => 
         p.id === activeProject.id ? updatedProject : p
       );
       
-      // Update state immediately
+      // Update state immediately for instant visual feedback
       setProjects(updatedProjects);
       
       try {
         await updateProjectOrderInCategory([...categoryProjects.map(p => p.id), activeProject.id]);
+        console.log('Project moved successfully');
         toast({
           title: "Success",
           description: "Project moved successfully."
@@ -204,7 +210,7 @@ const ProjectList: React.FC = () => {
     
     const reorderedProjects = arrayMove(categoryProjects, oldIndex, newIndex);
     
-    // Update projects with new display_order immediately
+    // Optimistic update: Update projects with new display_order immediately
     const updatedProjects = projects.map(project => {
       if (project.category === activeProject.category) {
         const index = reorderedProjects.findIndex(p => p.id === project.id);
@@ -215,12 +221,13 @@ const ProjectList: React.FC = () => {
       return project;
     });
     
-    // Update state immediately
+    // Update state immediately for instant visual feedback
     setProjects(updatedProjects);
 
     try {
       console.log('Saving project order:', reorderedProjects.map(p => p.id));
       await updateProjectOrderInCategory(reorderedProjects.map(p => p.id));
+      console.log('Project order saved successfully');
       toast({
         title: "Success",
         description: "Project order updated successfully."
@@ -248,7 +255,7 @@ const ProjectList: React.FC = () => {
         title: "Success",
         description: "Project deleted successfully."
       });
-      // Only reload after delete operation
+      // Reload projects after delete to ensure consistency
       loadProjectsAndCategories();
     } catch (error) {
       console.error('Error deleting project:', error);
@@ -261,23 +268,30 @@ const ProjectList: React.FC = () => {
   };
   
   const handleTogglePublish = async (id: string, currentStatus: boolean) => {
+    // Optimistic update: Update local state immediately
+    setProjects(prevProjects => 
+      prevProjects.map(project => 
+        project.id === id 
+          ? { ...project, published: !currentStatus }
+          : project
+      )
+    );
+    
     try {
       await togglePublishStatus(id, !currentStatus);
-      
-      // Update local state immediately instead of reloading
-      setProjects(prevProjects => 
-        prevProjects.map(project => 
-          project.id === id 
-            ? { ...project, published: !currentStatus }
-            : project
-        )
-      );
-      
       toast({
         title: "Success",
         description: `Project ${!currentStatus ? 'published' : 'unpublished'} successfully.`
       });
     } catch (error) {
+      // Revert on error
+      setProjects(prevProjects => 
+        prevProjects.map(project => 
+          project.id === id 
+            ? { ...project, published: currentStatus }
+            : project
+        )
+      );
       console.error('Error toggling publish status:', error);
       toast({
         title: "Error",

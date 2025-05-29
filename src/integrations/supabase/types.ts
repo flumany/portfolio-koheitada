@@ -133,7 +133,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      update_project_orders: {
+        Args: { project_ids: string[] }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
