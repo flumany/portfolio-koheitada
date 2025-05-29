@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "@/components/ui/use-toast";
@@ -41,15 +42,19 @@ const ProjectEditor: React.FC = () => {
     role: '',
     duration: '',
     challenge: '',
-    solution: ''
+    solution: '',
+    iframes: []
   });
 
   // 追加: 技術スタック入力用一時状態(string)
   const [technologiesInput, setTechnologiesInput] = useState('');
+  // 追加: iframe入力用一時状態(string)
+  const [iframesInput, setIframesInput] = useState('');
 
-  // プロジェクト読み込み時のみtechnologiesInputも文字列化して同期
+  // プロジェクト読み込み時のみtechnologiesInputとiframesInputも文字列化して同期
   useEffect(() => {
     setTechnologiesInput((project.technologies || []).join(', '));
+    setIframesInput((project.iframes || []).join(', '));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project.id]);
 
@@ -138,8 +143,13 @@ const ProjectEditor: React.FC = () => {
       
       let result: ProjectWork;
       
-      // 保存時のみtechnologiesInputを配列化して保持
+      // 保存時のみtechnologiesInputとiframesInputを配列化して保持
       const techArray = technologiesInput
+        .split(',')
+        .map(item => item.trim())
+        .filter(item => item);
+        
+      const iframeArray = iframesInput
         .split(',')
         .map(item => item.trim())
         .filter(item => item);
@@ -149,6 +159,7 @@ const ProjectEditor: React.FC = () => {
         result = await createProject({
           ...project,
           technologies: techArray,
+          iframes: iframeArray,
         } as Omit<ProjectWork, 'id' | 'created_at' | 'updated_at'>);
         toast({
           title: "Success",
@@ -161,6 +172,7 @@ const ProjectEditor: React.FC = () => {
         result = await updateProject(project.id!, {
           ...project,
           technologies: techArray,
+          iframes: iframeArray,
         });
         toast({
           title: "Success",
@@ -171,6 +183,7 @@ const ProjectEditor: React.FC = () => {
       // Update local state with the result
       setProject(result);
       setTechnologiesInput((result.technologies || []).join(', '));
+      setIframesInput((result.iframes || []).join(', '));
       
     } catch (error) {
       console.error('Failed to save project:', error);
@@ -443,6 +456,28 @@ const ProjectEditor: React.FC = () => {
                       placeholder="How did you solve these challenges?"
                       rows={4}
                     />
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>Interactive Prototypes</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="iframes">Iframe URLs (comma-separated)</Label>
+                    <Textarea 
+                      id="iframes"
+                      name="iframes"
+                      value={iframesInput}
+                      onChange={(e) => setIframesInput(e.target.value)}
+                      placeholder="https://example.com/prototype1, https://example.com/prototype2"
+                      rows={3}
+                    />
+                    <p className="text-sm text-muted-foreground">
+                      Add URLs of interactive prototypes (Figma, InVision, etc.) that will be embedded as iframes. The first URL will be used as the main preview.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
