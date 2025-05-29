@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "@/components/ui/use-toast";
@@ -123,9 +124,6 @@ const ProjectList: React.FC = () => {
           title: "Success",
           description: "Category order updated successfully."
         });
-        
-        // Reload to ensure consistency
-        await loadProjectsAndCategories();
       } catch (error) {
         console.error('Error updating category order:', error);
         // Revert optimistic update on error
@@ -172,7 +170,6 @@ const ProjectList: React.FC = () => {
           title: "Success",
           description: "Project moved successfully."
         });
-        await loadProjectsAndCategories();
       } catch (error) {
         setProjects(projects); // Revert on error
         console.error('Error moving project:', error);
@@ -205,11 +202,13 @@ const ProjectList: React.FC = () => {
     
     const reorderedProjects = arrayMove(categoryProjects, oldIndex, newIndex);
     
-    // Update the full projects array
+    // Update projects with new display_order
     const updatedProjects = projects.map(project => {
       if (project.category === activeProject.category) {
-        const newProject = reorderedProjects.find(p => p.id === project.id);
-        return newProject || project;
+        const index = reorderedProjects.findIndex(p => p.id === project.id);
+        if (index !== -1) {
+          return { ...project, display_order: index };
+        }
       }
       return project;
     });
@@ -223,7 +222,6 @@ const ProjectList: React.FC = () => {
         title: "Success",
         description: "Project order updated successfully."
       });
-      await loadProjectsAndCategories();
     } catch (error) {
       setProjects(projects); // Revert on error
       console.error('Error updating project order:', error);
