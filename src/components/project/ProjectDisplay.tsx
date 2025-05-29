@@ -52,14 +52,24 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   currentModels,
   loading
 }) => {
-  const [activeTab, setActiveTab] = useState('images');
-  
-  // Determine if there are valid 3D models to display
+  // iframesがある場合のデフォルトタブを決定
+  const hasIframes = Boolean(currentWork.iframes && currentWork.iframes.length > 0);
+  const hasImages = Boolean(currentImages.length > 0);
   const has3DModels = Boolean(
     currentModels.length > 0 || 
     (currentWork.modelUrl && is3DModelFormat(currentWork.modelUrl))
   );
+  
+  // デフォルトタブの優先順位: Web Embed > Images > 3D Model
+  const getDefaultTab = () => {
+    if (hasIframes) return 'web-embed';
+    if (hasImages) return 'images';
+    if (has3DModels) return '3d-model';
+    return 'images';
+  };
 
+  const [activeTab, setActiveTab] = useState(getDefaultTab());
+  
   // 本文事前整形
   const formattedDescription = formatTextWithLineBreaks(currentWork.description || '');
 
@@ -126,20 +136,48 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
       ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-3">
           <TabsList className="mb-7 bg-nordic-offwhite rounded-lg p-1 gap-2 border border-nordic-gray/30 shadow-none">
-            <TabsTrigger value="images" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">Images</TabsTrigger>
+            {hasIframes && (
+              <TabsTrigger value="web-embed" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
+                Web Embed
+              </TabsTrigger>
+            )}
+            {hasImages && (
+              <TabsTrigger value="images" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
+                Images
+              </TabsTrigger>
+            )}
             {has3DModels && (
               <TabsTrigger value="3d-model" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
                 3D Model
               </TabsTrigger>
             )}
           </TabsList>
-          <TabsContent value="images" className="focus-visible:outline-none focus-visible:ring-0">
-            <ProjectCarousel 
-              images={currentImages} 
-              iframes={currentWork.iframes || []}
-              title={currentWork.title} 
-            />
-          </TabsContent>
+          
+          {hasIframes && (
+            <TabsContent value="web-embed" className="focus-visible:outline-none focus-visible:ring-0">
+              <div className="space-y-6">
+                {currentWork.iframes?.map((iframe, index) => (
+                  <div key={index} className="w-full">
+                    <div 
+                      dangerouslySetInnerHTML={{ __html: iframe }}
+                      className="w-full flex justify-center"
+                    />
+                  </div>
+                ))}
+              </div>
+            </TabsContent>
+          )}
+          
+          {hasImages && (
+            <TabsContent value="images" className="focus-visible:outline-none focus-visible:ring-0">
+              <ProjectCarousel 
+                images={currentImages} 
+                iframes={[]}
+                title={currentWork.title} 
+              />
+            </TabsContent>
+          )}
+          
           {has3DModels && (
             <TabsContent value="3d-model" className="focus-visible:outline-none focus-visible:ring-0">
               <ModelViewer3D 
