@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getImageUrl } from '@/lib/supabase';
 import { Skeleton } from "@/components/ui/skeleton";
@@ -90,7 +91,7 @@ const Projects: React.FC = () => {
   const categories = ['all', ...new Set(projects.map(project => project.category))];
 
   // Group projects by category for display
-  const groupedProjects = () => {
+  const groupedProjects = useMemo(() => {
     if (filter !== 'all') {
       return [{ category: filter, projects: filteredProjects }];
     }
@@ -101,7 +102,7 @@ const Projects: React.FC = () => {
     })).filter(group => group.projects.length > 0);
     
     return grouped;
-  };
+  }, [filter, filteredProjects, categories, projects]);
 
   // Check if project has iframe as primary content
   const hasIframePreview = (project: ProjectWork) => {
@@ -175,32 +176,6 @@ const Projects: React.FC = () => {
     }
   };
 
-  const renderCategorySection = (category: string, categoryProjects: ProjectWork[]) => {
-    const scrollRef = useRef<HTMLDivElement>(null);
-    
-    return (
-      <div key={category} className="space-y-6">
-        <div className="text-center">
-          <h3 className="text-2xl font-medium mb-2 capitalize">
-            {category.replace('-', ' ')}
-          </h3>
-          <div className="w-12 h-0.5 bg-nordic-blue mx-auto" />
-        </div>
-        
-        <ScrollArea className="w-full whitespace-nowrap">
-          <div 
-            ref={scrollRef}
-            className="flex space-x-6 pb-4"
-            onWheel={(e) => handleWheel(e, scrollRef)}
-          >
-            {categoryProjects.map(renderProjectCard)}
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-      </div>
-    );
-  };
-
   return (
     <section id="projects" className="section bg-nordic-white">
       <div className="container-custom">
@@ -242,11 +217,17 @@ const Projects: React.FC = () => {
         {filter === 'all' ? (
           // Category-grouped display with horizontal scrolling
           <div className="space-y-16">
-            {groupedProjects().map((group) => 
-              renderCategorySection(group.category, group.projects)
-            )}
+            {groupedProjects.map((group) => (
+              <CategorySection 
+                key={group.category}
+                category={group.category}
+                projects={group.projects}
+                renderProjectCard={renderProjectCard}
+                handleWheel={handleWheel}
+              />
+            ))}
             
-            {groupedProjects().length === 0 && !loading && (
+            {groupedProjects.length === 0 && !loading && (
               <div className="text-center py-12">
                 <h3 className="text-xl font-medium mb-2">No projects found</h3>
                 <p className="text-nordic-dark/70">
@@ -258,7 +239,15 @@ const Projects: React.FC = () => {
         ) : (
           // Single category display with horizontal scrolling
           <div>
-            {renderCategorySection(filter, filteredProjects)}
+            {groupedProjects.map((group) => (
+              <CategorySection 
+                key={group.category}
+                category={group.category}
+                projects={group.projects}
+                renderProjectCard={renderProjectCard}
+                handleWheel={handleWheel}
+              />
+            ))}
             
             {filteredProjects.length === 0 && !loading && (
               <div className="text-center py-12">
@@ -272,6 +261,45 @@ const Projects: React.FC = () => {
         )}
       </div>
     </section>
+  );
+};
+
+// Separate component to handle the category section with its own ref
+interface CategorySectionProps {
+  category: string;
+  projects: ProjectWork[];
+  renderProjectCard: (project: ProjectWork) => JSX.Element;
+  handleWheel: (e: React.WheelEvent, scrollRef: React.RefObject<HTMLDivElement>) => void;
+}
+
+const CategorySection: React.FC<CategorySectionProps> = ({ 
+  category, 
+  projects, 
+  renderProjectCard, 
+  handleWheel 
+}) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-2xl font-medium mb-2 capitalize">
+          {category.replace('-', ' ')}
+        </h3>
+        <div className="w-12 h-0.5 bg-nordic-blue mx-auto" />
+      </div>
+      
+      <ScrollArea className="w-full whitespace-nowrap">
+        <div 
+          ref={scrollRef}
+          className="flex space-x-6 pb-4"
+          onWheel={(e) => handleWheel(e, scrollRef)}
+        >
+          {projects.map(renderProjectCard)}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+    </div>
   );
 };
 
