@@ -93,6 +93,12 @@ const Projects: React.FC = () => {
     return project.iframes && project.iframes.length > 0;
   };
 
+  // Extract src from HTML embed code
+  const extractSrcFromEmbed = (embedCode: string): string => {
+    const match = embedCode.match(/src=["']([^"']+)["']/);
+    return match ? match[1] : '';
+  };
+
   return (
     <section id="projects" className="section bg-nordic-white">
       <div className="container-custom">
@@ -142,12 +148,15 @@ const Projects: React.FC = () => {
                 {loading ? (
                   <Skeleton className="w-full h-full" />
                 ) : hasIframePreview(project) ? (
-                  // Display iframe preview
+                  // Display iframe preview from HTML embed code
                   <div className="relative w-full h-full">
-                    <iframe 
-                      src={project.iframes![0]} 
-                      className="w-full h-full object-cover border-0 pointer-events-none"
-                      title={`${project.title} - Preview`}
+                    <div 
+                      dangerouslySetInnerHTML={{ 
+                        __html: project.iframes![0].replace(
+                          /<iframe([^>]*)>/,
+                          '<iframe$1 class="w-full h-full object-cover border-0 pointer-events-none">'
+                        )
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <div className="bg-white/90 p-3 rounded-full">
@@ -155,7 +164,7 @@ const Projects: React.FC = () => {
                       </div>
                     </div>
                     <div className="absolute top-2 right-2 bg-nordic-blue text-white px-2 py-1 rounded text-xs font-medium">
-                      Prototype
+                      Web Embed
                     </div>
                   </div>
                 ) : (

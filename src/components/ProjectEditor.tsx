@@ -48,13 +48,13 @@ const ProjectEditor: React.FC = () => {
 
   // 追加: 技術スタック入力用一時状態(string)
   const [technologiesInput, setTechnologiesInput] = useState('');
-  // 追加: iframe入力用一時状態(string)
-  const [iframesInput, setIframesInput] = useState('');
+  // 追加: HTML埋め込みコード入力用一時状態(string)
+  const [embedCodeInput, setEmbedCodeInput] = useState('');
 
-  // プロジェクト読み込み時のみtechnologiesInputとiframesInputも文字列化して同期
+  // プロジェクト読み込み時のみtechnologiesInputとembedCodeInputも文字列化して同期
   useEffect(() => {
     setTechnologiesInput((project.technologies || []).join(', '));
-    setIframesInput((project.iframes || []).join(', '));
+    setEmbedCodeInput((project.iframes || []).join('\n\n'));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project.id]);
 
@@ -143,14 +143,14 @@ const ProjectEditor: React.FC = () => {
       
       let result: ProjectWork;
       
-      // 保存時のみtechnologiesInputとiframesInputを配列化して保持
+      // 保存時のみtechnologiesInputとembedCodeInputを配列化して保持
       const techArray = technologiesInput
         .split(',')
         .map(item => item.trim())
         .filter(item => item);
         
-      const iframeArray = iframesInput
-        .split(',')
+      const embedArray = embedCodeInput
+        .split('\n\n')
         .map(item => item.trim())
         .filter(item => item);
       
@@ -159,7 +159,7 @@ const ProjectEditor: React.FC = () => {
         result = await createProject({
           ...project,
           technologies: techArray,
-          iframes: iframeArray,
+          iframes: embedArray,
         } as Omit<ProjectWork, 'id' | 'created_at' | 'updated_at'>);
         toast({
           title: "Success",
@@ -172,7 +172,7 @@ const ProjectEditor: React.FC = () => {
         result = await updateProject(project.id!, {
           ...project,
           technologies: techArray,
-          iframes: iframeArray,
+          iframes: embedArray,
         });
         toast({
           title: "Success",
@@ -183,7 +183,7 @@ const ProjectEditor: React.FC = () => {
       // Update local state with the result
       setProject(result);
       setTechnologiesInput((result.technologies || []).join(', '));
-      setIframesInput((result.iframes || []).join(', '));
+      setEmbedCodeInput((result.iframes || []).join('\n\n'));
       
     } catch (error) {
       console.error('Failed to save project:', error);
@@ -462,21 +462,24 @@ const ProjectEditor: React.FC = () => {
               
               <Card>
                 <CardHeader>
-                  <CardTitle>Interactive Prototypes</CardTitle>
+                  <CardTitle>Web Embeds</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="iframes">Iframe URLs (comma-separated)</Label>
+                    <Label htmlFor="embedCode">HTML Embed Code</Label>
                     <Textarea 
-                      id="iframes"
-                      name="iframes"
-                      value={iframesInput}
-                      onChange={(e) => setIframesInput(e.target.value)}
-                      placeholder="https://example.com/prototype1, https://example.com/prototype2"
-                      rows={3}
+                      id="embedCode"
+                      name="embedCode"
+                      value={embedCodeInput}
+                      onChange={(e) => setEmbedCodeInput(e.target.value)}
+                      placeholder='<iframe src="https://example.com/prototype" width="800" height="600"></iframe>
+
+<iframe src="https://figma.com/embed?embed_host=share&url=..." width="800" height="450"></iframe>'
+                      rows={8}
+                      className="font-mono text-sm"
                     />
                     <p className="text-sm text-muted-foreground">
-                      Add URLs of interactive prototypes (Figma, InVision, etc.) that will be embedded as iframes. The first URL will be used as the main preview.
+                      Add HTML embed codes for interactive prototypes (Figma, InVision, CodePen, etc.). Separate multiple embeds with two line breaks. The first embed will be used as the main preview in the projects grid.
                     </p>
                   </div>
                 </CardContent>
