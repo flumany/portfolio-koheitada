@@ -155,12 +155,15 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
           
           {hasIframes && (
             <TabsContent value="web-embed" className="focus-visible:outline-none focus-visible:ring-0">
-              <div className="space-y-6">
+              <div className="space-y-12">
                 {currentWork.iframes?.map((iframe, index) => (
                   <div key={index} className="w-full">
                     <div 
                       dangerouslySetInnerHTML={{ __html: iframe }}
-                      className="w-full flex justify-center"
+                      className="w-full flex justify-center overflow-x-auto"
+                      style={{
+                        minHeight: '400px'
+                      }}
                     />
                   </div>
                 ))}
