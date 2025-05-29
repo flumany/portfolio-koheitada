@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectCarousel from './ProjectCarousel';
@@ -155,16 +154,14 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
           
           {hasIframes && (
             <TabsContent value="web-embed" className="focus-visible:outline-none focus-visible:ring-0">
-              <div className="space-y-8">
+              <div className="space-y-12">
                 {currentWork.iframes?.map((iframe, index) => (
-                  <div key={index} className="w-full overflow-x-auto">
+                  <div key={index} className="w-full">
                     <div 
                       dangerouslySetInnerHTML={{ __html: iframe }}
-                      className="flex justify-center"
+                      className="w-full"
                       style={{
-                        minHeight: '500px',
-                        width: 'max-content',
-                        minWidth: '100%'
+                        minHeight: '500px'
                       }}
                     />
                   </div>
