@@ -193,19 +193,9 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
           {hasIframes && (
             <TabsContent value="web-embed" className="focus-visible:outline-none focus-visible:ring-0">
               <div className="relative">
-                {/* Page Display */}
-                <div className="min-h-[500px] flex items-center justify-center">
-                  {parsedPages[currentPage] && (
-                    <div 
-                      dangerouslySetInnerHTML={{ __html: parsedPages[currentPage] }}
-                      className="w-full flex justify-center"
-                    />
-                  )}
-                </div>
-
-                {/* Navigation Controls */}
+                {/* Navigation Controls at Top */}
                 {parsedPages.length > 1 && (
-                  <div className="mt-6">
+                  <div className="mb-6">
                     {/* Previous/Next Buttons */}
                     <div className="flex justify-between items-center mb-4">
                       <Button
@@ -250,6 +240,16 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
                     </div>
                   </div>
                 )}
+
+                {/* Page Display */}
+                <div className="min-h-[500px] flex items-center justify-center">
+                  {parsedPages[currentPage] && (
+                    <div 
+                      dangerouslySetInnerHTML={{ __html: parsedPages[currentPage] }}
+                      className="w-full flex justify-center"
+                    />
+                  )}
+                </div>
               </div>
             </TabsContent>
           )}
