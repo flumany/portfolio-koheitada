@@ -29,28 +29,35 @@ const SortableProjectRow: React.FC<SortableProjectRowProps> = ({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: project.id });
+  } = useSortable({ 
+    id: project.id,
+    data: {
+      type: 'project',
+      project
+    }
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
+    backgroundColor: isDragging ? '#f3f4f6' : 'transparent',
   };
 
   return (
     <TableRow 
       ref={setNodeRef} 
       style={style}
-      className={isDragging ? 'bg-muted/50' : ''}
+      className={`${isDragging ? 'shadow-lg border-2 border-blue-200' : ''} hover:bg-gray-50`}
     >
       <TableCell>
         <div className="flex items-center gap-2">
           <div 
             {...attributes} 
             {...listeners}
-            className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
+            className="cursor-grab active:cursor-grabbing p-1 hover:bg-gray-200 rounded opacity-60 hover:opacity-100"
           >
-            <GripVertical className="h-4 w-4 text-muted-foreground" />
+            <GripVertical className="h-4 w-4 text-gray-400" />
           </div>
           <span className="font-medium">{project.title}</span>
         </div>

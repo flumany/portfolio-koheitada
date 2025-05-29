@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "@/components/ui/use-toast";
@@ -20,7 +19,8 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent
+  DragEndEvent,
+  DragOverEvent
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -37,7 +37,11 @@ const ProjectList: React.FC = () => {
   const [categoryOrder, setCategoryOrder] = useState<string[]>([]);
   
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -50,21 +54,28 @@ const ProjectList: React.FC = () => {
   const loadProjectsAndCategories = async () => {
     setLoading(true);
     try {
+      console.log('Loading projects and categories...');
       const [projectsData, categoryOrderData] = await Promise.all([
         fetchProjectsWithOrder(),
         getCategoryOrder()
       ]);
       
+      console.log('Projects loaded:', projectsData);
+      console.log('Category order loaded:', categoryOrderData);
+      
       setProjects(projectsData);
       
       // Get current categories from projects
       const currentCategories = [...new Set(projectsData.map(p => p.category))];
+      console.log('Current categories:', currentCategories);
+      
       // Merge with saved order, putting new categories at the end
       const mergedOrder = [
         ...categoryOrderData.filter(cat => currentCategories.includes(cat)),
         ...currentCategories.filter(cat => !categoryOrderData.includes(cat))
       ];
       
+      console.log('Merged category order:', mergedOrder);
       setCategoryOrder(mergedOrder);
     } catch (error) {
       console.error('Error loading projects:', error);
@@ -92,8 +103,11 @@ const ProjectList: React.FC = () => {
     const activeId = active.id as string;
     const overId = over.id as string;
 
+    console.log('Drag ended:', { activeId, overId });
+
     // Check if we're dragging categories
     if (categoryOrder.includes(activeId) && categoryOrder.includes(overId)) {
+      console.log('Reordering categories');
       const oldIndex = categoryOrder.indexOf(activeId);
       const newIndex = categoryOrder.indexOf(overId);
       const newCategoryOrder = arrayMove(categoryOrder, oldIndex, newIndex);
@@ -122,14 +136,64 @@ const ProjectList: React.FC = () => {
     const activeProject = projects.find(p => p.id === activeId);
     const overProject = projects.find(p => p.id === overId);
     
-    if (!activeProject || !overProject) return;
+    if (!activeProject) {
+      console.log('Active project not found');
+      return;
+    }
 
-    // Only allow reordering within the same category
-    if (activeProject.category !== overProject.category) return;
+    // If dropping over a category, move to end of that category
+    if (categoryOrder.includes(overId)) {
+      console.log('Moving project to category:', overId);
+      const targetCategory = overId;
+      
+      if (activeProject.category === targetCategory) return; // Same category, no change needed
+      
+      const categoryProjects = projects.filter(p => p.category === targetCategory);
+      const newOrder = categoryProjects.length;
+      
+      // Update project category and order
+      const updatedProject = { ...activeProject, category: targetCategory, display_order: newOrder };
+      const updatedProjects = projects.map(p => 
+        p.id === activeProject.id ? updatedProject : p
+      );
+      
+      setProjects(updatedProjects);
+      
+      try {
+        await updateProjectOrderInCategory([...categoryProjects.map(p => p.id), activeProject.id]);
+        toast({
+          title: "Success",
+          description: "Project moved successfully."
+        });
+      } catch (error) {
+        setProjects(projects); // Revert on error
+        console.error('Error moving project:', error);
+        toast({
+          title: "Error",
+          description: "Failed to move project.",
+          variant: "destructive"
+        });
+      }
+      return;
+    }
 
+    if (!overProject) {
+      console.log('Over project not found');
+      return;
+    }
+
+    // Only allow reordering within the same category for project-to-project drops
+    if (activeProject.category !== overProject.category) {
+      console.log('Cannot reorder projects across categories');
+      return;
+    }
+
+    console.log('Reordering projects within category:', activeProject.category);
     const categoryProjects = projects.filter(p => p.category === activeProject.category);
     const oldIndex = categoryProjects.findIndex(p => p.id === activeId);
     const newIndex = categoryProjects.findIndex(p => p.id === overId);
+    
+    if (oldIndex === -1 || newIndex === -1) return;
     
     const reorderedProjects = arrayMove(categoryProjects, oldIndex, newIndex);
     
@@ -243,7 +307,7 @@ const ProjectList: React.FC = () => {
           onDragEnd={handleDragEnd}
         >
           <SortableContext 
-            items={[...categoryOrder, ...projects.map(p => p.id)]}
+            items={categoryOrder}
             strategy={verticalListSortingStrategy}
           >
             <div className="space-y-8">

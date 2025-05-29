@@ -9,6 +9,21 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      category_order: {
+        Row: {
+          categories: string[] | null
+          id: number
+        }
+        Insert: {
+          categories?: string[] | null
+          id?: number
+        }
+        Update: {
+          categories?: string[] | null
+          id?: number
+        }
+        Relationships: []
+      }
       project_media: {
         Row: {
           created_at: string
@@ -56,6 +71,7 @@ export type Database = {
           challenge: string | null
           created_at: string
           description: string
+          display_order: number | null
           duration: string | null
           id: string
           iframes: string[] | null
@@ -75,6 +91,7 @@ export type Database = {
           challenge?: string | null
           created_at?: string
           description: string
+          display_order?: number | null
           duration?: string | null
           id?: string
           iframes?: string[] | null
@@ -94,6 +111,7 @@ export type Database = {
           challenge?: string | null
           created_at?: string
           description?: string
+          display_order?: number | null
           duration?: string | null
           id?: string
           iframes?: string[] | null

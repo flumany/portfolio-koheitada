@@ -12,6 +12,10 @@ import {
 import { ProjectWork } from '@/types/project';
 import SortableProjectRow from './SortableProjectRow';
 import { GripVertical } from 'lucide-react';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 interface CategoryGroupProps {
   category: string;
@@ -74,16 +78,21 @@ const CategoryGroup: React.FC<CategoryGroupProps> = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {projects.map((project) => (
-            <SortableProjectRow
-              key={project.id}
-              project={project}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              onTogglePublish={onTogglePublish}
-              onView={onView}
-            />
-          ))}
+          <SortableContext 
+            items={projects.map(p => p.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {projects.map((project) => (
+              <SortableProjectRow
+                key={project.id}
+                project={project}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onTogglePublish={onTogglePublish}
+                onView={onView}
+              />
+            ))}
+          </SortableContext>
         </TableBody>
       </Table>
     </div>
