@@ -1,4 +1,3 @@
-
 import { supabase } from '@/lib/supabase';
 import { ProjectWork, ProjectMedia } from '@/types/project';
 
@@ -179,4 +178,24 @@ export async function deleteProjectMedia(mediaId: string) {
   }
 
   return true;
+}
+
+// Update project order
+export async function updateProjectOrder(projectIds: string[]) {
+  // For now, we'll update each project with its new order
+  // In a real implementation, you might want to add an 'order' column to your database
+  const updates = projectIds.map((id, index) => 
+    supabase
+      .from('projects')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', id)
+  );
+
+  try {
+    await Promise.all(updates);
+    return true;
+  } catch (error) {
+    console.error('Error updating project order:', error);
+    throw error;
+  }
 }
