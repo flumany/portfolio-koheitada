@@ -1,4 +1,3 @@
-
 import { supabase } from '@/lib/supabase';
 import { ProjectWork, ProjectMedia } from '@/types/project';
 
@@ -204,31 +203,49 @@ export async function updateProjectOrder(projectIds: string[]) {
 // Update project order within a category
 export async function updateProjectOrderInCategory(projectIds: string[]) {
   try {
-    // Update each project with its new display_order
-    const updates = projectIds.map((id, index) => 
-      supabase
-        .from('projects')
-        .update({ 
-          display_order: index,
-          updated_at: new Date().toISOString() 
-        })
-        .eq('id', id)
-    );
-
-    const results = await Promise.all(updates);
+    console.log('Updating project order with IDs:', projectIds);
     
-    // Check if any updates failed
-    for (const result of results) {
-      if (result.error) {
-        console.error('Error in updateProjectOrderInCategory:', result.error);
-        throw result.error;
-      }
+    // Update each project with its new display_order using a transaction
+    const { error } = await supabase.rpc('update_project_orders', {
+      project_ids: projectIds
+    });
+
+    if (error) {
+      console.error('Error in updateProjectOrderInCategory RPC:', error);
+      throw error;
     }
     
+    console.log('Project order updated successfully');
     return true;
   } catch (error) {
     console.error('Error updating project order:', error);
-    throw error;
+    
+    // Fallback to individual updates if RPC fails
+    try {
+      console.log('Trying fallback individual updates...');
+      const updates = [];
+      
+      for (let i = 0; i < projectIds.length; i++) {
+        const { error: updateError } = await supabase
+          .from('projects')
+          .update({ 
+            display_order: i,
+            updated_at: new Date().toISOString() 
+          })
+          .eq('id', projectIds[i]);
+          
+        if (updateError) {
+          console.error(`Error updating project ${projectIds[i]}:`, updateError);
+          throw updateError;
+        }
+      }
+      
+      console.log('Fallback updates completed successfully');
+      return true;
+    } catch (fallbackError) {
+      console.error('Fallback update also failed:', fallbackError);
+      throw fallbackError;
+    }
   }
 }
 
