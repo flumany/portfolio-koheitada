@@ -1,3 +1,4 @@
+
 import { supabase } from '@/lib/supabase';
 import { ProjectWork, ProjectMedia } from '@/types/project';
 
@@ -202,18 +203,28 @@ export async function updateProjectOrder(projectIds: string[]) {
 
 // Update project order within a category
 export async function updateProjectOrderInCategory(projectIds: string[]) {
-  const updates = projectIds.map((id, index) => 
-    supabase
-      .from('projects')
-      .update({ 
-        display_order: index,
-        updated_at: new Date().toISOString() 
-      })
-      .eq('id', id)
-  );
-
   try {
-    await Promise.all(updates);
+    // Update each project with its new display_order
+    const updates = projectIds.map((id, index) => 
+      supabase
+        .from('projects')
+        .update({ 
+          display_order: index,
+          updated_at: new Date().toISOString() 
+        })
+        .eq('id', id)
+    );
+
+    const results = await Promise.all(updates);
+    
+    // Check if any updates failed
+    for (const result of results) {
+      if (result.error) {
+        console.error('Error in updateProjectOrderInCategory:', result.error);
+        throw result.error;
+      }
+    }
+    
     return true;
   } catch (error) {
     console.error('Error updating project order:', error);
@@ -227,9 +238,11 @@ export async function getCategoryOrder(): Promise<string[]> {
     const { data, error } = await supabase
       .from('category_order')
       .select('categories')
+      .eq('id', 1)
       .single();
     
     if (error && error.code !== 'PGRST116') { // PGRST116 is "not found"
+      console.error('Error fetching category order:', error);
       throw error;
     }
     
@@ -242,16 +255,22 @@ export async function getCategoryOrder(): Promise<string[]> {
 
 export async function updateCategoryOrder(categories: string[]): Promise<void> {
   try {
-    const { error } = await supabase
+    console.log('Updating category order:', categories);
+    
+    const { data, error } = await supabase
       .from('category_order')
       .upsert({ 
-        id: 1, // Use a fixed ID since we only need one row
+        id: 1,
         categories 
-      });
+      })
+      .select();
     
     if (error) {
+      console.error('Error updating category order:', error);
       throw error;
     }
+    
+    console.log('Category order updated successfully:', data);
   } catch (error) {
     console.error('Error updating category order:', error);
     throw error;

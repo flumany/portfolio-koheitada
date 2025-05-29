@@ -112,17 +112,24 @@ const ProjectList: React.FC = () => {
       const newIndex = categoryOrder.indexOf(overId);
       const newCategoryOrder = arrayMove(categoryOrder, oldIndex, newIndex);
       
+      // Optimistic update
       setCategoryOrder(newCategoryOrder);
       
       try {
+        console.log('Saving new category order:', newCategoryOrder);
         await updateCategoryOrder(newCategoryOrder);
+        console.log('Category order saved successfully');
         toast({
           title: "Success",
           description: "Category order updated successfully."
         });
+        
+        // Reload to ensure consistency
+        await loadProjectsAndCategories();
       } catch (error) {
-        setCategoryOrder(categoryOrder); // Revert on error
         console.error('Error updating category order:', error);
+        // Revert optimistic update on error
+        setCategoryOrder(categoryOrder);
         toast({
           title: "Error",
           description: "Failed to update category order.",
@@ -165,6 +172,7 @@ const ProjectList: React.FC = () => {
           title: "Success",
           description: "Project moved successfully."
         });
+        await loadProjectsAndCategories();
       } catch (error) {
         setProjects(projects); // Revert on error
         console.error('Error moving project:', error);
@@ -209,11 +217,13 @@ const ProjectList: React.FC = () => {
     setProjects(updatedProjects);
 
     try {
+      console.log('Saving project order:', reorderedProjects.map(p => p.id));
       await updateProjectOrderInCategory(reorderedProjects.map(p => p.id));
       toast({
         title: "Success",
         description: "Project order updated successfully."
       });
+      await loadProjectsAndCategories();
     } catch (error) {
       setProjects(projects); // Revert on error
       console.error('Error updating project order:', error);
