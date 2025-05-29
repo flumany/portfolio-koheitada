@@ -1,9 +1,15 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getImageUrl } from '@/lib/supabase';
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { fetchPublishedProjects, fetchProjectMedia } from '@/services/projectService';
 import { ProjectWork, ProjectMedia } from '@/types/project';
 import { Monitor, Image as ImageIcon } from 'lucide-react';
@@ -110,7 +116,7 @@ const Projects: React.FC = () => {
   const renderProjectCard = (project: ProjectWork) => (
     <div 
       key={project.id} 
-      className="project-card group cursor-pointer"
+      className="project-card group cursor-pointer flex-shrink-0 w-80"
       onClick={() => handleProjectClick(project.slug)}
     >
       <div className="aspect-[4/3] relative overflow-hidden">
@@ -206,7 +212,7 @@ const Projects: React.FC = () => {
         )}
 
         {filter === 'all' ? (
-          // Category-grouped display
+          // Category-grouped display with horizontal scrolling
           <div className="space-y-16">
             {groupedProjects().map((group) => (
               <div key={group.category} className="space-y-6">
@@ -216,9 +222,30 @@ const Projects: React.FC = () => {
                   </h3>
                   <div className="w-12 h-0.5 bg-nordic-blue mx-auto" />
                 </div>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {group.projects.map(renderProjectCard)}
-                </div>
+                
+                {group.projects.length > 3 ? (
+                  <Carousel
+                    opts={{
+                      align: "start",
+                      slidesToScroll: 1,
+                    }}
+                    className="w-full"
+                  >
+                    <CarouselContent className="-ml-2 md:-ml-4">
+                      {group.projects.map((project) => (
+                        <CarouselItem key={project.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
+                          {renderProjectCard(project)}
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="hidden sm:flex" />
+                    <CarouselNext className="hidden sm:flex" />
+                  </Carousel>
+                ) : (
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+                    {group.projects.map(renderProjectCard)}
+                  </div>
+                )}
               </div>
             ))}
             
@@ -232,12 +259,34 @@ const Projects: React.FC = () => {
             )}
           </div>
         ) : (
-          // Single category display
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map(renderProjectCard)}
+          // Single category display with horizontal scrolling if needed
+          <div>
+            {filteredProjects.length > 3 ? (
+              <Carousel
+                opts={{
+                  align: "start",
+                  slidesToScroll: 1,
+                }}
+                className="w-full"
+              >
+                <CarouselContent className="-ml-2 md:-ml-4">
+                  {filteredProjects.map((project) => (
+                    <CarouselItem key={project.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
+                      {renderProjectCard(project)}
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="hidden sm:flex" />
+                <CarouselNext className="hidden sm:flex" />
+              </Carousel>
+            ) : (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+                {filteredProjects.map(renderProjectCard)}
+              </div>
+            )}
             
             {filteredProjects.length === 0 && !loading && (
-              <div className="col-span-3 text-center py-12">
+              <div className="text-center py-12">
                 <h3 className="text-xl font-medium mb-2">No projects found</h3>
                 <p className="text-nordic-dark/70">
                   Try selecting a different category
