@@ -1,4 +1,3 @@
-
 export interface ProjectWork {
   id: string;
   title: string;
@@ -17,6 +16,7 @@ export interface ProjectWork {
   updated_at?: string;
   modelUrl?: string;
   iframes?: string[];
+  display_order?: number;
 }
 
 export interface ProjectMedia {
