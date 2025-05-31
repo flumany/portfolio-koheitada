@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectCarousel from './ProjectCarousel';
@@ -71,6 +70,9 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   
   // 本文事前整形
   const formattedDescription = formatTextWithLineBreaks(currentWork.description || '');
+
+  console.log('ProjectDisplay - hasWebEmbeds:', hasWebEmbeds);
+  console.log('ProjectDisplay - iframes:', currentWork.iframes);
 
   return (
     <div className="bg-white rounded-2xl p-8 shadow-md mb-8 border border-nordic-gray/30">
