@@ -8,6 +8,9 @@ import { ProjectWork } from '@/types/project';
 import { Skeleton } from "@/components/ui/skeleton";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 /**
  * 日本語は句読点のあと、英語はカンマ・セミコロン・コロンや主要前置詞/接続詞の前で改行。
@@ -39,6 +42,62 @@ function formatTextWithLineBreaks(text: string): string {
   return formatted;
 }
 
+/**
+ * HTMLコンテンツを個別のiframe/embed要素に分割してページごとに配列にする
+ */
+function parseIframeContent(htmlContent: string): string[] {
+  if (!htmlContent) return [];
+  
+  console.log('Original iframe content:', htmlContent);
+  
+  // まず、YouTube URLを自動的にiframeタグに変換
+  let processedContent = htmlContent;
+  
+  // YouTube URLパターンをチェック
+  const youtubeRegex = /(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#\s<>"']+))/g;
+  processedContent = processedContent.replace(youtubeRegex, (match, fullUrl, videoId) => {
+    console.log('Converting YouTube URL:', fullUrl, 'Video ID:', videoId);
+    return `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+  });
+  
+  console.log('Processed content after YouTube conversion:', processedContent);
+  
+  // iframe、embed、object要素を抽出（改善版）
+  const iframeRegex = /<iframe[^>]*>.*?<\/iframe>/gis;
+  const embedRegex = /<embed[^>]*\/?>/gi;
+  const objectRegex = /<object[^>]*>.*?<\/object>/gis;
+  
+  const iframes = processedContent.match(iframeRegex) || [];
+  const embeds = processedContent.match(embedRegex) || [];
+  const objects = processedContent.match(objectRegex) || [];
+  
+  const allEmbeds = [...iframes, ...embeds, ...objects];
+  
+  console.log('Found embeds:', allEmbeds);
+  
+  if (allEmbeds.length > 0) {
+    return allEmbeds.map(embed => {
+      // YouTube iframeの場合、必要な属性を確保
+      if (embed.includes('youtube.com/embed')) {
+        return embed.replace(
+          /<iframe([^>]*?)>/i, 
+          '<iframe$1 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>'
+        );
+      }
+      return embed;
+    });
+  }
+  
+  // 埋め込み要素が見つからない場合は、改行または連続する空白で分割
+  const lines = processedContent
+    .split(/\n+|\s{2,}/)
+    .map(line => line.trim())
+    .filter(line => line && line.length > 10); // 短すぎる文字列は除外
+  
+  console.log('Fallback to lines:', lines);
+  return lines;
+}
+
 interface ProjectDisplayProps {
   currentWork: ProjectWork;
   currentImages: string[];
@@ -52,23 +111,49 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   currentModels,
   loading
 }) => {
+  // iframesコンテンツを解析してページごとに分割
+  const parsedPages = currentWork.iframes && currentWork.iframes.length > 0
+    ? currentWork.iframes.flatMap(iframe => parseIframeContent(iframe))
+    : [];
+
+  console.log('Parsed pages:', parsedPages);
+
+  const hasIframes = Boolean(parsedPages.length > 0);
   const hasImages = Boolean(currentImages.length > 0);
   const has3DModels = Boolean(
     currentModels.length > 0 || 
     (currentWork.modelUrl && is3DModelFormat(currentWork.modelUrl))
   );
   
-  // デフォルトタブの優先順位: Images > 3D Model
+  // デフォルトタブの優先順位: Web Embed > Images > 3D Model
   const getDefaultTab = () => {
+    if (hasIframes) return 'web-embed';
     if (hasImages) return 'images';
     if (has3DModels) return '3d-model';
     return 'images';
   };
 
   const [activeTab, setActiveTab] = useState(getDefaultTab());
+  const [currentPage, setCurrentPage] = useState(0);
   
   // 本文事前整形
   const formattedDescription = formatTextWithLineBreaks(currentWork.description || '');
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < parsedPages.length - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPage = (pageIndex: number) => {
+    setCurrentPage(pageIndex);
+  };
 
   return (
     <div className="bg-white rounded-2xl p-8 shadow-md mb-8 border border-nordic-gray/30">
@@ -135,6 +220,11 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
       ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-3">
           <TabsList className="mb-7 bg-nordic-offwhite rounded-lg p-1 gap-2 border border-nordic-gray/30 shadow-none">
+            {hasIframes && (
+              <TabsTrigger value="web-embed" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
+                Web Embed
+              </TabsTrigger>
+            )}
             {hasImages && (
               <TabsTrigger value="images" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
                 Images
@@ -146,6 +236,79 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
               </TabsTrigger>
             )}
           </TabsList>
+          
+          {hasIframes && (
+            <TabsContent value="web-embed" className="focus-visible:outline-none focus-visible:ring-0">
+              <div className="relative">
+                {/* Navigation Controls at Top */}
+                {parsedPages.length > 1 && (
+                  <div className="mb-6">
+                    {/* Previous/Next Buttons */}
+                    <div className="flex justify-between items-center mb-4">
+                      <Button
+                        variant="outline"
+                        onClick={handlePrevPage}
+                        disabled={currentPage === 0}
+                        className="flex items-center gap-2"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                        Previous
+                      </Button>
+                      
+                      <span className="text-sm text-gray-600">
+                        Page {currentPage + 1} of {parsedPages.length}
+                      </span>
+                      
+                      <Button
+                        variant="outline"
+                        onClick={handleNextPage}
+                        disabled={currentPage === parsedPages.length - 1}
+                        className="flex items-center gap-2"
+                      >
+                        Next
+                        <ChevronRight className="w-4 h-4" />
+                      </Button>
+                    </div>
+
+                    {/* Page Indicators */}
+                    <div className="flex justify-center gap-2">
+                      {parsedPages.map((_, index) => (
+                        <button
+                          key={index}
+                          className={cn(
+                            "w-3 h-3 rounded-full transition-all cursor-pointer",
+                            currentPage === index 
+                              ? "bg-nordic-blue w-6" 
+                              : "bg-nordic-gray/40 hover:bg-nordic-gray/60"
+                          )}
+                          onClick={() => goToPage(index)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Page Display */}
+                <div className="min-h-[400px] flex items-center justify-center bg-gray-50 rounded-lg p-4">
+                  {parsedPages[currentPage] ? (
+                    <div 
+                      dangerouslySetInnerHTML={{ __html: parsedPages[currentPage] }}
+                      className="w-full flex justify-center [&_iframe]:w-full [&_iframe]:max-w-4xl [&_iframe]:h-[315px] [&_iframe]:md:h-[400px] [&_iframe]:lg:h-[500px] [&_iframe]:rounded-lg [&_iframe]:shadow-lg"
+                    />
+                  ) : (
+                    <div className="text-gray-500 text-center">
+                      <p>埋め込みコンテンツが見つかりません</p>
+                      <p className="text-sm mt-2">
+                        iframeタグを2つの改行で区切って入力してください：<br/>
+                        例：&lt;iframe src="..."&gt;&lt;/iframe&gt;<br/><br/>
+                        &lt;iframe src="..."&gt;&lt;/iframe&gt;
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </TabsContent>
+          )}
           
           {hasImages && (
             <TabsContent value="images" className="focus-visible:outline-none focus-visible:ring-0">
