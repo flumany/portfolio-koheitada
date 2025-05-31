@@ -43,48 +43,55 @@ function formatTextWithLineBreaks(text: string): string {
 }
 
 /**
- * YouTubeのURLをembedURLに変換
- */
-function convertYouTubeUrl(url: string): string {
-  const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/;
-  const match = url.match(regex);
-  if (match) {
-    return `https://www.youtube.com/embed/${match[1]}`;
-  }
-  return url;
-}
-
-/**
  * HTMLコンテンツを個別のiframe/embed要素に分割してページごとに配列にする
  */
 function parseIframeContent(htmlContent: string): string[] {
   if (!htmlContent) return [];
   
-  // YouTube URLの自動変換
-  let processedContent = htmlContent.replace(
-    /(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#\s]+))/g,
-    '<iframe width="800" height="450" src="https://www.youtube.com/embed/$2" frameborder="0" allowfullscreen></iframe>'
-  );
+  console.log('Original iframe content:', htmlContent);
   
-  // iframe、embed、object、divタグで囲まれた要素を抽出
-  const elementRegex = /<(?:iframe|embed|object|div)[^>]*>[\s\S]*?<\/(?:iframe|embed|object|div)>/gi;
-  const matches = processedContent.match(elementRegex);
+  // まず、YouTube URLを自動的にiframeタグに変換
+  let processedContent = htmlContent;
   
-  if (matches) {
-    return matches.map(match => {
-      // YouTube iframeの場合、適切な属性を確保
-      if (match.includes('youtube.com/embed')) {
-        return match.replace(
+  // YouTube URLパターンをチェック
+  const youtubeRegex = /(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#\s<>"']+))/g;
+  processedContent = processedContent.replace(youtubeRegex, (match, fullUrl, videoId) => {
+    console.log('Converting YouTube URL:', fullUrl, 'Video ID:', videoId);
+    return `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+  });
+  
+  console.log('Processed content after YouTube conversion:', processedContent);
+  
+  // iframe、embed、object要素を抽出
+  const iframeRegex = /<iframe[^>]*>.*?<\/iframe>/gis;
+  const embedRegex = /<embed[^>]*\/?>/gi;
+  const objectRegex = /<object[^>]*>.*?<\/object>/gis;
+  
+  const iframes = processedContent.match(iframeRegex) || [];
+  const embeds = processedContent.match(embedRegex) || [];
+  const objects = processedContent.match(objectRegex) || [];
+  
+  const allEmbeds = [...iframes, ...embeds, ...objects];
+  
+  console.log('Found embeds:', allEmbeds);
+  
+  if (allEmbeds.length > 0) {
+    return allEmbeds.map(embed => {
+      // YouTube iframeの場合、必要な属性を確保
+      if (embed.includes('youtube.com/embed')) {
+        return embed.replace(
           /<iframe([^>]*?)>/i, 
-          '<iframe$1 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>'
+          '<iframe$1 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>'
         );
       }
-      return match;
+      return embed;
     });
   }
   
-  // マッチしない場合は、改行で分割して空でない行を返す
-  return processedContent.split('\n').filter(line => line.trim());
+  // 埋め込み要素が見つからない場合は、改行で分割
+  const lines = processedContent.split('\n').filter(line => line.trim());
+  console.log('Fallback to lines:', lines);
+  return lines;
 }
 
 interface ProjectDisplayProps {
@@ -104,6 +111,8 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   const parsedPages = currentWork.iframes && currentWork.iframes.length > 0
     ? currentWork.iframes.flatMap(iframe => parseIframeContent(iframe))
     : [];
+
+  console.log('Parsed pages:', parsedPages);
 
   const hasIframes = Boolean(parsedPages.length > 0);
   const hasImages = Boolean(currentImages.length > 0);
@@ -145,6 +154,7 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   return (
     <div className="bg-white rounded-2xl p-8 shadow-md mb-8 border border-nordic-gray/30">
       <h2 className="text-2xl md:text-3xl font-medium mb-6 tracking-tight">{currentWork.title}</h2>
+      
       {/* 説明文のデザイン・余白・改行強化 */}
       <div
         className="prose prose-neutral max-w-none mb-8"
@@ -197,6 +207,7 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
           {formattedDescription}
         </ReactMarkdown>
       </div>
+      
       {loading ? (
         <div className="space-y-4">
           <Skeleton className="h-72 w-full" />
@@ -274,12 +285,17 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
                 )}
 
                 {/* Page Display */}
-                <div className="min-h-[500px] flex items-center justify-center">
-                  {parsedPages[currentPage] && (
+                <div className="min-h-[400px] flex items-center justify-center bg-gray-50 rounded-lg p-4">
+                  {parsedPages[currentPage] ? (
                     <div 
                       dangerouslySetInnerHTML={{ __html: parsedPages[currentPage] }}
-                      className="w-full flex justify-center [&_iframe]:max-w-full [&_iframe]:h-auto [&_iframe]:aspect-video"
+                      className="w-full flex justify-center [&_iframe]:w-full [&_iframe]:max-w-4xl [&_iframe]:h-[315px] [&_iframe]:md:h-[400px] [&_iframe]:lg:h-[500px] [&_iframe]:rounded-lg [&_iframe]:shadow-lg"
                     />
+                  ) : (
+                    <div className="text-gray-500 text-center">
+                      <p>埋め込みコンテンツが見つかりません</p>
+                      <p className="text-sm mt-2">YouTube URLまたはiframeタグを確認してください</p>
+                    </div>
                   )}
                 </div>
               </div>
