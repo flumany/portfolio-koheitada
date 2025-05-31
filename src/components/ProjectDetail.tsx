@@ -9,6 +9,7 @@ import { ProjectWork, ProjectMedia } from '@/types/project';
 import { getImageUrl, get3DModelUrl } from '@/lib/supabase';
 import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from 'lucide-react';
+import { projectsData } from '@/data/projectsData';
 
 const ProjectDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -29,45 +30,91 @@ const ProjectDetail: React.FC = () => {
       setLoading(true);
       
       try {
-        // Fetch project data
-        const projectData = await fetchProjectBySlug(slug);
+        console.log('Loading project with slug:', slug);
         
-        // If project is not published, redirect to home
-        if (!projectData.published) {
-          navigate('/');
-          toast({
-            title: "Not Found",
-            description: "The requested project is not available."
-          });
-          return;
-        }
-        
-        setProject(projectData);
-        
-        // Fetch project media
-        const mediaData = await fetchProjectMedia(projectData.id);
-        setMedia(mediaData);
-        
-        // Process media into image URLs and model URLs
-        const images: string[] = [];
-        const models: string[] = [];
-        
-        for (const item of mediaData) {
-          try {
-            if (item.type === 'image') {
-              const imageUrl = await getImageUrl(item.file_path);
-              images.push(imageUrl);
-            } else {
-              const modelUrl = await get3DModelUrl(item.file_path);
-              models.push(modelUrl);
-            }
-          } catch (error) {
-            console.error(`Error processing media ${item.id}:`, error);
+        // First try to load from Supabase
+        try {
+          const projectData = await fetchProjectBySlug(slug);
+          
+          // If project is not published, redirect to home
+          if (!projectData.published) {
+            navigate('/');
+            toast({
+              title: "Not Found",
+              description: "The requested project is not available."
+            });
+            return;
           }
+          
+          setProject(projectData);
+          
+          // Fetch project media
+          const mediaData = await fetchProjectMedia(projectData.id);
+          setMedia(mediaData);
+          
+          // Process media into image URLs and model URLs
+          const images: string[] = [];
+          const models: string[] = [];
+          
+          for (const item of mediaData) {
+            try {
+              if (item.type === 'image') {
+                const imageUrl = await getImageUrl(item.file_path);
+                images.push(imageUrl);
+              } else {
+                const modelUrl = await get3DModelUrl(item.file_path);
+                models.push(modelUrl);
+              }
+            } catch (error) {
+              console.error(`Error processing media ${item.id}:`, error);
+            }
+          }
+          
+          setProjectImages(images);
+          setProjectModels(models);
+          
+        } catch (supabaseError) {
+          console.log('Supabase load failed, trying static data:', supabaseError);
+          
+          // Fallback to static data
+          let foundProject: ProjectWork | null = null;
+          
+          // Search through all categories for the project
+          for (const category of Object.values(projectsData)) {
+            const project = category.projects.find(p => p.slug === slug);
+            if (project) {
+              foundProject = project;
+              break;
+            }
+          }
+          
+          if (!foundProject) {
+            navigate('/');
+            toast({
+              title: "Not Found",
+              description: "The requested project is not available."
+            });
+            return;
+          }
+          
+          if (!foundProject.published) {
+            navigate('/');
+            toast({
+              title: "Not Found",
+              description: "The requested project is not available."
+            });
+            return;
+          }
+          
+          setProject(foundProject);
+          
+          // Use static images and models from the project data
+          const images = foundProject.images || [];
+          const models = foundProject.models || [];
+          
+          setProjectImages(images);
+          setProjectModels(models);
         }
-        
-        setProjectImages(images);
-        setProjectModels(models);
         
       } catch (error) {
         console.error('Error loading project:', error);
@@ -96,10 +143,23 @@ const ProjectDetail: React.FC = () => {
   if (!project) {
     return (
       <div className="container-custom py-20">
-        Project not found
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Project not found</h1>
+          <p className="text-gray-600 mb-8">The requested project could not be found.</p>
+          <button 
+            onClick={() => navigate('/')}
+            className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+          >
+            Back to Home
+          </button>
+        </div>
       </div>
     );
   }
+
+  console.log('Project loaded:', project);
+  console.log('Project images:', projectImages);
+  console.log('Project models:', projectModels);
 
   return (
     <div className="container-custom py-20">
