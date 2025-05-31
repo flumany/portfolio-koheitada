@@ -62,7 +62,7 @@ function parseIframeContent(htmlContent: string): string[] {
   
   console.log('Processed content after YouTube conversion:', processedContent);
   
-  // iframe、embed、object要素を抽出
+  // iframe、embed、object要素を抽出（改善版）
   const iframeRegex = /<iframe[^>]*>.*?<\/iframe>/gis;
   const embedRegex = /<embed[^>]*\/?>/gi;
   const objectRegex = /<object[^>]*>.*?<\/object>/gis;
@@ -88,8 +88,12 @@ function parseIframeContent(htmlContent: string): string[] {
     });
   }
   
-  // 埋め込み要素が見つからない場合は、改行で分割
-  const lines = processedContent.split('\n').filter(line => line.trim());
+  // 埋め込み要素が見つからない場合は、改行または連続する空白で分割
+  const lines = processedContent
+    .split(/\n+|\s{2,}/)
+    .map(line => line.trim())
+    .filter(line => line && line.length > 10); // 短すぎる文字列は除外
+  
   console.log('Fallback to lines:', lines);
   return lines;
 }
@@ -294,7 +298,11 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
                   ) : (
                     <div className="text-gray-500 text-center">
                       <p>埋め込みコンテンツが見つかりません</p>
-                      <p className="text-sm mt-2">YouTube URLまたはiframeタグを確認してください</p>
+                      <p className="text-sm mt-2">
+                        iframeタグを2つの改行で区切って入力してください：<br/>
+                        例：&lt;iframe src="..."&gt;&lt;/iframe&gt;<br/><br/>
+                        &lt;iframe src="..."&gt;&lt;/iframe&gt;
+                      </p>
                     </div>
                   )}
                 </div>
