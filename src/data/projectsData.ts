@@ -47,7 +47,10 @@ export const projectsData: ProjectData = {
         title: 'Mobile App Design',
         description: 'User-centered interface design',
         images: ['/placeholder.svg'],
-        iframes: ['https://example.com/preview2'],
+        iframes: [
+          '<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FfzYhvQpqwhZDUImRz431Qo%2FUntitled%3Fnode-id%3D0-1%26t%3DvQbX8akxvA5tbEHt-1" allowfullscreen></iframe>',
+          '<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FfzYhvQpqwhZDUImRz431Qo%2FUntitled%3Fnode-id%3D1-2%26t%3DvQbX8akxvA5tbEHt-1" allowfullscreen></iframe>'
+        ],
         technologies: ['Figma', 'Adobe XD', 'Sketch'],
         role: 'UX Designer',
         duration: '6 weeks',
@@ -62,6 +65,10 @@ export const projectsData: ProjectData = {
         title: 'Design System',
         description: 'Comprehensive UI component library',
         images: ['/placeholder.svg', '/placeholder.svg'],
+        iframes: [
+          '<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FfzYhvQpqwhZDUImRz431Qo%2FUntitled%3Fnode-id%3D2-1%26t%3DvQbX8akxvA5tbEHt-1" allowfullscreen></iframe>',
+          '<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FfzYhvQpqwhZDUImRz431Qo%2FUntitled%3Fnode-id%3D3-1%26t%3DvQbX8akxvA5tbEHt-1" allowfullscreen></iframe>'
+        ],
         technologies: ['Storybook', 'React', 'Styled Components'],
         role: 'Design Systems Engineer',
         duration: '4 months',
@@ -152,6 +159,10 @@ export const projectsData: ProjectData = {
         title: 'AR Product Viewer', 
         description: 'Interactive AR product experience',
         images: ['/placeholder.svg', '/placeholder.svg'],
+        iframes: [
+          '<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
+          '<iframe width="560" height="315" src="https://www.youtube.com/embed/ScMzIvxBSi4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'
+        ],
         technologies: ['ARKit', 'Unity', 'C#'],
         role: 'AR Developer',
         duration: '6 weeks',
