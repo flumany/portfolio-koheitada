@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectCarousel from './ProjectCarousel';
@@ -56,12 +57,10 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
     currentModels.length > 0 || 
     (currentWork.modelUrl && is3DModelFormat(currentWork.modelUrl))
   );
-  const hasWebEmbeds = Boolean(currentWork.iframes && currentWork.iframes.length > 0);
   
-  // デフォルトタブの優先順位: Images > Web Embed > 3D Model
+  // デフォルトタブの優先順位: Images > 3D Model
   const getDefaultTab = () => {
     if (hasImages) return 'images';
-    if (hasWebEmbeds) return 'web-embed';
     if (has3DModels) return '3d-model';
     return 'images';
   };
@@ -70,9 +69,6 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   
   // 本文事前整形
   const formattedDescription = formatTextWithLineBreaks(currentWork.description || '');
-
-  console.log('ProjectDisplay - hasWebEmbeds:', hasWebEmbeds);
-  console.log('ProjectDisplay - iframes:', currentWork.iframes);
 
   return (
     <div className="bg-white rounded-2xl p-8 shadow-md mb-8 border border-nordic-gray/30">
@@ -144,11 +140,6 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
                 Images
               </TabsTrigger>
             )}
-            {hasWebEmbeds && (
-              <TabsTrigger value="web-embed" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
-                Web Embed
-              </TabsTrigger>
-            )}
             {has3DModels && (
               <TabsTrigger value="3d-model" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
                 3D Model
@@ -161,16 +152,6 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
               <ProjectCarousel 
                 images={currentImages} 
                 iframes={[]}
-                title={currentWork.title} 
-              />
-            </TabsContent>
-          )}
-          
-          {hasWebEmbeds && (
-            <TabsContent value="web-embed" className="focus-visible:outline-none focus-visible:ring-0">
-              <ProjectCarousel 
-                images={[]} 
-                iframes={currentWork.iframes || []}
                 title={currentWork.title} 
               />
             </TabsContent>
