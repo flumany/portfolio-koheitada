@@ -19,7 +19,7 @@ const About: React.FC = () => {
                 After studying architecture, I gained extensive experience in advanced development, applied research, and quality management at an interior manufacturing company.
               </p>
               <p className="text-xs md:text-sm text-nordic-dark/60">
-                建築学を学んだ後、主にインテリアメーカーの先行開発職、応用研究職や品質管理職としての幅広く経験値を蓄えました。
+                建築学を学んだ後、主にインテリアメーカーの開発や企画、品質管理など幅広く経験値を蓄えました。
               </p>
             </div>
             <div>
