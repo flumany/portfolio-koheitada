@@ -16,10 +16,10 @@ const About: React.FC = () => {
           <div className="space-y-10">
             <div>
               <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
-                After studying architecture, I gained extensive experience in design research and development at an interior manufacturing company.
+                After studying architecture, I gained extensive experience in advanced development, applied research, and quality management at an interior manufacturing company.
               </p>
               <p className="text-xs md:text-sm text-nordic-dark/60">
-                建築学を学んだ後、主にインテリアメーカーのデザイン研究開発職としての幅広く経験値を蓄えました。
+                建築学を学んだ後、主にインテリアメーカーの先行開発職、応用研究職や品質管理職としての幅広く経験値を蓄えました。
               </p>
             </div>
             <div>
