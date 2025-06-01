@@ -134,7 +134,7 @@ export type Database = {
     }
     Functions: {
       update_project_orders: {
-        Args: { project_ids: string[] }
+        Args: Record<PropertyKey, never> | { project_ids: string[] }
         Returns: undefined
       }
     }

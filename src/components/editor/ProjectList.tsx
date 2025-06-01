@@ -109,8 +109,11 @@ const ProjectList: React.FC = () => {
 
     console.log('Drag ended:', { activeId, overId });
 
-    // Check if we're dragging categories
-    if (categoryOrder.includes(activeId) && categoryOrder.includes(overId)) {
+    // Check if we're dragging categories (category names are in categoryOrder)
+    const isDraggingCategory = categoryOrder.includes(activeId);
+    const isOverCategory = categoryOrder.includes(overId);
+
+    if (isDraggingCategory && isOverCategory) {
       console.log('Reordering categories');
       const oldIndex = categoryOrder.indexOf(activeId);
       const newIndex = categoryOrder.indexOf(overId);
@@ -140,21 +143,23 @@ const ProjectList: React.FC = () => {
       return;
     }
 
-    // Handle project reordering within categories
+    // Handle project reordering
     const activeProject = projects.find(p => p.id === activeId);
-    const overProject = projects.find(p => p.id === overId);
     
     if (!activeProject) {
-      console.log('Active project not found');
+      console.log('Active item is not a project, skipping');
       return;
     }
 
-    // If dropping over a category, move to end of that category
-    if (categoryOrder.includes(overId)) {
+    // If dropping over a category header, move project to end of that category
+    if (isOverCategory) {
       console.log('Moving project to category:', overId);
       const targetCategory = overId;
       
-      if (activeProject.category === targetCategory) return; // Same category, no change needed
+      if (activeProject.category === targetCategory) {
+        console.log('Project already in target category, no change needed');
+        return;
+      }
       
       const categoryProjects = projects.filter(p => p.category === targetCategory);
       const newOrder = categoryProjects.length;
@@ -171,6 +176,9 @@ const ProjectList: React.FC = () => {
       setProjects(updatedProjects);
       
       try {
+        // First update the project's category
+        await updateProject(activeProject.id, { category: targetCategory });
+        // Then update the order of all projects in the target category
         await updateProjectOrderInCategory([...categoryProjects.map(p => p.id), activeProject.id]);
         console.log('Project moved successfully');
         toast({
@@ -190,14 +198,17 @@ const ProjectList: React.FC = () => {
       return;
     }
 
+    // Handle project-to-project reordering within the same category
+    const overProject = projects.find(p => p.id === overId);
+    
     if (!overProject) {
-      console.log('Over project not found');
+      console.log('Over target is not a project, skipping');
       return;
     }
 
     // Only allow reordering within the same category for project-to-project drops
     if (activeProject.category !== overProject.category) {
-      console.log('Cannot reorder projects across categories');
+      console.log('Cannot reorder projects across different categories');
       return;
     }
 
@@ -206,7 +217,10 @@ const ProjectList: React.FC = () => {
     const oldIndex = categoryProjects.findIndex(p => p.id === activeId);
     const newIndex = categoryProjects.findIndex(p => p.id === overId);
     
-    if (oldIndex === -1 || newIndex === -1) return;
+    if (oldIndex === -1 || newIndex === -1) {
+      console.log('Could not find project indices');
+      return;
+    }
     
     const reorderedProjects = arrayMove(categoryProjects, oldIndex, newIndex);
     
