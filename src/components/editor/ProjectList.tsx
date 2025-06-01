@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "@/hooks/use-toast";
@@ -85,16 +84,17 @@ const ProjectList: React.FC = () => {
     
     try {
       await updateCategoryOrder(newCategoryOrder);
+      console.log('Category moved up successfully');
       toast({
         title: "Success",
         description: "Category order updated successfully."
       });
     } catch (error) {
       console.error('Error updating category order:', error);
-      setCategoryOrder(categoryOrder);
+      setCategoryOrder(categoryOrder); // Revert on error
       toast({
         title: "Error",
-        description: "Failed to update category order.",
+        description: `Failed to update category order: ${error.message || 'Unknown error'}`,
         variant: "destructive"
       });
     }
@@ -111,16 +111,17 @@ const ProjectList: React.FC = () => {
     
     try {
       await updateCategoryOrder(newCategoryOrder);
+      console.log('Category moved down successfully');
       toast({
         title: "Success",
         description: "Category order updated successfully."
       });
     } catch (error) {
       console.error('Error updating category order:', error);
-      setCategoryOrder(categoryOrder);
+      setCategoryOrder(categoryOrder); // Revert on error
       toast({
         title: "Error",
-        description: "Failed to update category order.",
+        description: `Failed to update category order: ${error.message || 'Unknown error'}`,
         variant: "destructive"
       });
     }

@@ -260,7 +260,8 @@ export async function getCategoryOrder(): Promise<string[]> {
     
     if (error && error.code !== 'PGRST116') { // PGRST116 is "not found"
       console.error('Error fetching category order:', error);
-      throw error;
+      // Return empty array instead of throwing to prevent app crash
+      return [];
     }
     
     return data?.categories || [];
@@ -274,20 +275,40 @@ export async function updateCategoryOrder(categories: string[]): Promise<void> {
   try {
     console.log('Updating category order:', categories);
     
-    const { data, error } = await supabase
+    // First try to update existing record
+    const { data: existingData, error: fetchError } = await supabase
       .from('category_order')
-      .upsert({ 
-        id: 1,
-        categories 
-      })
-      .select();
+      .select('id')
+      .eq('id', 1)
+      .maybeSingle();
     
-    if (error) {
-      console.error('Error updating category order:', error);
-      throw error;
+    if (fetchError) {
+      console.error('Error checking existing category order:', fetchError);
+      throw fetchError;
     }
     
-    console.log('Category order updated successfully:', data);
+    let result;
+    if (existingData) {
+      // Update existing record
+      result = await supabase
+        .from('category_order')
+        .update({ categories })
+        .eq('id', 1)
+        .select();
+    } else {
+      // Insert new record
+      result = await supabase
+        .from('category_order')
+        .insert({ id: 1, categories })
+        .select();
+    }
+    
+    if (result.error) {
+      console.error('Error updating category order:', result.error);
+      throw result.error;
+    }
+    
+    console.log('Category order updated successfully:', result.data);
   } catch (error) {
     console.error('Error updating category order:', error);
     throw error;
