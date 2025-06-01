@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "@/hooks/use-toast";
@@ -9,7 +10,8 @@ import {
   togglePublishStatus, 
   updateProjectOrderInCategory,
   updateCategoryOrder,
-  getCategoryOrder
+  getCategoryOrder,
+  updateProject
 } from '@/services/projectService';
 import { Loader2, Plus } from 'lucide-react';
 import { 
