@@ -16,10 +16,10 @@ const About: React.FC = () => {
           <div className="space-y-10">
             <div>
               <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
-                After studying architecture, I gained extensive experience in advanced development, applied research, and quality management at an interior manufacturing company.
+                After studying architecture, I gained extensive experience in product development, planning, and quality management at an interior manufacturing company.
               </p>
               <p className="text-xs md:text-sm text-nordic-dark/60">
-                建築学を学んだ後、主にインテリアメーカーの開発や企画、品質管理など幅広く経験値を蓄えました。
+                建築学を学んだ後、主にインテリアメーカーで開発や企画、品質管理などの幅広い経験を積みました。
               </p>
             </div>
             <div>
@@ -27,7 +27,7 @@ const About: React.FC = () => {
                 Utilizing my knowledge of 3D data and experience with design software, I now work on 3D design, XR development, and UI/UX design for AI services.
               </p>
               <p className="text-xs md:text-sm text-nordic-dark/60">
-                その中で得た3Dデータの知見とデザインソフトの経験を活かし、現在は3DデザインやXR開発、AIサービス開発におけるのUI/UXデザイン等に携わっています。
+                その中で得た3Dデータの知見とデザインソフトの経験を活かし、現在は3DデザインやXR開発、AIサービス開発におけるUI/UXデザイン等に携わっています。
               </p>
             </div>
             <div>
@@ -35,7 +35,7 @@ const About: React.FC = () => {
                 My goal is to grow with my experiences and create better products and services for society.
               </p>
               <p className="text-xs md:text-sm text-nordic-dark/60">
-                これまでに得た経験を活かしつつ向上し、世の中に提供するより良い製品やサービスを創造していくことを目指しています。
+                これまでに得た経験を活かしながら成長し、世の中により良い製品やサービスを提供していくことを目指しています。
               </p>
             </div>
           </div>
