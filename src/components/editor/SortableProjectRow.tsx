@@ -1,11 +1,15 @@
 
 import React from 'react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2, Eye, GripVertical } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
 import { ProjectWork } from '@/types/project';
+import { 
+  Pencil, 
+  Trash2, 
+  Eye, 
+  ChevronUp, 
+  ChevronDown 
+} from 'lucide-react';
 
 interface SortableProjectRowProps {
   project: ProjectWork;
@@ -13,6 +17,10 @@ interface SortableProjectRowProps {
   onDelete: (id: string) => void;
   onTogglePublish: (id: string, currentStatus: boolean) => void;
   onView: (slug: string) => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  canMoveUp: boolean;
+  canMoveDown: boolean;
 }
 
 const SortableProjectRow: React.FC<SortableProjectRowProps> = ({
@@ -20,75 +28,69 @@ const SortableProjectRow: React.FC<SortableProjectRowProps> = ({
   onEdit,
   onDelete,
   onTogglePublish,
-  onView
+  onView,
+  onMoveUp,
+  onMoveDown,
+  canMoveUp,
+  canMoveDown,
 }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ 
-    id: project.id,
-    data: {
-      type: 'project',
-      project
-    }
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-    backgroundColor: isDragging ? '#f3f4f6' : 'transparent',
-  };
-
   return (
-    <TableRow 
-      ref={setNodeRef} 
-      style={style}
-      className={`${isDragging ? 'shadow-lg border-2 border-blue-200' : ''} hover:bg-gray-50`}
-    >
-      <TableCell>
-        <div className="flex items-center gap-2">
-          <div 
-            {...attributes} 
-            {...listeners}
-            className="cursor-grab active:cursor-grabbing p-1 hover:bg-gray-200 rounded opacity-60 hover:opacity-100"
+    <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+      <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-1">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onMoveUp}
+            disabled={!canMoveUp}
+            className="p-1 h-7 w-7"
           >
-            <GripVertical className="h-4 w-4 text-gray-400" />
-          </div>
-          <span className="font-medium">{project.title}</span>
+            <ChevronUp className="h-3 w-3" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onMoveDown}
+            disabled={!canMoveDown}
+            className="p-1 h-7 w-7"
+          >
+            <ChevronDown className="h-3 w-3" />
+          </Button>
         </div>
-      </TableCell>
-      <TableCell>
-        <span 
-          className={`px-2 py-1 text-xs rounded-full ${
-            project.published 
-              ? 'bg-green-100 text-green-800' 
-              : 'bg-amber-100 text-amber-800'
-          }`}
-        >
-          {project.published ? 'Published' : 'Draft'}
-        </span>
-      </TableCell>
-      <TableCell>
-        {new Date(project.updated_at!).toLocaleDateString()}
-      </TableCell>
-      <TableCell className="text-right space-x-2">
+        
+        <div>
+          <h3 className="font-medium">{project.title}</h3>
+          <p className="text-sm text-gray-500">{project.description}</p>
+          <div className="flex items-center gap-2 mt-1">
+            <Badge variant={project.published ? "default" : "secondary"}>
+              {project.published ? 'Published' : 'Draft'}
+            </Badge>
+            <span className="text-xs text-gray-400">/{project.slug}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div className="flex items-center gap-2">
         <Button
-          variant="ghost"
-          size="icon"
+          variant="outline"
+          size="sm"
           onClick={() => onEdit(project.slug)}
         >
-          <Edit className="h-4 w-4" />
+          <Pencil className="h-4 w-4" />
+        </Button>
+        
+        <Button
+          variant={project.published ? "destructive" : "default"}
+          size="sm"
+          onClick={() => onTogglePublish(project.id, project.published)}
+        >
+          {project.published ? 'Unpublish' : 'Publish'}
         </Button>
         
         {project.published && (
           <Button
-            variant="ghost"
-            size="icon"
+            variant="outline"
+            size="sm"
             onClick={() => onView(project.slug)}
           >
             <Eye className="h-4 w-4" />
@@ -96,24 +98,14 @@ const SortableProjectRow: React.FC<SortableProjectRowProps> = ({
         )}
         
         <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => onTogglePublish(project.id, project.published)}
-          className={project.published ? 'text-amber-600' : 'text-green-600'}
-        >
-          {project.published ? '📝' : '📢'}
-        </Button>
-        
-        <Button
-          variant="ghost"
-          size="icon"
+          variant="outline"
+          size="sm"
           onClick={() => onDelete(project.id)}
-          className="text-red-600"
         >
           <Trash2 className="h-4 w-4" />
         </Button>
-      </TableCell>
-    </TableRow>
+      </div>
+    </div>
   );
 };
 

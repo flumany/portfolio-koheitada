@@ -1,21 +1,10 @@
 
 import React from 'react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { 
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProjectWork } from '@/types/project';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 import SortableProjectRow from './SortableProjectRow';
-import { GripVertical } from 'lucide-react';
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
 
 interface CategoryGroupProps {
   category: string;
@@ -24,6 +13,12 @@ interface CategoryGroupProps {
   onDelete: (id: string) => void;
   onTogglePublish: (id: string, currentStatus: boolean) => void;
   onView: (slug: string) => void;
+  onMoveCategoryUp: () => void;
+  onMoveCategoryDown: () => void;
+  onMoveProjectUp: (projectId: string) => void;
+  onMoveProjectDown: (projectId: string) => void;
+  canMoveCategoryUp: boolean;
+  canMoveCategoryDown: boolean;
 }
 
 const CategoryGroup: React.FC<CategoryGroupProps> = ({
@@ -32,70 +27,60 @@ const CategoryGroup: React.FC<CategoryGroupProps> = ({
   onEdit,
   onDelete,
   onTogglePublish,
-  onView
+  onView,
+  onMoveCategoryUp,
+  onMoveCategoryDown,
+  onMoveProjectUp,
+  onMoveProjectDown,
+  canMoveCategoryUp,
+  canMoveCategoryDown,
 }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: category });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
   return (
-    <div 
-      ref={setNodeRef} 
-      style={style}
-      className={`bg-white border rounded-lg overflow-hidden ${isDragging ? 'shadow-lg' : 'shadow'}`}
-    >
-      <div className="bg-gray-50 px-4 py-3 border-b flex items-center gap-3">
-        <div 
-          {...attributes} 
-          {...listeners}
-          className="cursor-grab active:cursor-grabbing p-1 hover:bg-gray-200 rounded"
-        >
-          <GripVertical className="h-4 w-4 text-gray-500" />
+    <Card>
+      <CardHeader className="pb-4">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-medium capitalize">
+            {category.replace('-', ' ')}
+          </CardTitle>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onMoveCategoryUp}
+              disabled={!canMoveCategoryUp}
+            >
+              <ChevronUp className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onMoveCategoryDown}
+              disabled={!canMoveCategoryDown}
+            >
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
-        <h3 className="text-lg font-medium capitalize">
-          {category.replace('-', ' ')} ({projects.length})
-        </h3>
-      </div>
-      
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Last Updated</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <SortableContext 
-            items={projects.map(p => p.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            {projects.map((project) => (
-              <SortableProjectRow
-                key={project.id}
-                project={project}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                onTogglePublish={onTogglePublish}
-                onView={onView}
-              />
-            ))}
-          </SortableContext>
-        </TableBody>
-      </Table>
-    </div>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          {projects.map((project, index) => (
+            <SortableProjectRow
+              key={project.id}
+              project={project}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onTogglePublish={onTogglePublish}
+              onView={onView}
+              onMoveUp={() => onMoveProjectUp(project.id)}
+              onMoveDown={() => onMoveProjectDown(project.id)}
+              canMoveUp={index > 0}
+              canMoveDown={index < projects.length - 1}
+            />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

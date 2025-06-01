@@ -14,22 +14,6 @@ import {
   updateProject
 } from '@/services/projectService';
 import { Loader2, Plus } from 'lucide-react';
-import { 
-  DndContext, 
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-  DragOverEvent
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
 import CategoryGroup from './CategoryGroup';
 
 const ProjectList: React.FC = () => {
@@ -37,17 +21,6 @@ const ProjectList: React.FC = () => {
   const [projects, setProjects] = useState<ProjectWork[]>([]);
   const [loading, setLoading] = useState(true);
   const [categoryOrder, setCategoryOrder] = useState<string[]>([]);
-  
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
   
   useEffect(() => {
     loadProjectsAndCategories();
@@ -100,156 +73,137 @@ const ProjectList: React.FC = () => {
         .sort((a, b) => (a.display_order || 0) - (b.display_order || 0))
     })).filter(group => group.projects.length > 0);
   }, [categoryOrder, projects]);
-  
-  const handleDragEnd = async (event: DragEndEvent) => {
-    const { active, over } = event;
 
-    if (!over || active.id === over.id) return;
-
-    const activeId = active.id as string;
-    const overId = over.id as string;
-
-    console.log('Drag ended:', { activeId, overId });
-
-    // Check if we're dragging categories (category names are in categoryOrder)
-    const isDraggingCategory = categoryOrder.includes(activeId);
-    const isOverCategory = categoryOrder.includes(overId);
-
-    if (isDraggingCategory && isOverCategory) {
-      console.log('Reordering categories');
-      const oldIndex = categoryOrder.indexOf(activeId);
-      const newIndex = categoryOrder.indexOf(overId);
-      const newCategoryOrder = arrayMove(categoryOrder, oldIndex, newIndex);
-      
-      // Update state immediately for UI feedback (optimistic update)
-      setCategoryOrder(newCategoryOrder);
-      
-      try {
-        console.log('Saving new category order:', newCategoryOrder);
-        await updateCategoryOrder(newCategoryOrder);
-        console.log('Category order saved successfully');
-        toast({
-          title: "Success",
-          description: "Category order updated successfully."
-        });
-      } catch (error) {
-        console.error('Error updating category order:', error);
-        // Revert on error
-        setCategoryOrder(categoryOrder);
-        toast({
-          title: "Error",
-          description: "Failed to update category order.",
-          variant: "destructive"
-        });
-      }
-      return;
-    }
-
-    // Handle project reordering
-    const activeProject = projects.find(p => p.id === activeId);
+  const handleMoveCategoryUp = async (categoryIndex: number) => {
+    if (categoryIndex === 0) return;
     
-    if (!activeProject) {
-      console.log('Active item is not a project, skipping');
-      return;
-    }
-
-    // If dropping over a category header, move project to end of that category
-    if (isOverCategory) {
-      console.log('Moving project to category:', overId);
-      const targetCategory = overId;
-      
-      if (activeProject.category === targetCategory) {
-        console.log('Project already in target category, no change needed');
-        return;
-      }
-      
-      const categoryProjects = projects.filter(p => p.category === targetCategory);
-      const newOrder = categoryProjects.length;
-      
-      // Optimistic update: Update project category and order immediately
-      const updatedProjects = projects.map(p => {
-        if (p.id === activeProject.id) {
-          return { ...p, category: targetCategory, display_order: newOrder };
-        }
-        return p;
+    const newCategoryOrder = [...categoryOrder];
+    [newCategoryOrder[categoryIndex - 1], newCategoryOrder[categoryIndex]] = 
+    [newCategoryOrder[categoryIndex], newCategoryOrder[categoryIndex - 1]];
+    
+    setCategoryOrder(newCategoryOrder);
+    
+    try {
+      await updateCategoryOrder(newCategoryOrder);
+      toast({
+        title: "Success",
+        description: "Category order updated successfully."
       });
-      
-      console.log('Optimistic update - moving project to new category');
-      setProjects(updatedProjects);
-      
-      try {
-        // First update the project's category
-        await updateProject(activeProject.id, { category: targetCategory });
-        // Then update the order of all projects in the target category
-        await updateProjectOrderInCategory([...categoryProjects.map(p => p.id), activeProject.id]);
-        console.log('Project moved successfully');
-        toast({
-          title: "Success",
-          description: "Project moved successfully."
-        });
-      } catch (error) {
-        // Revert on error
-        console.error('Error moving project:', error);
-        setProjects(projects);
-        toast({
-          title: "Error",
-          description: "Failed to move project.",
-          variant: "destructive"
-        });
+    } catch (error) {
+      console.error('Error updating category order:', error);
+      setCategoryOrder(categoryOrder);
+      toast({
+        title: "Error",
+        description: "Failed to update category order.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleMoveCategoryDown = async (categoryIndex: number) => {
+    if (categoryIndex === categoryOrder.length - 1) return;
+    
+    const newCategoryOrder = [...categoryOrder];
+    [newCategoryOrder[categoryIndex], newCategoryOrder[categoryIndex + 1]] = 
+    [newCategoryOrder[categoryIndex + 1], newCategoryOrder[categoryIndex]];
+    
+    setCategoryOrder(newCategoryOrder);
+    
+    try {
+      await updateCategoryOrder(newCategoryOrder);
+      toast({
+        title: "Success",
+        description: "Category order updated successfully."
+      });
+    } catch (error) {
+      console.error('Error updating category order:', error);
+      setCategoryOrder(categoryOrder);
+      toast({
+        title: "Error",
+        description: "Failed to update category order.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleMoveProjectUp = async (projectId: string) => {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+
+    const categoryProjects = projects
+      .filter(p => p.category === project.category)
+      .sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
+
+    const currentIndex = categoryProjects.findIndex(p => p.id === projectId);
+    if (currentIndex === 0) return;
+
+    // Swap positions
+    const newOrder = [...categoryProjects];
+    [newOrder[currentIndex - 1], newOrder[currentIndex]] = 
+    [newOrder[currentIndex], newOrder[currentIndex - 1]];
+
+    // Update local state optimistically
+    const updatedProjects = projects.map(p => {
+      const orderIndex = newOrder.findIndex(np => np.id === p.id);
+      if (orderIndex !== -1) {
+        return { ...p, display_order: orderIndex };
       }
-      return;
-    }
-
-    // Handle project-to-project reordering within the same category
-    const overProject = projects.find(p => p.id === overId);
-    
-    if (!overProject) {
-      console.log('Over target is not a project, skipping');
-      return;
-    }
-
-    // Only allow reordering within the same category for project-to-project drops
-    if (activeProject.category !== overProject.category) {
-      console.log('Cannot reorder projects across different categories');
-      return;
-    }
-
-    console.log('Reordering projects within category:', activeProject.category);
-    const categoryProjects = projects.filter(p => p.category === activeProject.category);
-    const oldIndex = categoryProjects.findIndex(p => p.id === activeId);
-    const newIndex = categoryProjects.findIndex(p => p.id === overId);
-    
-    if (oldIndex === -1 || newIndex === -1) {
-      console.log('Could not find project indices');
-      return;
-    }
-    
-    const reorderedProjects = arrayMove(categoryProjects, oldIndex, newIndex);
-    
-    // Optimistic update: Update projects with new display_order immediately
-    const updatedProjects = projects.map(project => {
-      if (project.category === activeProject.category) {
-        const reorderedIndex = reorderedProjects.findIndex(p => p.id === project.id);
-        if (reorderedIndex !== -1) {
-          return { ...project, display_order: reorderedIndex };
-        }
-      }
-      return project;
+      return p;
     });
-    
-    console.log('Optimistic update - reordering within category');
+
     setProjects(updatedProjects);
 
     try {
-      console.log('Saving project order:', reorderedProjects.map(p => p.id));
-      await updateProjectOrderInCategory(reorderedProjects.map(p => p.id));
-      console.log('Project order saved successfully');
+      await updateProjectOrderInCategory(newOrder.map(p => p.id));
       toast({
         title: "Success",
         description: "Project order updated successfully."
       });
     } catch (error) {
-      // Revert on error
+      console.error('Error updating project order:', error);
+      setProjects(projects);
+      toast({
+        title: "Error",
+        description: "Failed to update project order.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleMoveProjectDown = async (projectId: string) => {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+
+    const categoryProjects = projects
+      .filter(p => p.category === project.category)
+      .sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
+
+    const currentIndex = categoryProjects.findIndex(p => p.id === projectId);
+    if (currentIndex === categoryProjects.length - 1) return;
+
+    // Swap positions
+    const newOrder = [...categoryProjects];
+    [newOrder[currentIndex], newOrder[currentIndex + 1]] = 
+    [newOrder[currentIndex + 1], newOrder[currentIndex]];
+
+    // Update local state optimistically
+    const updatedProjects = projects.map(p => {
+      const orderIndex = newOrder.findIndex(np => np.id === p.id);
+      if (orderIndex !== -1) {
+        return { ...p, display_order: orderIndex };
+      }
+      return p;
+    });
+
+    setProjects(updatedProjects);
+
+    try {
+      await updateProjectOrderInCategory(newOrder.map(p => p.id));
+      toast({
+        title: "Success",
+        description: "Project order updated successfully."
+      });
+    } catch (error) {
       console.error('Error updating project order:', error);
       setProjects(projects);
       toast({
@@ -271,7 +225,6 @@ const ProjectList: React.FC = () => {
         title: "Success",
         description: "Project deleted successfully."
       });
-      // Reload projects after delete to ensure consistency
       loadProjectsAndCategories();
     } catch (error) {
       console.error('Error deleting project:', error);
@@ -284,7 +237,6 @@ const ProjectList: React.FC = () => {
   };
   
   const handleTogglePublish = async (id: string, currentStatus: boolean) => {
-    // Optimistic update: Update local state immediately
     setProjects(prevProjects => 
       prevProjects.map(project => 
         project.id === id 
@@ -300,7 +252,6 @@ const ProjectList: React.FC = () => {
         description: `Project ${!currentStatus ? 'published' : 'unpublished'} successfully.`
       });
     } catch (error) {
-      // Revert on error
       setProjects(prevProjects => 
         prevProjects.map(project => 
           project.id === id 
@@ -353,30 +304,25 @@ const ProjectList: React.FC = () => {
           </Button>
         </div>
       ) : (
-        <DndContext 
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext 
-            items={categoryOrder}
-            strategy={verticalListSortingStrategy}
-          >
-            <div className="space-y-8">
-              {groupedProjects.map((group) => (
-                <CategoryGroup
-                  key={group.category}
-                  category={group.category}
-                  projects={group.projects}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                  onTogglePublish={handleTogglePublish}
-                  onView={handleView}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
+        <div className="space-y-8">
+          {groupedProjects.map((group, categoryIndex) => (
+            <CategoryGroup
+              key={group.category}
+              category={group.category}
+              projects={group.projects}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onTogglePublish={handleTogglePublish}
+              onView={handleView}
+              onMoveCategoryUp={() => handleMoveCategoryUp(categoryIndex)}
+              onMoveCategoryDown={() => handleMoveCategoryDown(categoryIndex)}
+              onMoveProjectUp={handleMoveProjectUp}
+              onMoveProjectDown={handleMoveProjectDown}
+              canMoveCategoryUp={categoryIndex > 0}
+              canMoveCategoryDown={categoryIndex < groupedProjects.length - 1}
+            />
+          ))}
+        </div>
       )}
     </div>
   );
