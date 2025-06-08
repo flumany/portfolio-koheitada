@@ -113,7 +113,7 @@ const Projects: React.FC = () => {
     })).filter(group => group.projects.length > 0);
   }, [filter, filteredProjects, projects]);
 
-  // Check if project has iframe as primary content
+  // Check if project has iframe as primary content (for detail page preview)
   const hasIframePreview = (project: ProjectWork) => {
     return project.iframes && project.iframes.length > 0;
   };
@@ -127,28 +127,8 @@ const Projects: React.FC = () => {
       <div className="aspect-[4/3] relative overflow-hidden">
         {loading ? (
           <Skeleton className="w-full h-full" />
-        ) : hasIframePreview(project) ? (
-          // Display iframe preview from HTML embed code
-          <div className="relative w-full h-full">
-            <div 
-              dangerouslySetInnerHTML={{ 
-                __html: project.iframes![0].replace(
-                  /<iframe([^>]*)>/,
-                  '<iframe$1 class="w-full h-full object-cover border-0 pointer-events-none">'
-                )
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <div className="bg-white/90 p-3 rounded-full">
-                <Monitor className="text-nordic-dark" size={24} />
-              </div>
-            </div>
-            <div className="absolute top-2 right-2 bg-nordic-blue text-white px-2 py-1 rounded text-xs font-medium">
-              Web Embed
-            </div>
-          </div>
         ) : (
-          // Display image preview
+          // Always display image preview in project list, even if iframe exists
           <>
             <img 
               src={projectImages[project.id] || '/placeholder.svg'} 
@@ -161,9 +141,18 @@ const Projects: React.FC = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
               <div className="bg-white/90 p-3 rounded-full">
-                <ImageIcon className="text-nordic-dark" size={24} />
+                {hasIframePreview(project) ? (
+                  <Monitor className="text-nordic-dark" size={24} />
+                ) : (
+                  <ImageIcon className="text-nordic-dark" size={24} />
+                )}
               </div>
             </div>
+            {hasIframePreview(project) && (
+              <div className="absolute top-2 right-2 bg-nordic-blue text-white px-2 py-1 rounded text-xs font-medium">
+                Interactive
+              </div>
+            )}
           </>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
