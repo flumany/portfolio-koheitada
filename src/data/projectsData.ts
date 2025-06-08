@@ -1,4 +1,3 @@
-
 import { ProjectData } from '../types/project';
 
 export const projectsData: ProjectData = {
@@ -47,7 +46,7 @@ export const projectsData: ProjectData = {
         title: 'Mobile App Design',
         description: 'User-centered interface design',
         images: ['/placeholder.svg'],
-        iframes: ['https://example.com/preview2'],
+        iframes: ['<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FC0YFdR975n4aZC1waqF7Ie%2FRedesign_RakutenKobo%3Fnode-id%3D15-58%26t%3DynOlo7QQS28d3jjT-1" allowfullscreen></iframe>'],
         technologies: ['Figma', 'Adobe XD', 'Sketch'],
         role: 'UX Designer',
         duration: '6 weeks',
