@@ -112,6 +112,9 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
     (currentWork.modelUrl && is3DModelFormat(currentWork.modelUrl))
   );
   
+  // UI/UX Designカテゴリーかどうかをチェック
+  const isUIUXDesign = currentWork.category === 'UI/UX Design';
+  
   // デフォルトタブの優先順位: Web Embed > Images > 3D Model
   const getDefaultTab = () => {
     if (hasIframes) return 'web-embed';
@@ -207,12 +210,12 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
           <TabsList className="mb-7 bg-nordic-offwhite rounded-lg p-1 gap-2 border border-nordic-gray/30 shadow-none">
             {hasIframes && (
               <TabsTrigger value="web-embed" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
-                Web Embed
+                {isUIUXDesign ? 'Final Product' : 'Web Embed'}
               </TabsTrigger>
             )}
             {hasImages && (
               <TabsTrigger value="images" className="px-6 py-2 text-base rounded-lg data-[state=active]:bg-accent-blue data-[state=active]:text-nordic-dark data-[state=inactive]:bg-transparent transition-all">
-                Images
+                {isUIUXDesign ? 'Prototype' : 'Images'}
               </TabsTrigger>
             )}
             {has3DModels && (
