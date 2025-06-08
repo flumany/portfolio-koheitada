@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "@/components/ui/use-toast";
@@ -19,7 +18,33 @@ import {
 import { uploadImage, upload3DModel } from '@/services/fileUploadService';
 import { ProjectWork, ProjectMedia } from '@/types/project';
 import MediaManager from './editor/MediaManager';
-import { Loader2, SaveIcon, EyeIcon, BookOpenIcon } from 'lucide-react';
+import { Loader2, SaveIcon, EyeIcon, BookOpenIcon, Plus, X } from 'lucide-react';
+
+// Figma URLをiframe形式に変換する関数
+const convertFigmaUrlToIframe = (url: string): string => {
+  // Figma プロトタイプURLのパターンをチェック
+  const figmaProtoRegex = /https:\/\/www\.figma\.com\/proto\/([^/?]+)\/([^/?]+)\?(.+)/;
+  const match = url.match(figmaProtoRegex);
+  
+  if (match) {
+    const fileId = match[1];
+    const fileName = match[2];
+    const params = match[3];
+    
+    // embed用のURLを構築
+    const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(url)}`;
+    
+    return `<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="${embedUrl}" allowfullscreen></iframe>`;
+  }
+  
+  // 既にiframe形式の場合はそのまま返す
+  if (url.includes('<iframe') && url.includes('</iframe>')) {
+    return url;
+  }
+  
+  // その他のURLの場合はそのまま返す
+  return url;
+};
 
 const ProjectEditor: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -50,11 +75,16 @@ const ProjectEditor: React.FC = () => {
   const [technologiesInput, setTechnologiesInput] = useState('');
   // 追加: HTML埋め込みコード入力用一時状態(string)
   const [embedCodeInput, setEmbedCodeInput] = useState('');
+  // 追加: Figma URL入力用状態
+  const [figmaUrl, setFigmaUrl] = useState('');
+  // 追加: 個別iframe管理用状態
+  const [iframeList, setIframeList] = useState<string[]>([]);
 
   // プロジェクト読み込み時のみtechnologiesInputとembedCodeInputも文字列化して同期
   useEffect(() => {
     setTechnologiesInput((project.technologies || []).join(', '));
     setEmbedCodeInput((project.iframes || []).join('\n\n'));
+    setIframeList(project.iframes || []);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project.id]);
 
@@ -126,6 +156,37 @@ const ProjectEditor: React.FC = () => {
     setProject(prev => ({ ...prev, slug: generateSlug(value) }));
   };
 
+  // Figma URL追加ハンドラー
+  const handleAddFigmaUrl = () => {
+    if (!figmaUrl.trim()) return;
+    
+    const convertedIframe = convertFigmaUrlToIframe(figmaUrl.trim());
+    const newIframeList = [...iframeList, convertedIframe];
+    
+    setIframeList(newIframeList);
+    setEmbedCodeInput(newIframeList.join('\n\n'));
+    setFigmaUrl('');
+    
+    toast({
+      title: "Success",
+      description: "Figma prototype added successfully."
+    });
+  };
+
+  // iframe削除ハンドラー
+  const handleRemoveIframe = (index: number) => {
+    const newIframeList = iframeList.filter((_, i) => i !== index);
+    setIframeList(newIframeList);
+    setEmbedCodeInput(newIframeList.join('\n\n'));
+  };
+
+  // embedCodeInput変更時にiframeListも同期
+  const handleEmbedCodeChange = (value: string) => {
+    setEmbedCodeInput(value);
+    const iframes = value.split('\n\n').map(item => item.trim()).filter(item => item);
+    setIframeList(iframes);
+  };
+
   const handleSave = async () => {
     setIsSaving(true);
     
@@ -184,6 +245,7 @@ const ProjectEditor: React.FC = () => {
       setProject(result);
       setTechnologiesInput((result.technologies || []).join(', '));
       setEmbedCodeInput((result.iframes || []).join('\n\n'));
+      setIframeList(result.iframes || []);
       
     } catch (error) {
       console.error('Failed to save project:', error);
@@ -462,7 +524,63 @@ const ProjectEditor: React.FC = () => {
               
               <Card>
                 <CardHeader>
-                  <CardTitle>Web Embeds</CardTitle>
+                  <CardTitle>Figma Prototypes</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="figmaUrl">Add Figma Prototype URL</Label>
+                    <div className="flex gap-2">
+                      <Input 
+                        id="figmaUrl"
+                        value={figmaUrl}
+                        onChange={(e) => setFigmaUrl(e.target.value)}
+                        placeholder="https://www.figma.com/proto/..."
+                        className="flex-1"
+                      />
+                      <Button 
+                        type="button" 
+                        onClick={handleAddFigmaUrl}
+                        disabled={!figmaUrl.trim()}
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add
+                      </Button>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Paste a Figma prototype URL and it will be automatically converted to an embedded iframe.
+                    </p>
+                  </div>
+                  
+                  {/* 追加されたiframeのリスト表示 */}
+                  {iframeList.length > 0 && (
+                    <div className="space-y-2">
+                      <Label>Added Prototypes</Label>
+                      <div className="space-y-2 max-h-40 overflow-y-auto">
+                        {iframeList.map((iframe, index) => (
+                          <div key={index} className="flex items-center justify-between p-2 border rounded bg-gray-50">
+                            <span className="text-sm text-gray-600 truncate flex-1">
+                              {iframe.includes('figma.com') ? 'Figma Prototype' : 'Custom Embed'} #{index + 1}
+                            </span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleRemoveIframe(index)}
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>Advanced Web Embeds</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -471,7 +589,7 @@ const ProjectEditor: React.FC = () => {
                       id="embedCode"
                       name="embedCode"
                       value={embedCodeInput}
-                      onChange={(e) => setEmbedCodeInput(e.target.value)}
+                      onChange={(e) => handleEmbedCodeChange(e.target.value)}
                       placeholder='<iframe src="https://example.com/prototype" width="800" height="600"></iframe>
 
 <iframe src="https://figma.com/embed?embed_host=share&url=..." width="800" height="450"></iframe>'
@@ -479,7 +597,8 @@ const ProjectEditor: React.FC = () => {
                       className="font-mono text-sm"
                     />
                     <p className="text-sm text-muted-foreground">
-                      Add HTML embed codes for interactive prototypes (Figma, InVision, CodePen, etc.). Separate multiple embeds with two line breaks. The first embed will be used as the main preview in the projects grid.
+                      Advanced users can manually edit HTML embed codes. Separate multiple embeds with two line breaks. 
+                      The first embed will be used as the main preview in the projects grid.
                     </p>
                   </div>
                 </CardContent>
