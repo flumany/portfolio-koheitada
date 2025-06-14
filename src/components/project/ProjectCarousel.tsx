@@ -21,6 +21,8 @@ interface ProjectCarouselProps {
 const ProjectCarousel = ({ images, iframes = [], title }: ProjectCarouselProps) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [emblaApi, setEmblaApi] = React.useState<UseEmblaCarouselType[1] | null>(null);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [dialogIndex, setDialogIndex] = React.useState(0);
   
   React.useEffect(() => {
     if (!emblaApi) return;
@@ -39,6 +41,35 @@ const ProjectCarousel = ({ images, iframes = [], title }: ProjectCarouselProps) 
   
   const items = [...images, ...iframes];
   const isIframe = (index: number) => index >= images.length;
+
+  const handleDialogItemClick = (index: number) => {
+    setDialogIndex(index);
+    setDialogOpen(true);
+  };
+
+  const handleDialogPrevious = () => {
+    if (dialogIndex > 0) {
+      setDialogIndex(dialogIndex - 1);
+    } else {
+      setDialogIndex(items.length - 1); // Loop to last item
+    }
+  };
+
+  const handleDialogNext = () => {
+    if (dialogIndex < items.length - 1) {
+      setDialogIndex(dialogIndex + 1);
+    } else {
+      setDialogIndex(0); // Loop to first item
+    }
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    // Sync the main carousel with the dialog index
+    if (emblaApi) {
+      emblaApi.scrollTo(dialogIndex);
+    }
+  };
   
   return (
     <div className="relative">
@@ -53,65 +84,34 @@ const ProjectCarousel = ({ images, iframes = [], title }: ProjectCarouselProps) 
         <CarouselContent>
           {items.map((src, index) => (
             <CarouselItem key={index}>
-              <Dialog>
-                <DialogTrigger className="w-full">
-                  <div className="p-1 relative group">
-                    {isIframe(index) ? (
-                      <iframe 
-                        src={src} 
-                        className="w-full h-[400px] rounded-lg"
-                        title={`${title} - Preview ${index + 1}`}
-                      />
-                    ) : (
-                      <div className="flex items-center justify-center w-full h-[400px] bg-nordic-offwhite rounded-lg">
-                        <img 
-                          src={src} 
-                          alt={`${title} - Image ${index + 1}`} 
-                          className="w-full h-full object-contain rounded-lg group-hover:opacity-90 transition-opacity cursor-pointer bg-nordic-offwhite"
-                          style={{ maxHeight: 400 }}
-                        />
-                      </div>
-                    )}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="bg-black/40 p-2 rounded-full">
-                        <Image className="text-white" size={24} />
-                      </div>
-                    </div>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="max-w-4xl">
-                  <DialogTitle className="text-xl font-medium mb-4">{title}</DialogTitle>
+              <div 
+                className="w-full cursor-pointer"
+                onClick={() => handleDialogItemClick(index)}
+              >
+                <div className="p-1 relative group">
                   {isIframe(index) ? (
                     <iframe 
                       src={src} 
-                      className="w-full h-[80vh]"
-                      title={`${title} - Full View ${index + 1}`}
+                      className="w-full h-[400px] rounded-lg"
+                      title={`${title} - Preview ${index + 1}`}
                     />
                   ) : (
-                    <div className="flex items-center justify-center w-full" style={{ minHeight: '60vh', background: '#F8F7F4' }}>
+                    <div className="flex items-center justify-center w-full h-[400px] bg-nordic-offwhite rounded-lg">
                       <img 
                         src={src} 
                         alt={`${title} - Image ${index + 1}`} 
-                        className="w-full object-contain max-h-[75vh] bg-nordic-offwhite rounded"
+                        className="w-full h-full object-contain rounded-lg group-hover:opacity-90 transition-opacity cursor-pointer bg-nordic-offwhite"
+                        style={{ maxHeight: 400 }}
                       />
                     </div>
                   )}
-                  <div className="absolute top-1/2 -translate-y-1/2 flex justify-between w-full left-0 px-4">
-                    <button 
-                      onClick={() => emblaApi?.scrollPrev()}
-                      className="p-2 rounded-full bg-white/80 hover:bg-white transition-colors shadow-lg"
-                    >
-                      <ArrowBigLeft className="w-6 h-6" />
-                    </button>
-                    <button 
-                      onClick={() => emblaApi?.scrollNext()}
-                      className="p-2 rounded-full bg-white/80 hover:bg-white transition-colors shadow-lg"
-                    >
-                      <ArrowBigRight className="w-6 h-6" />
-                    </button>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="bg-black/40 p-2 rounded-full">
+                      <Image className="text-white" size={24} />
+                    </div>
                   </div>
-                </DialogContent>
-              </Dialog>
+                </div>
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -141,9 +141,62 @@ const ProjectCarousel = ({ images, iframes = [], title }: ProjectCarouselProps) 
           ))}
         </div>
       )}
+
+      {/* Dialog for full-screen view */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogTitle className="text-xl font-medium mb-4">{title}</DialogTitle>
+          {isIframe(dialogIndex) ? (
+            <iframe 
+              src={items[dialogIndex]} 
+              className="w-full h-[80vh]"
+              title={`${title} - Full View ${dialogIndex + 1}`}
+            />
+          ) : (
+            <div className="flex items-center justify-center w-full" style={{ minHeight: '60vh', background: '#F8F7F4' }}>
+              <img 
+                src={items[dialogIndex]} 
+                alt={`${title} - Image ${dialogIndex + 1}`} 
+                className="w-full object-contain max-h-[75vh] bg-nordic-offwhite rounded"
+              />
+            </div>
+          )}
+          
+          {/* Navigation arrows inside dialog */}
+          {items.length > 1 && (
+            <>
+              <button 
+                onClick={handleDialogPrevious}
+                className="absolute top-1/2 left-4 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors shadow-lg z-10"
+              >
+                <ArrowBigLeft className="w-6 h-6" />
+              </button>
+              <button 
+                onClick={handleDialogNext}
+                className="absolute top-1/2 right-4 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors shadow-lg z-10"
+              >
+                <ArrowBigRight className="w-6 h-6" />
+              </button>
+              
+              {/* Page indicators */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                {items.map((_, index) => (
+                  <button
+                    key={index}
+                    className={cn(
+                      "w-2 h-2 rounded-full transition-all",
+                      dialogIndex === index ? "bg-white w-4" : "bg-white/40"
+                    )}
+                    onClick={() => setDialogIndex(index)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 
 export default ProjectCarousel;
-
