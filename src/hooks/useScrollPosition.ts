@@ -12,30 +12,16 @@ export const useScrollPosition = () => {
   const saveScrollPosition = () => {
     const scrollY = window.scrollY;
     scrollPositions.set(location.pathname, scrollY);
-    console.log(`Saved scroll position for ${location.pathname}:`, scrollY);
   };
 
   // 保存されたスクロール位置を復元
   const restoreScrollPosition = () => {
     const savedPosition = scrollPositions.get(location.pathname);
-    console.log(`Restoring scroll position for ${location.pathname}:`, savedPosition);
-    
-    if (savedPosition !== undefined && savedPosition > 0) {
-      // requestAnimationFrameを使ってDOMの描画完了後にスクロール
-      requestAnimationFrame(() => {
-        window.scrollTo({
-          top: savedPosition,
-          behavior: 'instant'
-        });
-        
-        // さらに確実にするため、少し遅れてもう一度実行
-        setTimeout(() => {
-          window.scrollTo({
-            top: savedPosition,
-            behavior: 'instant'
-          });
-        }, 10);
-      });
+    if (savedPosition !== undefined) {
+      // スクロール復元を少し遅延させることで、DOMの描画完了を待つ
+      setTimeout(() => {
+        window.scrollTo(0, savedPosition);
+      }, 100);
     }
   };
 
@@ -46,27 +32,16 @@ export const useScrollPosition = () => {
     };
 
     // スクロール位置を定期的に保存（ユーザーがスクロールしている間）
-    let scrollTimer: NodeJS.Timeout;
     const handleScroll = () => {
-      if (scrollTimer) {
-        clearTimeout(scrollTimer);
-      }
-      scrollTimer = setTimeout(() => {
-        saveScrollPosition();
-      }, 100);
+      saveScrollPosition();
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('scroll', handleScroll);
 
-    // コンポーネントのアンマウント時にもスクロール位置を保存
     return () => {
-      saveScrollPosition();
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('scroll', handleScroll);
-      if (scrollTimer) {
-        clearTimeout(scrollTimer);
-      }
     };
   }, [location.pathname]);
 
