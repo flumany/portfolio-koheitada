@@ -16,10 +16,10 @@ const Index: React.FC = () => {
   useEffect(() => {
     console.log('Index page mounted, attempting to restore scroll position');
     
-    // DOMの描画とコンテンツの読み込みを待ってからスクロール位置を復元
+    // DOMのレンダリング完了を待ってからスクロール位置を復元
     const timer = setTimeout(() => {
       restoreScrollPosition();
-    }, 100);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [restoreScrollPosition]);
