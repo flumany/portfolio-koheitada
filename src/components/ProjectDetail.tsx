@@ -89,9 +89,23 @@ const ProjectDetail: React.FC = () => {
 
   // 戻るボタンのハンドラー
   const handleBackToProjects = () => {
-    // Homeページのスクロール位置を保存してから遷移
-    navigate('/');
+    console.log('ProjectDetail: handleBackToProjects - saving scroll position before navigation');
+    // 現在のスクロール位置を明示的に保存
+    saveScrollPosition();
+    
+    // ホームページのスクロール位置を保存してから遷移
+    setTimeout(() => {
+      navigate('/');
+    }, 10);
   };
+
+  // コンポーネントアンマウント時にスクロール位置を保存
+  useEffect(() => {
+    return () => {
+      console.log('ProjectDetail: Component unmounting - saving scroll position');
+      saveScrollPosition();
+    };
+  }, [saveScrollPosition]);
 
   if (loading) {
     return (
