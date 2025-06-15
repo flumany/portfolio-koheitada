@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useScrollPosition } from '../hooks/useScrollPosition';
 import ProjectNavigator from './project/ProjectNavigator';
 import ProjectDisplay from './project/ProjectDisplay';
 import ProjectSidebar from './project/ProjectSidebar';
@@ -13,6 +13,8 @@ import { Loader2 } from 'lucide-react';
 const ProjectDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const { saveScrollPosition } = useScrollPosition();
+  
   const [loading, setLoading] = useState(true);
   const [project, setProject] = useState<ProjectWork | null>(null);
   const [projectImages, setProjectImages] = useState<string[]>([]);
@@ -85,6 +87,12 @@ const ProjectDetail: React.FC = () => {
     loadProject();
   }, [slug, navigate]);
 
+  // 戻るボタンのハンドラー
+  const handleBackToProjects = () => {
+    // Homeページのスクロール位置を保存してから遷移
+    navigate('/');
+  };
+
   if (loading) {
     return (
       <div className="container-custom py-20 flex items-center justify-center">
@@ -105,11 +113,12 @@ const ProjectDetail: React.FC = () => {
     <div className="container-custom py-20">
       <ProjectNavigator 
         categoryTitle={project.category}
-        projects={[project]} // For now, only showing the current project
+        projects={[project]}
         currentIndex={0}
         onProjectSelect={() => {}}
         loading={false}
         projectImages={{[project.id]: projectImages}}
+        onBackToProjects={handleBackToProjects}
       />
 
       <div className="grid md:grid-cols-12 gap-8">

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -14,6 +13,7 @@ interface ProjectNavigatorProps {
   onProjectSelect: (index: number) => void;
   loading: boolean;
   projectImages: {[key: string]: string[]};
+  onBackToProjects?: () => void;
 }
 
 const ProjectNavigator: React.FC<ProjectNavigatorProps> = ({ 
@@ -22,16 +22,25 @@ const ProjectNavigator: React.FC<ProjectNavigatorProps> = ({
   currentIndex, 
   onProjectSelect,
   loading,
-  projectImages
+  projectImages,
+  onBackToProjects
 }) => {
   const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    if (onBackToProjects) {
+      onBackToProjects();
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
     <>
       <Button
         variant="ghost"
         className="flex items-center gap-2 hover:bg-nordic-beige/20 mb-6"
-        onClick={() => navigate('/')}
+        onClick={handleBackClick}
       >
         <ArrowLeft size={20} />
         Back to Projects
