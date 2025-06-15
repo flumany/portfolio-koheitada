@@ -1,5 +1,5 @@
 
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useScrollPosition } from '../hooks/useScrollPosition';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
@@ -12,19 +12,14 @@ import Footer from '../components/Footer';
 const Index: React.FC = () => {
   const { restoreScrollPosition } = useScrollPosition();
 
-  // useLayoutEffect を使用してDOM描画前にスクロール位置を復元
-  useLayoutEffect(() => {
-    console.log('Index: useLayoutEffect - attempting to restore scroll position');
-    restoreScrollPosition();
-  }, [restoreScrollPosition]);
-
-  // 追加の復元タイミング（コンテンツ読み込み完了後）
+  // ページがマウントされた時にスクロール位置を復元
   useEffect(() => {
-    console.log('Index: useEffect - additional restore attempt');
-    // コンテンツが完全に読み込まれた後の復元
+    console.log('Index page mounted, attempting to restore scroll position');
+    
+    // DOMのレンダリング完了を待ってからスクロール位置を復元
     const timer = setTimeout(() => {
       restoreScrollPosition();
-    }, 100);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [restoreScrollPosition]);

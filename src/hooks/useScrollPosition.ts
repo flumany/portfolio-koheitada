@@ -1,5 +1,5 @@
 
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // スクロール位置を保存するためのグローバルストレージ
@@ -9,50 +9,35 @@ export const useScrollPosition = () => {
   const location = useLocation();
 
   // 現在のスクロール位置を保存
-  const saveScrollPosition = useCallback(() => {
+  const saveScrollPosition = () => {
     const scrollY = window.scrollY;
     scrollPositions.set(location.pathname, scrollY);
-    console.log(`Saved scroll position for ${location.pathname}: ${scrollY}`);
-  }, [location.pathname]);
+    console.log(`Saved scroll position for ${location.pathname}:`, scrollY);
+  };
 
   // 保存されたスクロール位置を復元
-  const restoreScrollPosition = useCallback(() => {
+  const restoreScrollPosition = () => {
     const savedPosition = scrollPositions.get(location.pathname);
-    console.log(`Attempting to restore scroll position for ${location.pathname}: ${savedPosition}`);
+    console.log(`Restoring scroll position for ${location.pathname}:`, savedPosition);
     
     if (savedPosition !== undefined && savedPosition > 0) {
-      // 複数のタイミングでスクロール復元を試行
-      const restoreAttempts = [0, 50, 100, 200, 500];
-      
-      restoreAttempts.forEach((delay, index) => {
+      // requestAnimationFrameを使ってDOMの描画完了後にスクロール
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: savedPosition,
+          behavior: 'instant'
+        });
+        
+        // さらに確実にするため、少し遅れてもう一度実行
         setTimeout(() => {
-          // DOM要素が完全に描画されるまで待機
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              const currentScroll = window.scrollY;
-              console.log(`Restore attempt ${index + 1} at ${delay}ms - Current: ${currentScroll}, Target: ${savedPosition}`);
-              
-              // まだ目標位置に到達していない場合のみスクロール
-              if (Math.abs(currentScroll - savedPosition) > 10) {
-                window.scrollTo({
-                  top: savedPosition,
-                  behavior: 'instant'
-                });
-                
-                // スクロール後の位置を確認
-                setTimeout(() => {
-                  const afterScroll = window.scrollY;
-                  console.log(`After scroll attempt ${index + 1}: ${afterScroll}`);
-                }, 10);
-              }
-            });
+          window.scrollTo({
+            top: savedPosition,
+            behavior: 'instant'
           });
-        }, delay);
+        }, 10);
       });
-    } else {
-      console.log(`No saved position found for ${location.pathname} or position is 0`);
     }
-  }, [location.pathname]);
+  };
 
   // ページを離れる時にスクロール位置を保存
   useEffect(() => {
@@ -61,32 +46,29 @@ export const useScrollPosition = () => {
     };
 
     // スクロール位置を定期的に保存（ユーザーがスクロールしている間）
+    let scrollTimer: NodeJS.Timeout;
     const handleScroll = () => {
-      saveScrollPosition();
-    };
-
-    // ページ遷移時の保存
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        saveScrollPosition();
+      if (scrollTimer) {
+        clearTimeout(scrollTimer);
       }
+      scrollTimer = setTimeout(() => {
+        saveScrollPosition();
+      }, 100);
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('scroll', handleScroll);
 
-    // コンポーネント初期化時に一度スクロール位置を保存
-    saveScrollPosition();
-
+    // コンポーネントのアンマウント時にもスクロール位置を保存
     return () => {
-      // アンマウント時にも保存
       saveScrollPosition();
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (scrollTimer) {
+        clearTimeout(scrollTimer);
+      }
     };
-  }, [location.pathname, saveScrollPosition]);
+  }, [location.pathname]);
 
   return {
     saveScrollPosition,
