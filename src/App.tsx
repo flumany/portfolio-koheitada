@@ -4,9 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import IndexEN from "./pages/IndexEN";
 import IndexJP from "./pages/IndexJP";
+import IndexEN from "./pages/IndexEN";
 import NotFound from "./pages/NotFound";
 import ProjectDetail from "./components/ProjectDetail";
 import ProjectEditor from "./components/ProjectEditor";
@@ -21,9 +20,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<IndexJP />} />
           <Route path="/en" element={<IndexEN />} />
-          <Route path="/jp" element={<IndexJP />} />
           <Route path="/project/:slug" element={<ProjectDetail />} />
           <Route path="/edit" element={<ProjectEditIndex />} />
           <Route path="/edit/:slug" element={<ProjectEditor />} />

@@ -1,51 +1,136 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { Mail, Phone, Github, Linkedin } from 'lucide-react';
 
 const ContactJP: React.FC = () => {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+
+  const isComplete = form.name.trim() && form.email.trim() && form.message.trim();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   return (
-    <section id="contact" className="section bg-nordic-gray">
+    <section id="contact" className="section bg-nordic-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-medium mb-4 tracking-tight">
-            お問い合わせ
-          </h2>
-          <div className="w-16 h-1 bg-accent-blue mx-auto mb-8" />
+          <h2 className="text-3xl md:text-4xl font-medium mb-4">お問い合わせ</h2>
+          <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-nordic-white p-8 rounded-lg shadow-sm">
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-xl font-medium mb-4">お気軽にご連絡ください</h3>
-                <p className="text-nordic-dark/70 mb-6">
-                  新しい機会やコラボレーションに常に興味を持っています。
-                  プロジェクトについて話し合いたい場合や、ご挨拶したい場合は、お気軽にご連絡ください。
-                </p>
+        <div className="grid md:grid-cols-12 gap-8">
+          <div className="md:col-span-5 space-y-6">
+            <div className="flex items-start">
+              <div className="bg-nordic-beige p-3 rounded-full">
+                <Mail size={20} />
               </div>
-              
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="ml-4">
+                <h3 className="font-medium">メール</h3>
+                <p className="text-nordic-dark/70">tadakohei.0120@gmail.com</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start">
+              <div className="bg-nordic-beige p-3 rounded-full">
+                <Phone size={20} />
+              </div>
+              <div className="ml-4">
+                <h3 className="font-medium">電話</h3>
+                <p className="text-nordic-dark/70">+81 80-4841-4120</p>
+              </div>
+            </div>
+
+            <div className="pt-6">
+              <h3 className="font-medium mb-4">つながりませんか</h3>
+              <div className="flex space-x-4">
+                <a href="https://github.com/flumany/" target="_blank" rel="noopener noreferrer" className="bg-nordic-gray/20 hover:bg-nordic-blue hover:text-white p-3 rounded-full transition-all">
+                  <Github size={20} />
+                </a>
+                <a href="https://www.linkedin.com/in/koheitada/" target="_blank" rel="noopener noreferrer" className="bg-nordic-gray/20 hover:bg-nordic-blue hover:text-white p-3 rounded-full transition-all">
+                  <Linkedin size={20} />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="md:col-span-7">
+            <div className="bg-nordic-offwhite p-6 rounded-lg">
+              <h3 className="font-medium mb-4">メッセージを送る</h3>
+              <form 
+                className="space-y-4" 
+                action="mailto:tadakohei.0120+contact@gmail.com" 
+                method="post" 
+                encType="text/plain"
+                onSubmit={e => {
+                  if (!isComplete) e.preventDefault();
+                }}
+              >
                 <div>
-                  <h4 className="font-medium mb-2">メール</h4>
-                  <a 
-                    href="mailto:contact@example.com" 
-                    className="text-accent-blue hover:underline"
-                  >
-                    contact@example.com
-                  </a>
+                  <label htmlFor="name" className="block text-sm font-medium mb-1">
+                    お名前
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 rounded-md border border-nordic-gray/30 focus:outline-none focus:ring-1 focus:ring-nordic-blue"
+                    placeholder="お名前を入力してください"
+                  />
                 </div>
                 
                 <div>
-                  <h4 className="font-medium mb-2">LinkedIn</h4>
-                  <a 
-                    href="https://linkedin.com" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-accent-blue hover:underline"
-                  >
-                    LinkedIn プロフィール
-                  </a>
+                  <label htmlFor="email" className="block text-sm font-medium mb-1">
+                    メールアドレス
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 rounded-md border border-nordic-gray/30 focus:outline-none focus:ring-1 focus:ring-nordic-blue"
+                    placeholder="メールアドレスを入力してください"
+                  />
                 </div>
-              </div>
+                
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium mb-1">
+                    メッセージ
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    value={form.message}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 rounded-md border border-nordic-gray/30 focus:outline-none focus:ring-1 focus:ring-nordic-blue"
+                    placeholder="メッセージを入力してください"
+                  ></textarea>
+                </div>
+                
+                <button
+                  type="submit"
+                  className={`w-full py-3 rounded-md transition-all ${
+                    isComplete
+                      ? '' // 選択時の背景色/文字色を適用
+                      : 'bg-nordic-blue text-white opacity-60 cursor-not-allowed'
+                  }`}
+                  style={{
+                    backgroundColor: isComplete ? '#a6bdfa' : undefined,
+                    color: isComplete ? '#fff' : undefined
+                  }}
+                  disabled={!isComplete}
+                >
+                  メッセージを送信
+                </button>
+              </form>
             </div>
           </div>
         </div>

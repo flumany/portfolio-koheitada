@@ -19,13 +19,13 @@ const HeroJP: React.FC = () => {
         <div className="grid md:grid-cols-12 gap-12 items-center">
           <div className="md:col-span-8 space-y-8">
             <h1 className="text-4xl md:text-6xl font-medium text-nordic-dark leading-tight animate-fade-in">
-              多田 航平<br />
+              多田 浩平<br />
               <div className="flex flex-col gap-3 mt-4">
                 <span className="text-xl md:text-2xl leading-relaxed font-semibold" style={{color: "#a6bdfa"}}>
-                  UI、UX、3D、XR、物理製品を専門とするサービス/プロダクトデザイナー
+                  Service/Product Designer specializing in UI, UX, 3D, XR, Physical Products
                 </span>
                 <span className="text-xl md:text-2xl leading-relaxed font-semibold" style={{color: "#a6bdfa"}}>
-                  認定人間中心設計スペシャリスト
+                  Certified Human Centered Design Specialist
                 </span>
               </div>
             </h1>
@@ -52,7 +52,7 @@ const HeroJP: React.FC = () => {
                   <div className="aspect-square rounded-md mb-4 flex items-center justify-center relative overflow-hidden group">
                     <img 
                       src="/lovable-uploads/1f814fdf-d820-4075-94dc-db2f878d6252.png" 
-                      alt="多田航平のプロフィール" 
+                      alt="多田浩平のプロフィール" 
                       className="w-full h-full object-cover rounded-md"
                     />
                     <div className="absolute inset-0 bg-gradient-to-tr from-nordic-blue/20 via-transparent to-nordic-beige/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

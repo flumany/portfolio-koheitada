@@ -38,17 +38,17 @@ const TimelineJP: React.FC = () => {
   const experiences = [
     {
       year: "2022年8月 - 現在",
-      title: "METABIRDS株式会社",
+      title: "株式会社メタバーズ",
       description: "3Dジェネラリスト・研究開発",
     },
     {
       year: "2019年1月 - 2022年7月",
-      title: "株式会社イノアック",
+      title: "株式会社イノアックコーポレーション",
       description: "寝具製品企画・研究開発スペシャリスト",
     },
     {
       year: "2014年4月 - 2018年12月",
-      title: "カリモク家具株式会社",
+      title: "カリモク皆栄株式会社",
       description: "家具先行開発・研究スペシャリスト",
     }
   ];

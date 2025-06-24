@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { useScrollPosition } from '../hooks/useScrollPosition';
-import Header from '../components/Header';
+import HeaderJP from '../components/HeaderJP';
 import HeroJP from '../components/HeroJP';
 import AboutJP from '../components/AboutJP';
 import TimelineJP from '../components/TimelineJP';
@@ -24,7 +24,7 @@ const IndexJP: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      <Header />
+      <HeaderJP />
       <HeroJP />
       <AboutJP />
       <TimelineJP />
