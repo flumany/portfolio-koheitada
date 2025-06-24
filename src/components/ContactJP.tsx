@@ -46,7 +46,7 @@ const ContactJP: React.FC = () => {
             </div>
 
             <div className="pt-6">
-              <h3 className="font-medium mb-4">つながりませんか</h3>
+              <h3 className="font-medium mb-4">Connect with me</h3>
               <div className="flex space-x-4">
                 <a href="https://github.com/flumany/" target="_blank" rel="noopener noreferrer" className="bg-nordic-gray/20 hover:bg-nordic-blue hover:text-white p-3 rounded-full transition-all">
                   <Github size={20} />
