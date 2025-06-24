@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface TimelineItemProps {
@@ -125,7 +124,7 @@ const TimelineJP: React.FC = () => {
     <section id="experience" className="section bg-nordic-offwhite">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-medium mb-4">経歴・資格</h2>
+          <h2 className="text-3xl md:text-4xl font-medium mb-4">Experience</h2>
           <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
         </div>
 
