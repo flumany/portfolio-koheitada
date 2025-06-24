@@ -46,9 +46,9 @@ const HeaderJP: React.FC = () => {
 
         <nav className="hidden md:flex space-x-8 items-center">
           <button onClick={() => scrollToSection('about')} className="nav-link">About Me</button>
-          <button onClick={() => scrollToSection('experience')} className="nav-link">経歴・資格</button>
-          <button onClick={() => scrollToSection('projects')} className="nav-link">プロジェクト</button>
-          <button onClick={() => scrollToSection('contact')} className="nav-link">お問い合わせ</button>
+          <button onClick={() => scrollToSection('experience')} className="nav-link">Experience</button>
+          <button onClick={() => scrollToSection('projects')} className="nav-link">Projects</button>
+          <button onClick={() => scrollToSection('contact')} className="nav-link">Contact</button>
           <Link to="/en" className="bg-nordic-beige px-3 py-1 rounded text-sm hover:bg-opacity-80 transition-all">
             English
           </Link>
@@ -67,9 +67,9 @@ const HeaderJP: React.FC = () => {
         <div className="md:hidden bg-nordic-white py-4 animate-fade-in">
           <div className="container-custom flex flex-col space-y-4">
             <button onClick={() => scrollToSection('about')} className="nav-link py-2 text-left">About Me</button>
-            <button onClick={() => scrollToSection('experience')} className="nav-link py-2 text-left">経歴・資格</button>
-            <button onClick={() => scrollToSection('projects')} className="nav-link py-2 text-left">プロジェクト</button>
-            <button onClick={() => scrollToSection('contact')} className="nav-link py-2 text-left">お問い合わせ</button>
+            <button onClick={() => scrollToSection('experience')} className="nav-link py-2 text-left">Experience</button>
+            <button onClick={() => scrollToSection('projects')} className="nav-link py-2 text-left">Projects</button>
+            <button onClick={() => scrollToSection('contact')} className="nav-link py-2 text-left">Contact</button>
             <Link to="/en" className="bg-nordic-beige px-3 py-1 rounded text-sm hover:bg-opacity-80 transition-all w-fit">
               English
             </Link>
