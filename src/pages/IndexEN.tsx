@@ -9,7 +9,7 @@ import Projects from '../components/Projects';
 import ContactEN from '../components/ContactEN';
 import Footer from '../components/Footer';
 
-const Index EN: React.FC = () => {
+const IndexEN: React.FC = () => {
   const { restoreScrollPosition } = useScrollPosition();
 
   useEffect(() => {
