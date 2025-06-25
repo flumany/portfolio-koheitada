@@ -5,19 +5,18 @@
  */
 export function formatTextWithLineBreaks(text: string): string {
   if (!text) return '';
-  
-  // 既存の改行を保持
   let formatted = text;
 
-  // 日本語句読点の後で改行（既存の改行がない場合のみ）
-  formatted = formatted.replace(/([。｡、，,！!？?])(?!\n)\s*/g, '$1\n');
+  // 日本語句読点の後で改行
+  formatted = formatted.replace(/([。｡、，,！!？?])\s*/g, '$1\n');
 
-  // 英語: カンマ, セミコロン, コロン, ピリオド, エクスクラメーション, クエスチョンの後で改行（既存の改行がない場合のみ）
-  formatted = formatted.replace(/([,.!?;:])(?!\n)\s+/g, '$1\n');
+  // 英語: カンマ, セミコロン, コロン, ピリオド, エクスクラメーション, クエスチョンの後で改行
+  formatted = formatted.replace(/([,.!?;:])\s+/g, '$1\n');
 
-  // 英語: よくある接続詞や前置詞の前で改行（単語区切りのみ/文頭文末じゃない場合、既存の改行がない場合のみ）
+  // 英語: よくある接続詞や前置詞の前で改行（単語区切りのみ/文頭文末じゃない場合）
+  // ["for","and","nor","but","or","yet","so","in","at","to","with","from","on","by","of","as","if","that","because"]
   formatted = formatted.replace(
-    /(?<!\n)(\s)(for|and|nor|but|or|yet|so|in|at|to|with|from|on|by|of|as|if|that|because)\s/gi,
+    /(\s)(for|and|nor|but|or|yet|so|in|at|to|with|from|on|by|of|as|if|that|because)\s/gi,
     '\n$2 '
   );
 
