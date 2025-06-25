@@ -49,7 +49,7 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   const [activeTab, setActiveTab] = useState(getDefaultTab());
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-0">
       {/* Project Details Section */}
       <ProjectDescription 
         title={currentWork.title}
@@ -57,7 +57,7 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
       />
 
       {/* Media Tabs Section */}
-      <div className="bg-white rounded-2xl p-8 shadow-md border border-nordic-gray/30">
+      <div className="bg-white rounded-2xl p-8 shadow-md border border-nordic-gray/30 -mt-2">
         {loading ? (
           <div className="space-y-4">
             <Skeleton className="h-72 w-full" />
