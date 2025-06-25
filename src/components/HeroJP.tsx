@@ -19,7 +19,14 @@ const HeroJP: React.FC = () => {
         <div className="grid md:grid-cols-12 gap-12 items-center">
           <div className="md:col-span-8 space-y-8">
             <h1 className="text-4xl md:text-6xl font-medium text-nordic-dark leading-tight animate-fade-in">
-              多田 浩平<br />
+              <span className="font-serif tracking-wider text-5xl md:text-7xl" style={{
+                fontFamily: "'Noto Serif JP', 'Yu Mincho', 'YuMincho', 'Hiragino Mincho Pro', serif",
+                fontWeight: 400,
+                letterSpacing: '0.08em'
+              }}>
+                多田 浩平
+              </span>
+              <br />
               <div className="flex flex-col gap-3 mt-4">
                 <span className="text-xl md:text-2xl leading-relaxed font-semibold" style={{color: "#a6bdfa"}}>
                   Service/Product Designer specializing in UI, UX, 3D, XR, Physical Products
