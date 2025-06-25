@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectCarousel from './ProjectCarousel';
@@ -49,7 +48,7 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
   const [activeTab, setActiveTab] = useState(getDefaultTab());
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-2">
       {/* Project Details Section */}
       <ProjectDescription 
         title={currentWork.title}
