@@ -19,8 +19,8 @@ const HeroJP: React.FC = () => {
         <div className="grid md:grid-cols-12 gap-12 items-center">
           <div className="md:col-span-8 space-y-8">
             <h1 className="text-4xl md:text-6xl font-medium text-nordic-dark leading-tight animate-fade-in">
-              <span className="font-serif tracking-wider text-5xl md:text-7xl" style={{
-                fontFamily: "'Noto Serif JP', 'Yu Mincho', 'YuMincho', 'Hiragino Mincho Pro', serif",
+              <span className="text-5xl md:text-7xl" style={{
+                fontFamily: "'Kaisei Opti', 'Noto Serif JP', 'Yu Mincho', 'YuMincho', 'Hiragino Mincho Pro', serif",
                 fontWeight: 400,
                 letterSpacing: '0.08em'
               }}>
