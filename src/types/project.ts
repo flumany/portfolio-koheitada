@@ -1,7 +1,10 @@
+
 export interface ProjectWork {
   id: string;
   title: string;
+  title_en?: string;
   description: string;
+  description_en?: string;
   category: string;
   slug: string;
   published: boolean;
@@ -9,9 +12,12 @@ export interface ProjectWork {
   models?: string[];
   technologies?: string[];
   role?: string;
+  role_en?: string;
   duration?: string;
   challenge?: string;
+  challenge_en?: string;
   solution?: string;
+  solution_en?: string;
   created_at?: string;
   updated_at?: string;
   modelUrl?: string;

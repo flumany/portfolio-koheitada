@@ -57,7 +57,9 @@ const ProjectEditor: React.FC = () => {
   
   const [project, setProject] = useState<Partial<ProjectWork>>({
     title: '',
+    title_en: '',
     description: '',
+    description_en: '',
     category: '',
     slug: '',
     published: false,
@@ -65,9 +67,12 @@ const ProjectEditor: React.FC = () => {
     models: [],
     technologies: [],
     role: '',
+    role_en: '',
     duration: '',
     challenge: '',
+    challenge_en: '',
     solution: '',
+    solution_en: '',
     iframes: []
   });
 
@@ -363,7 +368,7 @@ const ProjectEditor: React.FC = () => {
             <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Basic Information</CardTitle>
+                  <CardTitle>Basic Information (Japanese)</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -373,7 +378,7 @@ const ProjectEditor: React.FC = () => {
                       name="title"
                       value={project.title}
                       onChange={handleTitleChange}
-                      placeholder="Project title"
+                      placeholder="プロジェクトタイトル"
                       required
                     />
                   </div>
@@ -400,7 +405,7 @@ const ProjectEditor: React.FC = () => {
                       name="category"
                       value={project.category}
                       onChange={handleChange}
-                      placeholder="e.g. web-design, 3d-design"
+                      placeholder="e.g. UI/UX Design, 3DCG Design"
                       required
                     />
                   </div>
@@ -412,7 +417,7 @@ const ProjectEditor: React.FC = () => {
                       name="description"
                       value={project.description || ''}
                       onChange={handleChange}
-                      placeholder="Brief description of the project"
+                      placeholder="プロジェクトの概要"
                       rows={4}
                     />
                   </div>
@@ -432,7 +437,39 @@ const ProjectEditor: React.FC = () => {
               
               <Card>
                 <CardHeader>
-                  <CardTitle>Additional Details</CardTitle>
+                  <CardTitle>Basic Information (English)</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="title_en">Title (English)</Label>
+                    <Input 
+                      id="title_en"
+                      name="title_en"
+                      value={project.title_en || ''}
+                      onChange={handleChange}
+                      placeholder="Project Title"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="description_en">Description (English)</Label>
+                    <Textarea 
+                      id="description_en"
+                      name="description_en"
+                      value={project.description_en || ''}
+                      onChange={handleChange}
+                      placeholder="Brief description of the project"
+                      rows={4}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Additional Details (Japanese)</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -453,7 +490,7 @@ const ProjectEditor: React.FC = () => {
                       name="role"
                       value={project.role || ''}
                       onChange={handleChange}
-                      placeholder="Your role in the project"
+                      placeholder="プロジェクトでの役割"
                     />
                   </div>
                   
@@ -464,7 +501,25 @@ const ProjectEditor: React.FC = () => {
                       name="duration"
                       value={project.duration || ''}
                       onChange={handleChange}
-                      placeholder="e.g. 3 months"
+                      placeholder="e.g. 3ヶ月"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>Additional Details (English)</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="role_en">Role (English)</Label>
+                    <Input 
+                      id="role_en"
+                      name="role_en"
+                      value={project.role_en || ''}
+                      onChange={handleChange}
+                      placeholder="Your role in the project"
                     />
                   </div>
                 </CardContent>
@@ -491,118 +546,137 @@ const ProjectEditor: React.FC = () => {
           
           <TabsContent value="content" className="p-6">
             <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Project Content</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="challenge">Challenge</Label>
-                    <Textarea 
-                      id="challenge"
-                      name="challenge"
-                      value={project.challenge || ''}
-                      onChange={handleChange}
-                      placeholder="What challenges did you face?"
-                      rows={4}
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="solution">Solution</Label>
-                    <Textarea 
-                      id="solution"
-                      name="solution"
-                      value={project.solution || ''}
-                      onChange={handleChange}
-                      placeholder="How did you solve these challenges?"
-                      rows={4}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle>Figma Prototypes</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="figmaUrl">Add Figma Prototype URL</Label>
-                    <div className="flex gap-2">
-                      <Input 
-                        id="figmaUrl"
-                        value={figmaUrl}
-                        onChange={(e) => setFigmaUrl(e.target.value)}
-                        placeholder="https://www.figma.com/proto/..."
-                        className="flex-1"
-                      />
-                      <Button 
-                        type="button" 
-                        onClick={handleAddFigmaUrl}
-                        disabled={!figmaUrl.trim()}
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add
-                      </Button>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Paste a Figma prototype URL and it will be automatically converted to an embedded iframe.
-                    </p>
-                  </div>
-                  
-                  {/* 追加されたiframeのリスト表示 */}
-                  {iframeList.length > 0 && (
+              <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Project Content (Japanese)</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
                     <div className="space-y-2">
-                      <Label>Added Prototypes</Label>
-                      <div className="space-y-2 max-h-40 overflow-y-auto">
-                        {iframeList.map((iframe, index) => (
-                          <div key={index} className="flex items-center justify-between p-2 border rounded bg-gray-50">
-                            <span className="text-sm text-gray-600 truncate flex-1">
-                              {iframe.includes('figma.com') ? 'Figma Prototype' : 'Custom Embed'} #{index + 1}
-                            </span>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleRemoveIframe(index)}
-                              className="text-red-500 hover:text-red-700"
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
+                      <Label htmlFor="challenge">Challenge</Label>
+                      <Textarea 
+                        id="challenge"
+                        name="challenge"
+                        value={project.challenge || ''}
+                        onChange={handleChange}
+                        placeholder="どのような課題に直面しましたか？"
+                        rows={4}
+                      />
                     </div>
-                  )}
-                </CardContent>
-              </Card>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="solution">Solution</Label>
+                      <Textarea 
+                        id="solution"
+                        name="solution"
+                        value={project.solution || ''}
+                        onChange={handleChange}
+                        placeholder="どのようにその課題を解決しましたか？"
+                        rows={4}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Project Content (English)</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="challenge_en">Challenge (English)</Label>
+                      <Textarea 
+                        id="challenge_en"
+                        name="challenge_en"
+                        value={project.challenge_en || ''}
+                        onChange={handleChange}
+                        placeholder="What challenges did you face?"
+                        rows={4}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="solution_en">Solution (English)</Label>
+                      <Textarea 
+                        id="solution_en"
+                        name="solution_en"
+                        value={project.solution_en || ''}
+                        onChange={handleChange}
+                        placeholder="How did you solve these challenges?"
+                        rows={4}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
               
-              <Card>
-                <CardHeader>
-                  <CardTitle>Advanced Web Embeds</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="embedCode">HTML Embed Code</Label>
-                    <Textarea 
-                      id="embedCode"
-                      name="embedCode"
-                      value={embedCodeInput}
-                      onChange={(e) => handleEmbedCodeChange(e.target.value)}
-                      placeholder='<iframe src="https://example.com/prototype" width="800" height="600"></iframe>
+              <div className="space-y-2">
+                <Label htmlFor="figmaUrl">Add Figma Prototype URL</Label>
+                <div className="flex gap-2">
+                  <Input 
+                    id="figmaUrl"
+                    value={figmaUrl}
+                    onChange={(e) => setFigmaUrl(e.target.value)}
+                    placeholder="https://www.figma.com/proto/..."
+                    className="flex-1"
+                  />
+                  <Button 
+                    type="button" 
+                    onClick={handleAddFigmaUrl}
+                    disabled={!figmaUrl.trim()}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add
+                  </Button>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Paste a Figma prototype URL and it will be automatically converted to an embedded iframe.
+                </p>
+              </div>
+              
+              {/* 追加されたiframeのリスト表示 */}
+              {iframeList.length > 0 && (
+                <div className="space-y-2">
+                  <Label>Added Prototypes</Label>
+                  <div className="space-y-2 max-h-40 overflow-y-auto">
+                    {iframeList.map((iframe, index) => (
+                      <div key={index} className="flex items-center justify-between p-2 border rounded bg-gray-50">
+                        <span className="text-sm text-gray-600 truncate flex-1">
+                          {iframe.includes('figma.com') ? 'Figma Prototype' : 'Custom Embed'} #{index + 1}
+                        </span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleRemoveIframe(index)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              <div className="space-y-2">
+                <Label htmlFor="embedCode">HTML Embed Code</Label>
+                <Textarea 
+                  id="embedCode"
+                  name="embedCode"
+                  value={embedCodeInput}
+                  onChange={(e) => handleEmbedCodeChange(e.target.value)}
+                  placeholder='<iframe src="https://example.com/prototype" width="800" height="600"></iframe>
 
 <iframe src="https://figma.com/embed?embed_host=share&url=..." width="800" height="450"></iframe>'
-                      rows={8}
-                      className="font-mono text-sm"
-                    />
-                    <p className="text-sm text-muted-foreground">
-                      Advanced users can manually edit HTML embed codes. Separate multiple embeds with two line breaks. 
-                      The first embed will be used as the main preview in the projects grid.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+                  rows={8}
+                  className="font-mono text-sm"
+                />
+                <p className="text-sm text-muted-foreground">
+                  Advanced users can manually edit HTML embed codes. Separate multiple embeds with two line breaks. 
+                  The first embed will be used as the main preview in the projects grid.
+                </p>
+              </div>
             </div>
           </TabsContent>
         </Tabs>
