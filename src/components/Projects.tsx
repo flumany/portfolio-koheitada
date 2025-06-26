@@ -163,7 +163,7 @@ const Projects: React.FC = () => {
         </div>
       </div>
       <div className="p-6 bg-white">
-        <h3 className="font-medium text-lg mb-2 break-words leading-tight">{project.title}</h3>
+        <h3 className="font-medium text-lg mb-2 break-words leading-tight whitespace-normal">{project.title}</h3>
       </div>
     </div>
   );
@@ -282,7 +282,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-2xl font-medium mb-2 capitalize break-words leading-tight">
+        <h3 className="text-2xl font-medium mb-2 capitalize whitespace-normal break-words leading-tight">
           {category.replace('-', ' ')}
         </h3>
         <div className="w-12 h-0.5 bg-nordic-blue mx-auto" />

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Info } from 'lucide-react';
 import { ProjectWork } from '@/types/project';
@@ -13,19 +12,45 @@ interface ProjectSidebarENProps {
   onProjectChange: (index: number) => void;
 }
 
-// English translations for common Japanese project content
+// Enhanced English translations for common Japanese project content
 const translateToEnglish = (text: string): string => {
   const translations: { [key: string]: string } = {
+    // Existing translations
     '従来のデザインでは進捗度は薄いグレーのパーセンテージで表示され、読書中のものは最近読んだ本とひとまとめにされ、読書継続への促進性が不足していることが課題として見受けられた。リデザインでは読書進捗度は楽天のブランドカラーでもあるクリムゾンレッド色のバーで目立つように表示し、読書中の本は続きを読むための単独セクションとして表示するなど、従来と比べて読書の継続を促進するような仕様とした。': 'The conventional design displayed reading progress with a faint gray percentage and grouped currently reading books with recently read ones, which lacked the promotional aspect for reading continuation. In the redesign, reading progress is prominently displayed with Rakuten\'s brand color crimson red bar, and currently reading books are shown in a dedicated section for continuing reading, creating specifications that promote reading continuation compared to the conventional approach.',
     '自主制作(調査/分析、プロトタイプ作成、デザイン全般)': 'Independent project (Research/Analysis, Prototyping, Overall Design)',
     'フィルムクリーナーの解説用CGアニメーション': 'CG animation for film cleaner explanation',
     '楽天Koboアプリ リデザイン': 'Rakuten Kobo App Redesign',
     'オーディオ企画': 'Audio Planning',
     '北欧デザイナースタイルのキャビネット': 'Nordic Designer Style Cabinet',
-    '所有している腕時計': 'Owned Wristwatch'
+    '所有している腕時計': 'Owned Wristwatch',
+    '所有しているペンダント': 'Owned Pendant',
+    // Cabinet project specific translations
+    '家具の北欧デザインの巨匠 Finn Juhl（フィン・ユール）にインスピレーション受け、': 'Inspired by the Nordic furniture design master Finn Juhl,',
+    'デザインしたキャビネット。': 'I designed this cabinet.',
+    'チーク材を全体使い、': 'Using teak wood throughout,',
+    '脚との色の切り替えが印象的。': 'the color transition with the legs is striking.',
+    '自主制作(デザイン、3DCG制作)': 'Independent project (Design, 3DCG production)',
+    // Additional common terms
+    'スピーカーデザイン企画': 'Speaker Design Project',
+    'フィルムクリーナーの解説用CGアニメーション': 'CG Animation for Film Cleaner Explanation'
   };
   
-  return translations[text] || text;
+  // If exact match found, return translation
+  if (translations[text]) {
+    return translations[text];
+  }
+  
+  // For partial matches or combined text, try to translate parts
+  let translated = text;
+  
+  // Replace known phrases
+  Object.entries(translations).forEach(([japanese, english]) => {
+    if (translated.includes(japanese)) {
+      translated = translated.replace(japanese, english);
+    }
+  });
+  
+  return translated;
 };
 
 const ProjectSidebarEN = ({ works, currentWork, currentWorkIndex, onProjectChange }: ProjectSidebarENProps) => {
