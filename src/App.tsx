@@ -8,6 +8,7 @@ import IndexJP from "./pages/IndexJP";
 import IndexEN from "./pages/IndexEN";
 import NotFound from "./pages/NotFound";
 import ProjectDetail from "./components/ProjectDetail";
+import ProjectDetailEN from "./components/ProjectDetailEN";
 import ProjectEditor from "./components/ProjectEditor";
 import ProjectEditIndex from "./pages/ProjectEditIndex";
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/" element={<IndexJP />} />
           <Route path="/en" element={<IndexEN />} />
           <Route path="/project/:slug" element={<ProjectDetail />} />
+          <Route path="/en/project/:slug" element={<ProjectDetailEN />} />
           <Route path="/edit" element={<ProjectEditIndex />} />
           <Route path="/edit/:slug" element={<ProjectEditor />} />
           <Route path="*" element={<NotFound />} />

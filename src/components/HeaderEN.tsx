@@ -49,8 +49,9 @@ const HeaderEN: React.FC = () => {
           <button onClick={() => scrollToSection('experience')} className="nav-link">Experience</button>
           <button onClick={() => scrollToSection('projects')} className="nav-link">Projects</button>
           <button onClick={() => scrollToSection('contact')} className="nav-link">Contact</button>
-          <Link to="/" className="bg-nordic-beige px-3 py-1 rounded text-sm hover:bg-opacity-80 transition-all">
-            日本語
+          <Link to="/" className="flex items-center gap-2 bg-nordic-beige px-4 py-2 rounded-md text-sm hover:bg-opacity-80 transition-all border border-nordic-gray/20">
+            <span className="text-xs bg-white px-2 py-1 rounded text-nordic-dark font-medium">English</span>
+            <span>日本語</span>
           </Link>
         </nav>
 
@@ -70,8 +71,9 @@ const HeaderEN: React.FC = () => {
             <button onClick={() => scrollToSection('experience')} className="nav-link py-2 text-left">Experience</button>
             <button onClick={() => scrollToSection('projects')} className="nav-link py-2 text-left">Projects</button>
             <button onClick={() => scrollToSection('contact')} className="nav-link py-2 text-left">Contact</button>
-            <Link to="/" className="bg-nordic-beige px-3 py-1 rounded text-sm hover:bg-opacity-80 transition-all w-fit">
-              日本語
+            <Link to="/" className="flex items-center gap-2 bg-nordic-beige px-4 py-2 rounded-md text-sm hover:bg-opacity-80 transition-all w-fit border border-nordic-gray/20">
+              <span className="text-xs bg-white px-2 py-1 rounded text-nordic-dark font-medium">English</span>
+              <span>日本語</span>
             </Link>
           </div>
         </div>

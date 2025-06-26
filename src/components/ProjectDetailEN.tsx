@@ -4,14 +4,14 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useScrollPosition } from '../hooks/useScrollPosition';
 import ProjectNavigator from './project/ProjectNavigator';
 import ProjectDisplay from './project/ProjectDisplay';
-import ProjectSidebar from './project/ProjectSidebar';
+import ProjectSidebarEN from './project/ProjectSidebarEN';
 import { fetchProjectBySlug, fetchProjectMedia } from '@/services/projectService';
 import { ProjectWork, ProjectMedia } from '@/types/project';
 import { getImageUrl, get3DModelUrl } from '@/lib/supabase';
 import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from 'lucide-react';
 
-const ProjectDetail: React.FC = () => {
+const ProjectDetailEN: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { saveScrollPosition } = useScrollPosition();
@@ -25,7 +25,7 @@ const ProjectDetail: React.FC = () => {
   useEffect(() => {
     const loadProject = async () => {
       if (!slug) {
-        navigate('/');
+        navigate('/en');
         return;
       }
       
@@ -37,7 +37,7 @@ const ProjectDetail: React.FC = () => {
         
         // If project is not published, redirect to home
         if (!projectData.published) {
-          navigate('/');
+          navigate('/en');
           toast({
             title: "Not Found",
             description: "The requested project is not available."
@@ -79,7 +79,7 @@ const ProjectDetail: React.FC = () => {
           description: "Failed to load project data.",
           variant: "destructive"
         });
-        navigate('/');
+        navigate('/en');
       } finally {
         setLoading(false);
       }
@@ -88,17 +88,16 @@ const ProjectDetail: React.FC = () => {
     loadProject();
   }, [slug, navigate]);
 
-  // 戻るボタンのハンドラー
+  // Handler for back button
   const handleBackToProjects = () => {
-    // Homeページのスクロール位置を保存してから遷移
     console.log('Navigating back to home page');
-    navigate('/');
+    navigate('/en');
   };
 
-  // コンポーネントのアンマウント時にスクロール位置を保存
+  // Save scroll position on component unmount
   useEffect(() => {
     return () => {
-      console.log('ProjectDetail unmounting, saving scroll position');
+      console.log('ProjectDetailEN unmounting, saving scroll position');
       saveScrollPosition();
     };
   }, [saveScrollPosition]);
@@ -124,11 +123,11 @@ const ProjectDetail: React.FC = () => {
       {/* Language Switch Button */}
       <div className="fixed top-24 right-4 z-40">
         <Link 
-          to={`/en/project/${slug}`}
+          to={`/project/${slug}`}
           className="flex items-center gap-2 bg-nordic-beige px-4 py-2 rounded-md text-sm hover:bg-opacity-80 transition-all border border-nordic-gray/20 shadow-sm"
         >
-          <span className="text-xs bg-white px-2 py-1 rounded text-nordic-dark font-medium">日本語</span>
-          <span>English</span>
+          <span className="text-xs bg-white px-2 py-1 rounded text-nordic-dark font-medium">English</span>
+          <span>日本語</span>
         </Link>
       </div>
 
@@ -153,7 +152,7 @@ const ProjectDetail: React.FC = () => {
         </div>
 
         <div className="md:col-span-4">
-          <ProjectSidebar 
+          <ProjectSidebarEN 
             works={[project]}
             currentWork={project}
             currentWorkIndex={0}
@@ -165,4 +164,4 @@ const ProjectDetail: React.FC = () => {
   );
 };
 
-export default ProjectDetail;
+export default ProjectDetailEN;

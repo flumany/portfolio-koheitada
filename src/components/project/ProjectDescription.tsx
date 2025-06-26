@@ -12,7 +12,7 @@ interface ProjectDescriptionProps {
 const ProjectDescription: React.FC<ProjectDescriptionProps> = ({ title, description }) => {
   return (
     <div className="bg-white rounded-2xl p-8 shadow-md border border-nordic-gray/30">
-      <h2 className="text-2xl md:text-3xl font-medium mb-6 tracking-tight">{title}</h2>
+      <h2 className="text-2xl md:text-3xl font-medium tracking-tight">{title}</h2>
     </div>
   );
 };

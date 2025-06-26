@@ -6,15 +6,30 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { formatTextWithLineBreaks } from '@/utils/textUtils';
 
-interface ProjectSidebarProps {
+interface ProjectSidebarENProps {
   works: ProjectWork[];
   currentWork: ProjectWork;
   currentWorkIndex: number;
   onProjectChange: (index: number) => void;
 }
 
-const ProjectSidebar = ({ works, currentWork, currentWorkIndex, onProjectChange }: ProjectSidebarProps) => {
-  const formattedDescription = formatTextWithLineBreaks(currentWork.description || '');
+// English translations for common Japanese project content
+const translateToEnglish = (text: string): string => {
+  const translations: { [key: string]: string } = {
+    '従来のデザインでは進捗度は薄いグレーのパーセンテージで表示され、読書中のものは最近読んだ本とひとまとめにされ、読書継続への促進性が不足していることが課題として見受けられた。リデザインでは読書進捗度は楽天のブランドカラーでもあるクリムゾンレッド色のバーで目立つように表示し、読書中の本は続きを読むための単独セクションとして表示するなど、従来と比べて読書の継続を促進するような仕様とした。': 'The conventional design displayed reading progress with a faint gray percentage and grouped currently reading books with recently read ones, which lacked the promotional aspect for reading continuation. In the redesign, reading progress is prominently displayed with Rakuten\'s brand color crimson red bar, and currently reading books are shown in a dedicated section for continuing reading, creating specifications that promote reading continuation compared to the conventional approach.',
+    '自主制作(調査/分析、プロトタイプ作成、デザイン全般)': 'Independent project (Research/Analysis, Prototyping, Overall Design)',
+    'フィルムクリーナーの解説用CGアニメーション': 'CG animation for film cleaner explanation',
+    '楽天Koboアプリ リデザイン': 'Rakuten Kobo App Redesign',
+    'オーディオ企画': 'Audio Planning',
+    '北欧デザイナースタイルのキャビネット': 'Nordic Designer Style Cabinet',
+    '所有している腕時計': 'Owned Wristwatch'
+  };
+  
+  return translations[text] || text;
+};
+
+const ProjectSidebarEN = ({ works, currentWork, currentWorkIndex, onProjectChange }: ProjectSidebarENProps) => {
+  const formattedDescription = formatTextWithLineBreaks(translateToEnglish(currentWork.description || ''));
 
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm mb-6 sticky top-20">
@@ -37,7 +52,7 @@ const ProjectSidebar = ({ works, currentWork, currentWorkIndex, onProjectChange 
                     : 'bg-nordic-gray/20 hover:bg-nordic-gray/30'
                 }`}
               >
-                {work.title}
+                {translateToEnglish(work.title)}
               </button>
             ))}
           </div>
@@ -118,7 +133,7 @@ const ProjectSidebar = ({ works, currentWork, currentWorkIndex, onProjectChange 
       {currentWork.role && (
         <div className="mb-4">
           <h4 className="text-sm font-medium text-nordic-dark/70 mb-1">Role</h4>
-          <p className="text-sm">{currentWork.role}</p>
+          <p className="text-sm">{translateToEnglish(currentWork.role)}</p>
         </div>
       )}
 
@@ -132,18 +147,18 @@ const ProjectSidebar = ({ works, currentWork, currentWorkIndex, onProjectChange 
       {currentWork.challenge && (
         <div className="mb-4">
           <h4 className="text-sm font-medium text-nordic-dark/70 mb-1">Challenge</h4>
-          <p className="text-sm">{currentWork.challenge}</p>
+          <p className="text-sm">{translateToEnglish(currentWork.challenge)}</p>
         </div>
       )}
 
       {currentWork.solution && (
         <div className="mb-4">
           <h4 className="text-sm font-medium text-nordic-dark/70 mb-1">Solution</h4>
-          <p className="text-sm">{currentWork.solution}</p>
+          <p className="text-sm">{translateToEnglish(currentWork.solution)}</p>
         </div>
       )}
     </div>
   );
 };
 
-export default ProjectSidebar;
+export default ProjectSidebarEN;
