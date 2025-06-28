@@ -104,70 +104,64 @@ const ProjectDetailEN: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-white min-h-screen">
-        <div className="container-custom py-8 flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin" />
-        </div>
+      <div className="container-custom py-20 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );
   }
 
   if (!project) {
     return (
-      <div className="bg-white min-h-screen">
-        <div className="container-custom py-8">
-          Project not found
-        </div>
+      <div className="container-custom py-20">
+        Project not found
       </div>
     );
   }
 
   return (
-    <div className="bg-white min-h-screen">
-      <div className="container-custom py-8">
-        {/* Language Switch Button */}
-        <div className="fixed top-24 right-4 z-40">
-          <Link 
-            to={`/project/${slug}`}
-            className="flex items-center gap-2 bg-nordic-beige px-4 py-2 rounded-md text-sm hover:bg-opacity-80 transition-all border border-nordic-gray/20 shadow-sm"
-          >
-            <span className="text-xs bg-white px-2 py-1 rounded text-nordic-dark font-medium">English</span>
-            <span>日本語</span>
-          </Link>
+    <div className="container-custom py-20">
+      {/* Language Switch Button */}
+      <div className="fixed top-24 right-4 z-40">
+        <Link 
+          to={`/project/${slug}`}
+          className="flex items-center gap-2 bg-nordic-beige px-4 py-2 rounded-md text-sm hover:bg-opacity-80 transition-all border border-nordic-gray/20 shadow-sm"
+        >
+          <span className="text-xs bg-white px-2 py-1 rounded text-nordic-dark font-medium">English</span>
+          <span>日本語</span>
+        </Link>
+      </div>
+
+      <ProjectNavigator 
+        categoryTitle={project.category}
+        projects={[project]}
+        currentIndex={0}
+        onProjectSelect={() => {}}
+        loading={false}
+        projectImages={{[project.id]: projectImages}}
+        onBackToProjects={handleBackToProjects}
+      />
+
+      <div className="grid md:grid-cols-12 gap-8">
+        <div className="md:col-span-8">
+          <ProjectDisplay 
+            currentWork={{
+              ...project,
+              title: project.title_en || project.title,
+              description: project.description_en || project.description
+            }}
+            currentImages={projectImages}
+            currentModels={projectModels}
+            loading={false}
+          />
         </div>
 
-        <ProjectNavigator 
-          categoryTitle={project.category}
-          projects={[project]}
-          currentIndex={0}
-          onProjectSelect={() => {}}
-          loading={false}
-          projectImages={{[project.id]: projectImages}}
-          onBackToProjects={handleBackToProjects}
-        />
-
-        <div className="grid md:grid-cols-12 gap-8">
-          <div className="md:col-span-8">
-            <ProjectDisplay 
-              currentWork={{
-                ...project,
-                title: project.title_en || project.title,
-                description: project.description_en || project.description
-              }}
-              currentImages={projectImages}
-              currentModels={projectModels}
-              loading={false}
-            />
-          </div>
-
-          <div className="md:col-span-4">
-            <ProjectSidebarEN 
-              works={[project]}
-              currentWork={project}
-              currentWorkIndex={0}
-              onProjectChange={() => {}}
-            />
-          </div>
+        <div className="md:col-span-4">
+          <ProjectSidebarEN 
+            works={[project]}
+            currentWork={project}
+            currentWorkIndex={0}
+            onProjectChange={() => {}}
+          />
         </div>
       </div>
     </div>
