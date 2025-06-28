@@ -105,7 +105,7 @@ const ProjectDetailEN: React.FC = () => {
   if (loading) {
     return (
       <div className="bg-white min-h-screen">
-        <div className="container-custom py-20 flex items-center justify-center">
+        <div className="container-custom py-8 flex items-center justify-center">
           <Loader2 className="h-8 w-8 animate-spin" />
         </div>
       </div>
@@ -115,7 +115,7 @@ const ProjectDetailEN: React.FC = () => {
   if (!project) {
     return (
       <div className="bg-white min-h-screen">
-        <div className="container-custom py-20">
+        <div className="container-custom py-8">
           Project not found
         </div>
       </div>
@@ -124,7 +124,7 @@ const ProjectDetailEN: React.FC = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="container-custom py-20">
+      <div className="container-custom py-8">
         {/* Language Switch Button */}
         <div className="fixed top-24 right-4 z-40">
           <Link 
