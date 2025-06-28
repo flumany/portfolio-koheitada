@@ -144,7 +144,11 @@ const ProjectDetailEN: React.FC = () => {
       <div className="grid md:grid-cols-12 gap-8">
         <div className="md:col-span-8">
           <ProjectDisplay 
-            currentWork={project}
+            currentWork={{
+              ...project,
+              title: project.title_en || project.title,
+              description: project.description_en || project.description
+            }}
             currentImages={projectImages}
             currentModels={projectModels}
             loading={false}
