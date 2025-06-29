@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectCarousel from './ProjectCarousel';
 import ModelViewer3D from '../ModelViewer3D';
-import ProjectDescription from './ProjectDescription';
 import WebEmbedTab from './WebEmbedTab';
 import { is3DModelFormat } from '@/utils/3dUtils';
 import { ProjectWork } from '@/types/project';
@@ -50,14 +49,20 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
 
   return (
     <div className="space-y-8">
-      {/* Project Details Section */}
-      <ProjectDescription 
-        title={currentWork.title}
-        description={currentWork.description}
-      />
-
-      {/* Media Tabs Section */}
+      {/* Project Description Section */}
       <div className="bg-white rounded-2xl p-8 shadow-md border border-nordic-gray/30">
+        <p className="text-nordic-dark/70 leading-relaxed">
+          {currentWork.description}
+        </p>
+      </div>
+
+      {/* Combined Title and Media Tabs Section */}
+      <div className="bg-white rounded-2xl p-8 shadow-md border border-nordic-gray/30">
+        {/* Project Title */}
+        <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-6">
+          {currentWork.title}
+        </h2>
+
         {loading ? (
           <div className="space-y-4">
             <Skeleton className="h-72 w-full" />
