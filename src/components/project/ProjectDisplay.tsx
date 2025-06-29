@@ -49,13 +49,6 @@ const ProjectDisplay: React.FC<ProjectDisplayProps> = ({
 
   return (
     <div className="space-y-8">
-      {/* Project Description Section */}
-      <div className="bg-white rounded-2xl p-8 shadow-md border border-nordic-gray/30">
-        <p className="text-nordic-dark/70 leading-relaxed">
-          {currentWork.description}
-        </p>
-      </div>
-
       {/* Combined Title and Media Tabs Section */}
       <div className="bg-white rounded-2xl p-8 shadow-md border border-nordic-gray/30">
         {/* Project Title */}
