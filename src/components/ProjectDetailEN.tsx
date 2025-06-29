@@ -119,7 +119,7 @@ const ProjectDetailEN: React.FC = () => {
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="container-custom py-20">
       {/* Language Switch Button */}
       <div className="fixed top-24 right-4 z-40">
         <Link 
@@ -131,39 +131,37 @@ const ProjectDetailEN: React.FC = () => {
         </Link>
       </div>
 
-      <div className="container-custom pt-8 pb-20">
-        <ProjectNavigator 
-          categoryTitle={project.category}
-          projects={[project]}
-          currentIndex={0}
-          onProjectSelect={() => {}}
-          loading={false}
-          projectImages={{[project.id]: projectImages}}
-          onBackToProjects={handleBackToProjects}
-        />
+      <ProjectNavigator 
+        categoryTitle={project.category}
+        projects={[project]}
+        currentIndex={0}
+        onProjectSelect={() => {}}
+        loading={false}
+        projectImages={{[project.id]: projectImages}}
+        onBackToProjects={handleBackToProjects}
+      />
 
-        <div className="grid md:grid-cols-12 gap-8">
-          <div className="md:col-span-8">
-            <ProjectDisplay 
-              currentWork={{
-                ...project,
-                title: project.title_en || project.title,
-                description: project.description_en || project.description
-              }}
-              currentImages={projectImages}
-              currentModels={projectModels}
-              loading={false}
-            />
-          </div>
+      <div className="grid md:grid-cols-12 gap-8">
+        <div className="md:col-span-8">
+          <ProjectDisplay 
+            currentWork={{
+              ...project,
+              title: project.title_en || project.title,
+              description: project.description_en || project.description
+            }}
+            currentImages={projectImages}
+            currentModels={projectModels}
+            loading={false}
+          />
+        </div>
 
-          <div className="md:col-span-4">
-            <ProjectSidebarEN 
-              works={[project]}
-              currentWork={project}
-              currentWorkIndex={0}
-              onProjectChange={() => {}}
-            />
-          </div>
+        <div className="md:col-span-4">
+          <ProjectSidebarEN 
+            works={[project]}
+            currentWork={project}
+            currentWorkIndex={0}
+            onProjectChange={() => {}}
+          />
         </div>
       </div>
     </div>
