@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "@/components/ui/use-toast";
@@ -40,8 +39,8 @@ const ProjectEditor: React.FC = () => {
     technologies: [],
     role: '',
     role_en: '',
-    work_type: 'personal',
-    work_type_en: 'personal',
+    work_type: '',
+    work_type_en: '',
     duration: '',
     challenge: '',
     challenge_en: '',

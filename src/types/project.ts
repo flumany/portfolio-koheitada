@@ -13,8 +13,8 @@ export interface ProjectWork {
   technologies?: string[];
   role?: string;
   role_en?: string;
-  work_type?: 'client' | 'personal';
-  work_type_en?: 'client' | 'personal';
+  work_type?: string;
+  work_type_en?: string;
   duration?: string;
   challenge?: string;
   challenge_en?: string;
