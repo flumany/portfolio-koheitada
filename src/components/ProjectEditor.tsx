@@ -40,6 +40,8 @@ const ProjectEditor: React.FC = () => {
     technologies: [],
     role: '',
     role_en: '',
+    work_type: 'personal',
+    work_type_en: 'personal',
     duration: '',
     challenge: '',
     challenge_en: '',

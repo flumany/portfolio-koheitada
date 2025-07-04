@@ -3,6 +3,7 @@ import React from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ProjectWork } from '@/types/project';
 
 interface AdditionalDetailsFormProps {
@@ -18,6 +19,21 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
   onTechnologiesChange,
   onChange
 }) => {
+  const handleWorkTypeChange = (value: 'client' | 'personal') => {
+    // Create a synthetic event to maintain consistency with other form handlers
+    const event = {
+      target: { name: 'work_type', value }
+    } as React.ChangeEvent<HTMLInputElement>;
+    onChange(event);
+  };
+
+  const handleWorkTypeEnChange = (value: 'client' | 'personal') => {
+    const event = {
+      target: { name: 'work_type_en', value }
+    } as React.ChangeEvent<HTMLInputElement>;
+    onChange(event);
+  };
+
   return (
     <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 mt-6">
       <Card>
@@ -45,6 +61,24 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
               onChange={onChange}
               placeholder="プロジェクトでの役割"
             />
+          </div>
+
+          <div className="space-y-3">
+            <Label>Work Type</Label>
+            <RadioGroup
+              value={project.work_type || 'personal'}
+              onValueChange={handleWorkTypeChange}
+              className="flex gap-6"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="client" id="client-jp" />
+                <Label htmlFor="client-jp">クライアントワーク</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="personal" id="personal-jp" />
+                <Label htmlFor="personal-jp">自主制作</Label>
+              </div>
+            </RadioGroup>
           </div>
           
           <div className="space-y-2">
@@ -74,6 +108,24 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
               onChange={onChange}
               placeholder="Your role in the project"
             />
+          </div>
+
+          <div className="space-y-3">
+            <Label>Work Type (English)</Label>
+            <RadioGroup
+              value={project.work_type_en || 'personal'}
+              onValueChange={handleWorkTypeEnChange}
+              className="flex gap-6"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="client" id="client-en" />
+                <Label htmlFor="client-en">Client Work</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="personal" id="personal-en" />
+                <Label htmlFor="personal-en">Personal Project</Label>
+              </div>
+            </RadioGroup>
           </div>
         </CardContent>
       </Card>
