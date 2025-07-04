@@ -1,4 +1,3 @@
-
 export interface ProjectWork {
   id: string;
   title: string;
@@ -13,8 +12,6 @@ export interface ProjectWork {
   technologies?: string[];
   role?: string;
   role_en?: string;
-  work_type?: string;
-  work_type_en?: string;
   duration?: string;
   challenge?: string;
   challenge_en?: string;
