@@ -88,10 +88,12 @@ const ProjectDetailEN: React.FC = () => {
     loadProject();
   }, [slug, navigate]);
 
-  // Handler for back button - シンプルに戻るだけ
+  // Handler for back button - 現在の位置を保存してから戻る
   const handleBackToProjects = () => {
     console.log('Navigating back to EN home page');
-    saveScrollPosition(); // 現在の位置を保存してから戻る
+    // 現在のスクロール位置を保存
+    saveScrollPosition();
+    // 即座に遷移
     navigate('/en');
   };
 

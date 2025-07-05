@@ -21,32 +21,17 @@ export const useScrollPosition = () => {
     console.log(`Restoring scroll position for ${location.pathname}:`, savedPosition);
     
     if (savedPosition !== undefined && savedPosition > 0) {
-      // requestAnimationFrameを使用してDOM更新後に確実に実行
-      requestAnimationFrame(() => {
-        window.scrollTo({
-          top: savedPosition,
-          behavior: 'instant'
-        });
-        console.log(`Actually scrolled to:`, savedPosition);
-      });
+      // 即座にスクロール位置を設定し、確実に復元する
+      window.scrollTo(0, savedPosition);
+      console.log(`Scrolled to:`, savedPosition);
+      
+      // 念のため、少し遅延させてもう一度実行
+      setTimeout(() => {
+        window.scrollTo(0, savedPosition);
+        console.log(`Double-check scroll to:`, savedPosition);
+      }, 50);
     }
   }, [location.pathname]);
-
-  // 特定のパスのスクロール位置を強制的に復元する関数
-  const restoreScrollPositionForPath = useCallback((path: string) => {
-    const savedPosition = scrollPositions.get(path);
-    console.log(`Force restoring scroll position for ${path}:`, savedPosition);
-    
-    if (savedPosition !== undefined && savedPosition > 0) {
-      requestAnimationFrame(() => {
-        window.scrollTo({
-          top: savedPosition,
-          behavior: 'instant'
-        });
-        console.log(`Force scrolled to:`, savedPosition);
-      });
-    }
-  }, []);
 
   // スクロールイベントリスナー（デバウンス付き）
   useEffect(() => {
@@ -58,7 +43,7 @@ export const useScrollPosition = () => {
       }
       scrollTimer = setTimeout(() => {
         saveScrollPosition();
-      }, 150);
+      }, 100); // デバウンス時間を短縮
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -73,7 +58,6 @@ export const useScrollPosition = () => {
 
   return {
     saveScrollPosition,
-    restoreScrollPosition,
-    restoreScrollPositionForPath
+    restoreScrollPosition
   };
 };

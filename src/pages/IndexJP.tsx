@@ -15,12 +15,15 @@ const IndexJP = () => {
   useEffect(() => {
     console.log('IndexJP page mounted, attempting to restore scroll position');
     
-    // DOM更新後に確実にスクロール位置を復元
-    const timer = setTimeout(() => {
+    // DOM更新完了後に確実にスクロール位置を復元
+    const restoreScroll = () => {
       restoreScrollPosition();
-    }, 100);
-
-    return () => clearTimeout(timer);
+    };
+    
+    // 複数のタイミングで復元を試行
+    restoreScroll(); // 即座に実行
+    setTimeout(restoreScroll, 10); // 短い遅延
+    setTimeout(restoreScroll, 100); // 少し長い遅延
   }, [restoreScrollPosition]);
 
   return (
