@@ -87,14 +87,27 @@ const ProjectDetail: React.FC = () => {
     loadProject();
   }, [slug, navigate]);
 
-  // 戻るボタンのハンドラー - スクロール位置復元機能付き
+  // 戻るボタンのハンドラー - より確実なスクロール位置復元
   const handleBackToProjects = () => {
     console.log('Navigating back to home page with scroll restoration');
+    
+    // 現在のスクロール位置を保存
+    saveScrollPosition();
+    
+    // ホームページに戻る
     navigate('/');
-    // ナビゲーション後にスクロール位置を復元
-    setTimeout(() => {
+    
+    // より確実にスクロール位置を復元
+    const restoreWithRetry = () => {
       restoreScrollPositionForPath('/');
-    }, 100);
+      
+      // さらに確実にするため複数回試行
+      setTimeout(() => restoreScrollPositionForPath('/'), 200);
+      setTimeout(() => restoreScrollPositionForPath('/'), 500);
+    };
+    
+    // 遅延実行
+    setTimeout(restoreWithRetry, 100);
   };
 
   // コンポーネントのアンマウント時にスクロール位置を保存

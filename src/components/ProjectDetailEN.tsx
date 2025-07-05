@@ -87,14 +87,27 @@ const ProjectDetailEN: React.FC = () => {
     loadProject();
   }, [slug, navigate]);
 
-  // Handler for back button - with scroll position restoration
+  // Handler for back button - with improved scroll position restoration
   const handleBackToProjects = () => {
     console.log('Navigating back to EN home page with scroll restoration');
+    
+    // 現在のスクロール位置を保存
+    saveScrollPosition();
+    
+    // ENホームページに戻る
     navigate('/en');
-    // ナビゲーション後にスクロール位置を復元
-    setTimeout(() => {
+    
+    // より確実にスクロール位置を復元
+    const restoreWithRetry = () => {
       restoreScrollPositionForPath('/en');
-    }, 100);
+      
+      // さらに確実にするため複数回試行
+      setTimeout(() => restoreScrollPositionForPath('/en'), 200);
+      setTimeout(() => restoreScrollPositionForPath('/en'), 500);
+    };
+    
+    // 遅延実行
+    setTimeout(restoreWithRetry, 100);
   };
 
   // Save scroll position on component unmount
