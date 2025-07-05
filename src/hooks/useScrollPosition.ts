@@ -20,22 +20,15 @@ export const useScrollPosition = () => {
     const savedPosition = scrollPositions.get(location.pathname);
     console.log(`Restoring scroll position for ${location.pathname}:`, savedPosition);
     
-    if (savedPosition !== undefined && savedPosition >= 0) {
-      // 複数回試行して確実に復元
-      const scrollToPosition = () => {
+    if (savedPosition !== undefined && savedPosition > 0) {
+      // requestAnimationFrameを使用してDOM更新後に確実に実行
+      requestAnimationFrame(() => {
         window.scrollTo({
           top: savedPosition,
           behavior: 'instant'
         });
-      };
-
-      // 即座に実行
-      scrollToPosition();
-      
-      // 少し遅延してもう一度実行（DOM更新待ち）
-      setTimeout(scrollToPosition, 50);
-      setTimeout(scrollToPosition, 150);
-      setTimeout(scrollToPosition, 300);
+        console.log(`Actually scrolled to:`, savedPosition);
+      });
     }
   }, [location.pathname]);
 
@@ -44,22 +37,18 @@ export const useScrollPosition = () => {
     const savedPosition = scrollPositions.get(path);
     console.log(`Force restoring scroll position for ${path}:`, savedPosition);
     
-    if (savedPosition !== undefined && savedPosition >= 0) {
-      const scrollToPosition = () => {
+    if (savedPosition !== undefined && savedPosition > 0) {
+      requestAnimationFrame(() => {
         window.scrollTo({
           top: savedPosition,
           behavior: 'instant'
         });
-      };
-
-      // 複数回試行
-      setTimeout(scrollToPosition, 100);
-      setTimeout(scrollToPosition, 200);
-      setTimeout(scrollToPosition, 400);
+        console.log(`Force scrolled to:`, savedPosition);
+      });
     }
   }, []);
 
-  // スクロールイベントの処理を改善
+  // スクロールイベントリスナー（デバウンス付き）
   useEffect(() => {
     let scrollTimer: NodeJS.Timeout;
     
@@ -69,25 +58,16 @@ export const useScrollPosition = () => {
       }
       scrollTimer = setTimeout(() => {
         saveScrollPosition();
-      }, 100);
+      }, 150);
     };
 
-    const handleBeforeUnload = () => {
-      saveScrollPosition();
-    };
-
-    // イベントリスナーを追加
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('beforeunload', handleBeforeUnload);
 
-    // クリーンアップ
     return () => {
       if (scrollTimer) {
         clearTimeout(scrollTimer);
       }
-      saveScrollPosition(); // アンマウント時に保存
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [saveScrollPosition]);
 

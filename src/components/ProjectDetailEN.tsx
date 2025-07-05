@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useScrollPosition } from '../hooks/useScrollPosition';
@@ -13,7 +14,7 @@ import { Loader2 } from 'lucide-react';
 const ProjectDetailEN: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const { saveScrollPosition, restoreScrollPositionForPath } = useScrollPosition();
+  const { saveScrollPosition } = useScrollPosition();
   
   const [loading, setLoading] = useState(true);
   const [project, setProject] = useState<ProjectWork | null>(null);
@@ -87,36 +88,12 @@ const ProjectDetailEN: React.FC = () => {
     loadProject();
   }, [slug, navigate]);
 
-  // Handler for back button - with improved scroll position restoration
+  // Handler for back button - シンプルに戻るだけ
   const handleBackToProjects = () => {
-    console.log('Navigating back to EN home page with scroll restoration');
-    
-    // 現在のスクロール位置を保存
-    saveScrollPosition();
-    
-    // ENホームページに戻る
+    console.log('Navigating back to EN home page');
+    saveScrollPosition(); // 現在の位置を保存してから戻る
     navigate('/en');
-    
-    // より確実にスクロール位置を復元
-    const restoreWithRetry = () => {
-      restoreScrollPositionForPath('/en');
-      
-      // さらに確実にするため複数回試行
-      setTimeout(() => restoreScrollPositionForPath('/en'), 200);
-      setTimeout(() => restoreScrollPositionForPath('/en'), 500);
-    };
-    
-    // 遅延実行
-    setTimeout(restoreWithRetry, 100);
   };
-
-  // Save scroll position on component unmount
-  useEffect(() => {
-    return () => {
-      console.log('ProjectDetailEN unmounting, saving scroll position');
-      saveScrollPosition();
-    };
-  }, [saveScrollPosition]);
 
   if (loading) {
     return (
