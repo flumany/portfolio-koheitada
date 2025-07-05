@@ -36,6 +36,17 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
               placeholder="e.g. UI/UXデザイナー、プロダクトデザイナー"
             />
           </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="work_type">Work Type</Label>
+            <Input 
+              id="work_type"
+              name="work_type"
+              value={project.work_type || ''}
+              onChange={onChange}
+              placeholder="e.g. クライアントワーク、個人プロジェクト、受託開発"
+            />
+          </div>
           
           <div className="space-y-2">
             <Label htmlFor="duration">Duration</Label>
@@ -97,6 +108,17 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
               value={project.role_en || ''}
               onChange={onChange}
               placeholder="e.g. UI/UX Designer, Product Designer"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="work_type_en">Work Type (English)</Label>
+            <Input 
+              id="work_type_en"
+              name="work_type_en"
+              value={project.work_type_en || ''}
+              onChange={onChange}
+              placeholder="e.g. Client Work, Personal Project, Contract Development"
             />
           </div>
           
