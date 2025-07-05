@@ -13,7 +13,7 @@ import { Loader2 } from 'lucide-react';
 const ProjectDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const { saveScrollPosition } = useScrollPosition();
+  const { saveScrollPosition, restoreScrollPositionForPath } = useScrollPosition();
   
   const [loading, setLoading] = useState(true);
   const [project, setProject] = useState<ProjectWork | null>(null);
@@ -87,11 +87,14 @@ const ProjectDetail: React.FC = () => {
     loadProject();
   }, [slug, navigate]);
 
-  // 戻るボタンのハンドラー
+  // 戻るボタンのハンドラー - スクロール位置復元機能付き
   const handleBackToProjects = () => {
-    // Homeページのスクロール位置を保存してから遷移
-    console.log('Navigating back to home page');
+    console.log('Navigating back to home page with scroll restoration');
     navigate('/');
+    // ナビゲーション後にスクロール位置を復元
+    setTimeout(() => {
+      restoreScrollPositionForPath('/');
+    }, 100);
   };
 
   // コンポーネントのアンマウント時にスクロール位置を保存

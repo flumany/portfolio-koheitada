@@ -34,8 +34,24 @@ export const useScrollPosition = () => {
             top: savedPosition,
             behavior: 'instant'
           });
-        }, 10);
+        }, 100);
       });
+    }
+  };
+
+  // 特定のパスのスクロール位置を強制的に復元する関数を追加
+  const restoreScrollPositionForPath = (path: string) => {
+    const savedPosition = scrollPositions.get(path);
+    console.log(`Force restoring scroll position for ${path}:`, savedPosition);
+    
+    if (savedPosition !== undefined && savedPosition > 0) {
+      // 少し遅延してから復元を実行
+      setTimeout(() => {
+        window.scrollTo({
+          top: savedPosition,
+          behavior: 'instant'
+        });
+      }, 50);
     }
   };
 
@@ -72,6 +88,7 @@ export const useScrollPosition = () => {
 
   return {
     saveScrollPosition,
-    restoreScrollPosition
+    restoreScrollPosition,
+    restoreScrollPositionForPath
   };
 };

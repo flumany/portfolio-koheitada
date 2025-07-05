@@ -13,7 +13,7 @@ import { Loader2 } from 'lucide-react';
 const ProjectDetailEN: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const { saveScrollPosition } = useScrollPosition();
+  const { saveScrollPosition, restoreScrollPositionForPath } = useScrollPosition();
   
   const [loading, setLoading] = useState(true);
   const [project, setProject] = useState<ProjectWork | null>(null);
@@ -87,10 +87,14 @@ const ProjectDetailEN: React.FC = () => {
     loadProject();
   }, [slug, navigate]);
 
-  // Handler for back button
+  // Handler for back button - with scroll position restoration
   const handleBackToProjects = () => {
-    console.log('Navigating back to home page');
+    console.log('Navigating back to EN home page with scroll restoration');
     navigate('/en');
+    // ナビゲーション後にスクロール位置を復元
+    setTimeout(() => {
+      restoreScrollPositionForPath('/en');
+    }, 100);
   };
 
   // Save scroll position on component unmount
