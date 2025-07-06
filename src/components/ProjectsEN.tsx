@@ -1,27 +1,66 @@
 
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card, CardContent } from "@/components/ui/card";
-import { fetchPublishedProjectsWithOrder } from '@/services/projectService';
-import { ProjectWork } from '@/types/project';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getImageUrl } from '@/lib/supabase';
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "@/components/ui/use-toast";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { fetchPublishedProjectsWithOrder, fetchProjectMedia } from '@/services/projectService';
+import { ProjectWork, ProjectMedia } from '@/types/project';
+import { Monitor, Image as ImageIcon } from 'lucide-react';
 
-const ProjectsEN = () => {
-  const [projects, setProjects] = useState<ProjectWork[]>([]);
+const ProjectsEN: React.FC = () => {
+  const [filter, setFilter] = useState('all');
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [currentImageIndex, setCurrentImageIndex] = useState<{ [key: string]: number }>({});
+  const [projects, setProjects] = useState<ProjectWork[]>([]);
+  const [projectImages, setProjectImages] = useState<{[key: string]: string}>({});
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadProjects = async () => {
+      setLoading(true);
+      setError(null);
       try {
+        // Fetch published projects with proper category ordering
         const projectsData = await fetchPublishedProjectsWithOrder();
         setProjects(projectsData);
+        
+        // Load thumbnail images for projects
+        const images: {[key: string]: string} = {};
+        
+        for (const project of projectsData) {
+          try {
+            // Fetch the first image for each project
+            const mediaData = await fetchProjectMedia(project.id);
+            const imageMedia = mediaData.filter(item => item.type === 'image')[0];
+            
+            if (imageMedia) {
+              const imageUrl = await getImageUrl(imageMedia.file_path);
+              images[project.id] = imageUrl;
+            } else if (project.images && project.images.length > 0) {
+              // Fall back to legacy images array
+              const imageUrl = await getImageUrl(project.images[0]);
+              images[project.id] = imageUrl;
+            } else {
+              images[project.id] = '/placeholder.svg';
+            }
+          } catch (error) {
+            console.error(`Error loading image for project ${project.id}:`, error);
+            images[project.id] = '/placeholder.svg';
+          }
+        }
+        
+        setProjectImages(images);
+        
       } catch (error) {
         console.error('Error loading projects:', error);
+        setError('An error occurred while loading projects.');
+        toast({
+          title: "Error occurred",
+          description: "An error occurred while loading projects.",
+          variant: "destructive"
+        });
       } finally {
         setLoading(false);
       }
@@ -30,132 +69,194 @@ const ProjectsEN = () => {
     loadProjects();
   }, []);
 
-  // Group projects by category
-  const projectsByCategory = projects.reduce((acc, project) => {
-    if (!acc[project.category]) {
-      acc[project.category] = [];
+  const handleProjectClick = (slug: string) => {
+    try {
+      navigate(`/en/project/${slug}`);
+    } catch (error) {
+      console.error('Navigation error:', error);
+      toast({
+        title: "Error occurred",
+        description: "An error occurred while navigating to the project page.",
+        variant: "destructive"
+      });
     }
-    acc[project.category].push(project);
-    return acc;
-  }, {} as Record<string, ProjectWork[]>);
+  };
 
-  // Get unique categories
-  const categories = ['All', ...Object.keys(projectsByCategory)];
-
-  // Filter projects based on selected category
-  const filteredProjects = selectedCategory === 'All' 
+  const filteredProjects = filter === 'all' 
     ? projects 
-    : projectsByCategory[selectedCategory] || [];
+    : projects.filter(project => project.category === filter);
+    
+  // Get unique categories from projects
+  const categories = ['all', ...new Set(projects.map(project => project.category))];
 
-  const handleImageNavigation = (projectId: string, direction: 'prev' | 'next', totalImages: number) => {
-    setCurrentImageIndex(prev => {
-      const currentIndex = prev[projectId] || 0;
-      let newIndex;
-      
-      if (direction === 'next') {
-        newIndex = (currentIndex + 1) % totalImages;
-      } else {
-        newIndex = currentIndex === 0 ? totalImages - 1 : currentIndex - 1;
-      }
-      
-      return { ...prev, [projectId]: newIndex };
-    });
-  };
-
-  const getProjectImage = async (project: ProjectWork, index: number = 0) => {
-    if (project.images && project.images[index]) {
-      try {
-        const imageUrl = await getImageUrl(project.images[index]);
-        return imageUrl;
-      } catch (error) {
-        console.error('Error getting image URL:', error);
-        return '/placeholder.svg';
-      }
+  // Group projects by category for display with preserved order
+  const groupedProjects = useMemo(() => {
+    if (filter !== 'all') {
+      return [{ category: filter, projects: filteredProjects }];
     }
-    return '/placeholder.svg';
+    
+    // Preserve the order from fetchPublishedProjectsWithOrder
+    const categoryOrder: string[] = [];
+    const grouped: { [key: string]: ProjectWork[] } = {};
+    
+    projects.forEach(project => {
+      if (!grouped[project.category]) {
+        grouped[project.category] = [];
+        categoryOrder.push(project.category);
+      }
+      grouped[project.category].push(project);
+    });
+    
+    return categoryOrder.map(category => ({
+      category,
+      projects: grouped[category]
+    })).filter(group => group.projects.length > 0);
+  }, [filter, filteredProjects, projects]);
+
+  // Check if project has iframe as primary content (for detail page preview)
+  const hasIframePreview = (project: ProjectWork) => {
+    return project.iframes && project.iframes.length > 0;
   };
 
-  if (loading) {
-    return (
-      <section id="projects" className="py-20 bg-gradient-to-b from-nordic-offwhite to-white">
-        <div className="container-custom">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-medium mb-4">Projects</h2>
-            <div className="w-24 h-1 bg-accent-blue mx-auto"></div>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(6)].map((_, i) => (
-              <Card key={i} className="overflow-hidden animate-pulse">
-                <div className="h-64 bg-gray-200"></div>
-                <CardContent className="p-6">
-                  <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section id="projects" className="py-20 bg-gradient-to-b from-nordic-offwhite to-white">
-      <div className="container-custom">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-medium mb-4">Projects</h2>
-          <div className="w-24 h-1 bg-accent-blue mx-auto"></div>
-        </div>
-
-        {/* Category Filter */}
-        <ScrollArea className="w-full mb-8">
-          <div className="flex gap-2 px-4 py-2">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category)}
-                className={`whitespace-nowrap ${
-                  selectedCategory === category 
-                    ? 'bg-accent-blue hover:bg-accent-blue/90' 
-                    : 'hover:bg-accent-blue/10'
-                }`}
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
-        </ScrollArea>
-
-        {/* Projects by Category */}
-        {selectedCategory === 'All' ? (
-          Object.entries(projectsByCategory).map(([category, categoryProjects]) => (
-            <div key={category} className="mb-16">
-              <h3 className="text-2xl font-medium mb-8 text-center">{category}</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {categoryProjects.map((project) => (
-                  <ProjectCard 
-                    key={project.id} 
-                    project={project} 
-                    currentImageIndex={currentImageIndex[project.id] || 0}
-                    onImageNavigation={handleImageNavigation}
-                    getProjectImage={getProjectImage}
-                  />
-                ))}
+  const renderProjectCard = (project: ProjectWork) => (
+    <div 
+      key={project.id} 
+      className="project-card group cursor-pointer flex-shrink-0 w-80"
+      onClick={() => handleProjectClick(project.slug)}
+    >
+      <div className="aspect-[4/3] relative overflow-hidden">
+        {loading ? (
+          <Skeleton className="w-full h-full" />
+        ) : (
+          // Always display image preview in project list, even if iframe exists
+          <>
+            <img 
+              src={projectImages[project.id] || '/placeholder.svg'} 
+              alt={project.title_en || project.title} 
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+              onError={(e) => {
+                e.currentTarget.src = '/placeholder.svg';
+                console.log(`Image error, using placeholder for ${project.title_en || project.title}`);
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <div className="bg-white/90 p-3 rounded-full">
+                {hasIframePreview(project) ? (
+                  <Monitor className="text-nordic-dark" size={24} />
+                ) : (
+                  <ImageIcon className="text-nordic-dark" size={24} />
+                )}
               </div>
             </div>
-          ))
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project) => (
-              <ProjectCard 
-                key={project.id} 
-                project={project} 
-                currentImageIndex={currentImageIndex[project.id] || 0}
-                onImageNavigation={handleImageNavigation}
-                getProjectImage={getProjectImage}
+            {hasIframePreview(project) && (
+              <div className="absolute top-2 right-2 bg-nordic-blue text-white px-2 py-1 rounded text-xs font-medium">
+                Interactive
+              </div>
+            )}
+          </>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+          <span className="text-white text-sm font-medium uppercase tracking-wider">
+            {project.category}
+          </span>
+        </div>
+      </div>
+      <div className="p-6 bg-white">
+        <h3 className="font-medium text-lg mb-2 break-words leading-tight whitespace-normal">
+          {project.title_en || project.title}
+        </h3>
+      </div>
+    </div>
+  );
+
+  const handleWheel = (e: React.WheelEvent, scrollRef: React.RefObject<HTMLDivElement>) => {
+    if (scrollRef.current) {
+      e.preventDefault();
+      scrollRef.current.scrollLeft += e.deltaY;
+    }
+  };
+
+  return (
+    <section id="projects" className="section bg-nordic-white">
+      <div className="container-custom">
+        <div className="max-w-3xl mx-auto text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-medium mb-4">Projects</h2>
+          <div className="w-16 h-1 bg-nordic-blue mx-auto mb-8" />
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-2 mb-12">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setFilter(category)}
+              className={`px-4 py-2 rounded-md transition-all ${
+                filter === category 
+                  ? 'text-white' 
+                  : 'text-nordic-dark'
+              }`}
+              style={
+                filter === category
+                  ? {
+                      backgroundColor: "#a6bdfa",
+                      border: "1px solid #a6bdfa",
+                    }
+                  : { backgroundColor: "#ECECEC" }
+              }
+            >
+              {category.charAt(0).toUpperCase() + category.slice(1)}
+            </button>
+          ))}
+        </div>
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            <p>{error}</p>
+          </div>
+        )}
+
+        {filter === 'all' ? (
+          // Category-grouped display with horizontal scrolling
+          <div className="space-y-16">
+            {groupedProjects.map((group) => (
+              <CategorySection 
+                key={group.category}
+                category={group.category}
+                projects={group.projects}
+                renderProjectCard={renderProjectCard}
+                handleWheel={handleWheel}
               />
             ))}
+            
+            {groupedProjects.length === 0 && !loading && (
+              <div className="text-center py-12">
+                <h3 className="text-xl font-medium mb-2">No projects found</h3>
+                <p className="text-nordic-dark/70">
+                  Projects will appear here once they are published
+                </p>
+              </div>
+            )}
+          </div>
+        ) : (
+          // Single category display with horizontal scrolling
+          <div>
+            {groupedProjects.map((group) => (
+              <CategorySection 
+                key={group.category}
+                category={group.category}
+                projects={group.projects}
+                renderProjectCard={renderProjectCard}
+                handleWheel={handleWheel}
+              />
+            ))}
+            
+            {filteredProjects.length === 0 && !loading && (
+              <div className="text-center py-12">
+                <h3 className="text-xl font-medium mb-2">No projects found</h3>
+                <p className="text-nordic-dark/70">
+                  Try selecting a different category
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -163,101 +264,42 @@ const ProjectsEN = () => {
   );
 };
 
-// Project Card Component
-const ProjectCard = ({ 
-  project, 
-  currentImageIndex, 
-  onImageNavigation, 
-  getProjectImage 
-}: {
-  project: ProjectWork;
-  currentImageIndex: number;
-  onImageNavigation: (projectId: string, direction: 'prev' | 'next', totalImages: number) => void;
-  getProjectImage: (project: ProjectWork, index: number) => Promise<string>;
+// Separate component to handle the category section with its own ref
+interface CategorySectionProps {
+  category: string;
+  projects: ProjectWork[];
+  renderProjectCard: (project: ProjectWork) => JSX.Element;
+  handleWheel: (e: React.WheelEvent, scrollRef: React.RefObject<HTMLDivElement>) => void;
+}
+
+const CategorySection: React.FC<CategorySectionProps> = ({ 
+  category, 
+  projects, 
+  renderProjectCard, 
+  handleWheel 
 }) => {
-  const [imageUrl, setImageUrl] = useState('/placeholder.svg');
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const loadImage = async () => {
-      setIsLoading(true);
-      try {
-        const url = await getProjectImage(project, currentImageIndex);
-        setImageUrl(url);
-      } catch (error) {
-        console.error('Error loading image:', error);
-        setImageUrl('/placeholder.svg');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadImage();
-  }, [project, currentImageIndex, getProjectImage]);
-
-  const totalImages = project.images?.length || 0;
-
+  const scrollRef = useRef<HTMLDivElement>(null);
+  
   return (
-    <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 border-nordic-gray/20">
-      <div className="relative h-64 overflow-hidden">
-        {isLoading ? (
-          <div className="w-full h-full bg-gray-200 animate-pulse" />
-        ) : (
-          <img
-            src={imageUrl}
-            alt={project.title_en || project.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            onError={(e) => {
-              e.currentTarget.src = '/placeholder.svg';
-            }}
-          />
-        )}
-        
-        {/* Image Navigation */}
-        {totalImages > 1 && (
-          <>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-1"
-              onClick={(e) => {
-                e.preventDefault();
-                onImageNavigation(project.id, 'prev', totalImages);
-              }}
-            >
-              <ChevronLeft size={16} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-1"
-              onClick={(e) => {
-                e.preventDefault();
-                onImageNavigation(project.id, 'next', totalImages);
-              }}
-            >
-              <ChevronRight size={16} />
-            </Button>
-            
-            {/* Image Counter */}
-            <div className="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
-              {currentImageIndex + 1} / {totalImages}
-            </div>
-          </>
-        )}
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-2xl font-medium mb-2 capitalize whitespace-normal break-words leading-tight">
+          {category.replace('-', ' ')}
+        </h3>
+        <div className="w-12 h-0.5 bg-nordic-blue mx-auto" />
       </div>
       
-      <CardContent className="p-6">
-        <Link to={`/en/project/${project.slug}`}>
-          <h3 className="text-xl font-medium mb-2 group-hover:text-accent-blue transition-colors">
-            {project.title_en || project.title}
-          </h3>
-          <p className="text-nordic-dark/70 text-sm line-clamp-3">
-            {project.description_en || project.description}
-          </p>
-        </Link>
-      </CardContent>
-    </Card>
+      <ScrollArea className="w-full whitespace-nowrap">
+        <div 
+          ref={scrollRef}
+          className="flex space-x-6 pb-4"
+          onWheel={(e) => handleWheel(e, scrollRef)}
+        >
+          {projects.map(renderProjectCard)}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+    </div>
   );
 };
 
