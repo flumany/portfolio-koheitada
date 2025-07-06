@@ -2,8 +2,8 @@
 import HeaderEN from "@/components/HeaderEN";
 import HeroEN from "@/components/HeroEN";
 import AboutEN from "@/components/AboutEN";
-import ProjectsEN from "@/components/ProjectsEN";
 import TimelineEN from "@/components/TimelineEN";
+import ProjectsEN from "@/components/ProjectsEN";
 import ContactEN from "@/components/ContactEN";
 import Footer from "@/components/Footer";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
@@ -24,15 +24,15 @@ const IndexEN = () => {
     restoreScroll(); // 即座に実行
     setTimeout(restoreScroll, 10); // 短い遅延
     setTimeout(restoreScroll, 100); // 少し長い遅延
-  }, [restoreScrollPosition]);
+  }, [restoreScrollTime]);
 
   return (
     <div className="min-h-screen">
       <HeaderEN />
       <HeroEN />
       <AboutEN />
-      <ProjectsEN />
       <TimelineEN />
+      <ProjectsEN />
       <ContactEN />
       <Footer />
     </div>

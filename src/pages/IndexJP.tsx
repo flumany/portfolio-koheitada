@@ -2,8 +2,8 @@
 import Header from "@/components/HeaderJP";
 import Hero from "@/components/HeroJP";
 import About from "@/components/AboutJP";
-import Projects from "@/components/Projects";
 import Timeline from "@/components/TimelineJP";
+import Projects from "@/components/Projects";
 import Contact from "@/components/ContactJP";
 import Footer from "@/components/Footer";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
@@ -31,8 +31,8 @@ const IndexJP = () => {
       <Header />
       <Hero />
       <About />
-      <Projects />
       <Timeline />
+      <Projects />
       <Contact />
       <Footer />
     </div>

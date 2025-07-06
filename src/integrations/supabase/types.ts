@@ -90,6 +90,8 @@ export type Database = {
           title: string
           title_en: string | null
           updated_at: string
+          work_type: string | null
+          work_type_en: string | null
         }
         Insert: {
           category: string
@@ -115,6 +117,8 @@ export type Database = {
           title: string
           title_en?: string | null
           updated_at?: string
+          work_type?: string | null
+          work_type_en?: string | null
         }
         Update: {
           category?: string
@@ -140,6 +144,8 @@ export type Database = {
           title?: string
           title_en?: string | null
           updated_at?: string
+          work_type?: string | null
+          work_type_en?: string | null
         }
         Relationships: []
       }
