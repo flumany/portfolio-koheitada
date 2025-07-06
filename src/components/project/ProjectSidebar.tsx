@@ -122,6 +122,13 @@ const ProjectSidebar = ({ works, currentWork, currentWorkIndex, onProjectChange 
         </div>
       )}
 
+      {currentWork.work_type && (
+        <div className="mb-4">
+          <h4 className="text-sm font-medium text-nordic-dark/70 mb-1">Work Type</h4>
+          <p className="text-sm">{currentWork.work_type}</p>
+        </div>
+      )}
+
       {currentWork.duration && (
         <div className="mb-4">
           <h4 className="text-sm font-medium text-nordic-dark/70 mb-1">Duration</h4>
