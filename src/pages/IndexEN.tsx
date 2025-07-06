@@ -1,4 +1,3 @@
-
 import HeaderEN from "@/components/HeaderEN";
 import HeroEN from "@/components/HeroEN";
 import AboutEN from "@/components/AboutEN";
@@ -24,7 +23,7 @@ const IndexEN = () => {
     restoreScroll(); // 即座に実行
     setTimeout(restoreScroll, 10); // 短い遅延
     setTimeout(restoreScroll, 100); // 少し長い遅延
-  }, [restoreScrollTime]);
+  }, [restoreScrollPosition]);
 
   return (
     <div className="min-h-screen">
