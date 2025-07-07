@@ -15,6 +15,8 @@ interface ProjectSidebarENProps {
 
 const ProjectSidebarEN = ({ works, currentWork, currentWorkIndex, onProjectChange }: ProjectSidebarENProps) => {
   const formattedDescription = formatTextWithLineBreaks(currentWork.description_en || currentWork.description || '');
+  const formattedChallenge = formatTextWithLineBreaks(currentWork.challenge_en || currentWork.challenge || '');
+  const formattedSolution = formatTextWithLineBreaks(currentWork.solution_en || currentWork.solution || '');
 
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm mb-6 sticky top-20">
@@ -139,14 +141,74 @@ const ProjectSidebarEN = ({ works, currentWork, currentWorkIndex, onProjectChang
       {(currentWork.challenge_en || currentWork.challenge) && (
         <div className="mb-4">
           <h4 className="text-sm font-medium text-nordic-dark/70 mb-1">Challenge</h4>
-          <p className="text-sm">{currentWork.challenge_en || currentWork.challenge}</p>
+          <div
+            className="prose prose-neutral max-w-none text-sm"
+            style={{
+              fontSize: "0.875rem",
+              lineHeight: "1.6",
+              letterSpacing: "0.01em",
+              wordBreak: "normal",
+            }}
+          >
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                p: ({ node, ...props }) => (
+                  <p
+                    style={{
+                      marginBottom: "0.75em",
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: "normal",
+                    }}
+                    {...props}
+                  />
+                ),
+                strong: ({ node, ...props }) => (
+                  <strong style={{ fontWeight: 600 }} {...props} />
+                ),
+                br: () => <br />,
+              }}
+            >
+              {formattedChallenge}
+            </ReactMarkdown>
+          </div>
         </div>
       )}
 
       {(currentWork.solution_en || currentWork.solution) && (
         <div className="mb-4">
           <h4 className="text-sm font-medium text-nordic-dark/70 mb-1">Solution</h4>
-          <p className="text-sm">{currentWork.solution_en || currentWork.solution}</p>
+          <div
+            className="prose prose-neutral max-w-none text-sm"
+            style={{
+              fontSize: "0.875rem",
+              lineHeight: "1.6",
+              letterSpacing: "0.01em",
+              wordBreak: "normal",
+            }}
+          >
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                p: ({ node, ...props }) => (
+                  <p
+                    style={{
+                      marginBottom: "0.75em",
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: "normal",
+                    }}
+                    {...props}
+                  />
+                ),
+                strong: ({ node, ...props }) => (
+                  <strong style={{ fontWeight: 600 }} {...props} />
+                ),
+                br: () => <br />,
+              }}
+            >
+              {formattedSolution}
+            </ReactMarkdown>
+          </div>
         </div>
       )}
     </div>
