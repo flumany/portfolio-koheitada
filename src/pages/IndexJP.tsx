@@ -6,7 +6,6 @@ import Timeline from "@/components/TimelineJP";
 import Projects from "@/components/Projects";
 import Contact from "@/components/ContactJP";
 import Footer from "@/components/Footer";
-import PDFExporter from "@/components/PDFExporter";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
 import { useEffect } from "react";
 
@@ -30,29 +29,11 @@ const IndexJP = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      
-      {/* PDF Export Button */}
-      <div className="fixed top-20 right-4 z-50 bg-white/90 backdrop-blur-sm p-2 rounded-lg shadow-lg">
-        <PDFExporter language="jp" />
-      </div>
-
-      <main>
-        <section data-section="hero">
-          <Hero />
-        </section>
-        <section data-section="about">
-          <About />
-        </section>
-        <section data-section="timeline">
-          <Timeline />
-        </section>
-        <section data-section="projects">
-          <Projects />
-        </section>
-        <section data-section="contact">
-          <Contact />
-        </section>
-      </main>
+      <Hero />
+      <About />
+      <Timeline />
+      <Projects />
+      <Contact />
       <Footer />
     </div>
   );
