@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import IndexJP from "./pages/IndexJP";
 import IndexEN from "./pages/IndexEN";
+import IndexAnonymousJP from "./pages/IndexAnonymousJP";
+import IndexAnonymousEN from "./pages/IndexAnonymousEN";
 import NotFound from "./pages/NotFound";
 import ProjectDetail from "./components/ProjectDetail";
 import ProjectDetailEN from "./components/ProjectDetailEN";
@@ -23,6 +25,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<IndexJP />} />
           <Route path="/en" element={<IndexEN />} />
+          <Route path="/anonymous" element={<IndexAnonymousJP />} />
+          <Route path="/anonymous/en" element={<IndexAnonymousEN />} />
           <Route path="/project/:slug" element={<ProjectDetail />} />
           <Route path="/en/project/:slug" element={<ProjectDetailEN />} />
           <Route path="/edit" element={<ProjectEditIndex />} />
