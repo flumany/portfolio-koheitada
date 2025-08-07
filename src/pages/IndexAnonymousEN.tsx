@@ -3,7 +3,7 @@ import HeroAnonymousEN from "@/components/HeroAnonymousEN";
 import AboutEN from "@/components/AboutEN";
 import TimelineEN from "@/components/TimelineEN";
 import ProjectsEN from "@/components/ProjectsEN";
-import ContactEN from "@/components/ContactEN";
+
 import FooterAnonymous from "@/components/FooterAnonymous";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
 import { useEffect } from "react";
@@ -32,7 +32,7 @@ const IndexAnonymousEN = () => {
       <AboutEN />
       <TimelineEN />
       <ProjectsEN />
-      <ContactEN />
+      
       <FooterAnonymous />
     </div>
   );

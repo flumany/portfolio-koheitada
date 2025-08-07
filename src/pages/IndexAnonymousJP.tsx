@@ -3,7 +3,7 @@ import HeroAnonymousJP from "@/components/HeroAnonymousJP";
 import AboutJP from "@/components/AboutJP";
 import TimelineJP from "@/components/TimelineJP";
 import Projects from "@/components/Projects";
-import ContactJP from "@/components/ContactJP";
+
 import FooterAnonymous from "@/components/FooterAnonymous";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
 import { useEffect } from "react";
@@ -32,7 +32,7 @@ const IndexAnonymousJP = () => {
       <AboutJP />
       <TimelineJP />
       <Projects />
-      <ContactJP />
+      
       <FooterAnonymous />
     </div>
   );
