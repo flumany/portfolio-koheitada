@@ -1,4 +1,4 @@
-import HeaderJP from "@/components/HeaderJP";
+import HeaderAnonymousJP from "@/components/HeaderAnonymousJP";
 import HeroAnonymousJP from "@/components/HeroAnonymousJP";
 import AboutJP from "@/components/AboutJP";
 import TimelineJP from "@/components/TimelineJP";
@@ -27,7 +27,7 @@ const IndexAnonymousJP = () => {
 
   return (
     <div className="min-h-screen">
-      <HeaderJP />
+      <HeaderAnonymousJP />
       <HeroAnonymousJP />
       <AboutJP />
       <TimelineJP />

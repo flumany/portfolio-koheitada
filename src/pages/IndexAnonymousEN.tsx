@@ -1,4 +1,4 @@
-import HeaderEN from "@/components/HeaderEN";
+import HeaderAnonymousEN from "@/components/HeaderAnonymousEN";
 import HeroAnonymousEN from "@/components/HeroAnonymousEN";
 import AboutEN from "@/components/AboutEN";
 import TimelineEN from "@/components/TimelineEN";
@@ -27,7 +27,7 @@ const IndexAnonymousEN = () => {
 
   return (
     <div className="min-h-screen">
-      <HeaderEN />
+      <HeaderAnonymousEN />
       <HeroAnonymousEN />
       <AboutEN />
       <TimelineEN />
