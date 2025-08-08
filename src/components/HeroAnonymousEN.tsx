@@ -47,14 +47,6 @@ const HeroAnonymousEN: React.FC = () => {
             <Card className="overflow-hidden bg-gradient-to-br from-nordic-blue/5 to-nordic-blue/20 border-none animate-fade-in backdrop-blur-sm shadow-xl" style={{animationDelay: '0.6s'}}>
               <CardContent className="p-6">
                 <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="aspect-square rounded-md mb-4 flex items-center justify-center relative overflow-hidden group">
-                    <img 
-                      src="/lovable-uploads/1f814fdf-d820-4075-94dc-db2f878d6252.png" 
-                      alt="Profile image" 
-                      className="w-full h-full object-cover rounded-md"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-nordic-blue/20 via-transparent to-nordic-beige/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </div>
                   <p className="text-sm text-nordic-dark/70 leading-relaxed">
                     Enhancing user experiences across physical and digital products through innovative design solutions.
                   </p>
