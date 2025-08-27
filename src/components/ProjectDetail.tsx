@@ -35,12 +35,12 @@ const ProjectDetail: React.FC = () => {
         // Fetch project data
         const projectData = await fetchProjectBySlug(slug);
         
-        // If project is not published, redirect to home
-        if (!projectData.published) {
+        // If project doesn't exist or is not published, redirect to home
+        if (!projectData || !projectData.published) {
           navigate('/');
           toast({
-            title: "Not Found",
-            description: "The requested project is not available."
+            title: "プロジェクトが見つかりません",
+            description: "お探しのプロジェクトは存在しないか、現在公開されていません。"
           });
           return;
         }
@@ -75,8 +75,8 @@ const ProjectDetail: React.FC = () => {
       } catch (error) {
         console.error('Error loading project:', error);
         toast({
-          title: "Error",
-          description: "Failed to load project data.",
+          title: "エラー",
+          description: "プロジェクトデータの読み込みに失敗しました。",
           variant: "destructive"
         });
         navigate('/');

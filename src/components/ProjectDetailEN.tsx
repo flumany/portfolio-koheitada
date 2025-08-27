@@ -35,12 +35,12 @@ const ProjectDetailEN: React.FC = () => {
         // Fetch project data
         const projectData = await fetchProjectBySlug(slug);
         
-        // If project is not published, redirect to home
-        if (!projectData.published) {
+        // If project doesn't exist or is not published, redirect to home
+        if (!projectData || !projectData.published) {
           navigate('/en');
           toast({
-            title: "Not Found",
-            description: "The requested project is not available."
+            title: "Project Not Found",
+            description: "The requested project does not exist or is not currently available."
           });
           return;
         }

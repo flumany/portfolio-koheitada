@@ -38,11 +38,15 @@ export async function fetchProjectBySlug(slug: string) {
     .from('projects')
     .select('*')
     .eq('slug', slug)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error(`Error fetching project with slug "${slug}":`, error);
     throw error;
+  }
+
+  if (!data) {
+    return null;
   }
 
   return data as ProjectWork;
