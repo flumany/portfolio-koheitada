@@ -5,6 +5,7 @@ import { useScrollPosition } from '../hooks/useScrollPosition';
 import ProjectNavigator from './project/ProjectNavigator';
 import ProjectDisplay from './project/ProjectDisplay';
 import ProjectSidebar from './project/ProjectSidebar';
+import MetaTags from './MetaTags';
 import { fetchProjectBySlug, fetchProjectMedia } from '@/services/projectService';
 import { ProjectWork, ProjectMedia } from '@/types/project';
 import { getImageUrl, get3DModelUrl } from '@/lib/supabase';
@@ -115,6 +116,8 @@ const ProjectDetail: React.FC = () => {
 
   return (
     <div className="container-custom py-20">
+      <MetaTags project={project} isEnglish={false} />
+      
       {/* Language Switch Button */}
       <div className="fixed top-24 right-4 z-40">
         <Link 
