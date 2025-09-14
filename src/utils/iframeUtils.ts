@@ -12,6 +12,13 @@ export function convertYouTubeUrl(url: string): string {
 }
 
 /**
+ * App StoreやPlay StoreのURLかどうかを判定
+ */
+export function isAppStoreUrl(url: string): boolean {
+  return /^https?:\/\/(?:play\.google\.com\/store|apps\.apple\.com|itunes\.apple\.com)/.test(url);
+}
+
+/**
  * HTMLコンテンツを個別のiframe/embed要素に分割してページごとに配列にする
  */
 export function parseIframeContent(htmlContent: string): string[] {
@@ -21,6 +28,12 @@ export function parseIframeContent(htmlContent: string): string[] {
   let processedContent = htmlContent.replace(
     /(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#\s]+))/g,
     '<iframe width="800" height="450" src="https://www.youtube.com/embed/$2" frameborder="0" allowfullscreen></iframe>'
+  );
+  
+  // App Store/Play StoreのURLを検出してリンクボタンに変換
+  processedContent = processedContent.replace(
+    /(https?:\/\/(?:play\.google\.com\/store|apps\.apple\.com|itunes\.apple\.com)[^\s<>"']+)/g,
+    '<div class="app-store-link" data-url="$1">$1</div>'
   );
   
   // iframe、embed、object、divタグで囲まれた要素を抽出
