@@ -35,7 +35,7 @@ export const useScrollPosition = () => {
 
   // スクロールイベントリスナー（デバウンス付き）
   useEffect(() => {
-    let scrollTimer: NodeJS.Timeout;
+    let scrollTimer: ReturnType<typeof setTimeout>;
     
     const handleScroll = () => {
       if (scrollTimer) {
