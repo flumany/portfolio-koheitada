@@ -14,7 +14,146 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      category_order: {
+        Row: {
+          categories: string[] | null
+          id: number
+        }
+        Insert: {
+          categories?: string[] | null
+          id?: number
+        }
+        Update: {
+          categories?: string[] | null
+          id?: number
+        }
+        Relationships: []
+      }
+      project_media: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number | null
+          file_path: string
+          id: string
+          project_id: string
+          title: string | null
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          file_path: string
+          id?: string
+          project_id: string
+          title?: string | null
+          type: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          file_path?: string
+          id?: string
+          project_id?: string
+          title?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_media_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          category: string
+          challenge: string | null
+          challenge_en: string | null
+          created_at: string
+          description: string
+          description_en: string | null
+          display_order: number | null
+          duration: string | null
+          id: string
+          iframes: string[] | null
+          images: string[] | null
+          models: string[] | null
+          modelurl: string | null
+          published: boolean | null
+          role: string | null
+          role_en: string | null
+          slug: string
+          solution: string | null
+          solution_en: string | null
+          technologies: string[] | null
+          title: string
+          title_en: string | null
+          updated_at: string
+          work_type: string | null
+          work_type_en: string | null
+        }
+        Insert: {
+          category: string
+          challenge?: string | null
+          challenge_en?: string | null
+          created_at?: string
+          description: string
+          description_en?: string | null
+          display_order?: number | null
+          duration?: string | null
+          id?: string
+          iframes?: string[] | null
+          images?: string[] | null
+          models?: string[] | null
+          modelurl?: string | null
+          published?: boolean | null
+          role?: string | null
+          role_en?: string | null
+          slug: string
+          solution?: string | null
+          solution_en?: string | null
+          technologies?: string[] | null
+          title: string
+          title_en?: string | null
+          updated_at?: string
+          work_type?: string | null
+          work_type_en?: string | null
+        }
+        Update: {
+          category?: string
+          challenge?: string | null
+          challenge_en?: string | null
+          created_at?: string
+          description?: string
+          description_en?: string | null
+          display_order?: number | null
+          duration?: string | null
+          id?: string
+          iframes?: string[] | null
+          images?: string[] | null
+          models?: string[] | null
+          modelurl?: string | null
+          published?: boolean | null
+          role?: string | null
+          role_en?: string | null
+          slug?: string
+          solution?: string | null
+          solution_en?: string | null
+          technologies?: string[] | null
+          title?: string
+          title_en?: string | null
+          updated_at?: string
+          work_type?: string | null
+          work_type_en?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
