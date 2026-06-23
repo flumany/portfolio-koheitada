@@ -56,7 +56,7 @@ export async function fetchProjectBySlug(slug: string) {
 export async function createProject(project: Omit<ProjectWork, 'id' | 'created_at' | 'updated_at'>) {
   const { data, error } = await supabase
     .from('projects')
-    .insert([project])
+    .insert([project as any])
     .select()
     .single();
 
@@ -72,7 +72,7 @@ export async function createProject(project: Omit<ProjectWork, 'id' | 'created_a
 export async function updateProject(id: string, updates: Partial<ProjectWork>) {
   const { data, error } = await supabase
     .from('projects')
-    .update({ ...updates, updated_at: new Date().toISOString() })
+    .update({ ...updates, updated_at: new Date().toISOString() } as any)
     .eq('id', id)
     .select()
     .single();
@@ -210,7 +210,7 @@ export async function updateProjectOrderInCategory(projectIds: string[]) {
     console.log('Updating project order with IDs:', projectIds);
     
     // Update each project with its new display_order using a transaction
-    const { error } = await supabase.rpc('update_project_orders', {
+    const { error } = await (supabase.rpc as any)('update_project_orders', {
       project_ids: projectIds
     });
 
