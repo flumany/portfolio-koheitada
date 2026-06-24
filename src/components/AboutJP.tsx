@@ -45,8 +45,8 @@ const AboutJP: React.FC = () => {
               <p className="text-sm text-nordic-dark/70">デザイン思考・人間中心設計</p>
             </div>
             <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">サービスデザイン</h3>
-              <p className="text-sm text-nordic-dark/70">企画・製品設計・開発</p>
+              <h3 className="font-medium text-xl mb-2">DX</h3>
+              <p className="text-sm text-nordic-dark/70">企画・設計・開発の上流工程</p>
             </div>
           </div>
         </div>

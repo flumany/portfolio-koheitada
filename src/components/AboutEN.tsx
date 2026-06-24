@@ -45,8 +45,8 @@ const AboutEN: React.FC = () => {
               <p className="text-sm text-nordic-dark/70">Design Thinking & Human Centered Design</p>
             </div>
             <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">Service Design</h3>
-              <p className="text-sm text-nordic-dark/70">Planning & Product Design and Development</p>
+              <h3 className="font-medium text-xl mb-2">DX</h3>
+              <p className="text-sm text-nordic-dark/70">Upstream phases of planning, design, and development</p>
             </div>
           </div>
         </div>
