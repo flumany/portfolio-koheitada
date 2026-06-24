@@ -36,7 +36,12 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
 const TimelineJP: React.FC = () => {
   const experiences = [
     {
-      year: "2022年8月 - 現在",
+      year: "2026年1月 - 現在",
+      title: "株式会社メニコン",
+      description: "DXによる業務効率化・生産性向上（正社員）",
+    },
+    {
+      year: "2022年8月 - 2025年12月",
       title: "株式会社メタバーズ",
       description: "3Dジェネラリスト・研究開発",
     },
@@ -66,6 +71,12 @@ const TimelineJP: React.FC = () => {
   ];
 
   const qualifications = [
+    {
+      year: "2026年4月",
+      title: "日商簿記3級",
+      description: "97点/100点満点",
+      certifyingBody: "日本商工会議所",
+    },
     {
       year: "2023年4月",
       title: "HCD-Net認定 人間中心設計スペシャリスト",
