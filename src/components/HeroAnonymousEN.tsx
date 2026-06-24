@@ -20,7 +20,7 @@ const HeroAnonymousEN: React.FC = () => {
             <h1 className="text-4xl md:text-6xl font-medium text-nordic-dark leading-tight animate-fade-in">
               <div className="flex flex-col gap-3 mt-4">
                 <span className="text-xl md:text-2xl leading-relaxed font-semibold" style={{color: "#a6bdfa"}}>
-                  Service/Product Designer specializing in UI, UX, 3D, XR, Physical Products
+                  Digital Business Architect &amp; Innovation Designer
                 </span>
                 <span className="text-xl md:text-2xl leading-relaxed font-semibold" style={{color: "#a6bdfa"}}>
                   Certified Human Centered Design Specialist

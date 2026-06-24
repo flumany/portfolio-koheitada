@@ -36,7 +36,12 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
 const TimelineEN: React.FC = () => {
   const experiences = [
     {
-      year: "August 2022 - Present",
+      year: "January 2026 - Present",
+      title: "Menicon Co., Ltd.",
+      description: "DX-driven operational efficiency and productivity improvement (Full-time)",
+    },
+    {
+      year: "August 2022 - December 2025",
       title: "METABIRDS Co., Ltd.",
       description: "3D Generalist and Research & Development",
     },
@@ -66,6 +71,12 @@ const TimelineEN: React.FC = () => {
   ];
 
   const qualifications = [
+    {
+      year: "April 2026",
+      title: "Nissho Bookkeeping Level 3",
+      description: "Score 97/100",
+      certifyingBody: "The Japan Chamber of Commerce and Industry",
+    },
     {
       year: "April 2023",
       title: "Certified Human Centered Design Specialist",
