@@ -34,7 +34,7 @@ const AboutJP: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-nordic-beige p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">3Dデザイン</h3>
-              <p className="text-sm text-nordic-dark/70">空間・デジタルツイン・キャラクターデザイン</p>
+              <p className="text-sm text-nordic-dark/70">空間・プロダクト・デジタルツイン・メタバース・キャラクターデザイン</p>
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">XR開発</h3>
@@ -42,11 +42,11 @@ const AboutJP: React.FC = () => {
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">UXデザイン</h3>
-              <p className="text-sm text-nordic-dark/70">デザイン思考・人間中心設計</p>
+              <p className="text-sm text-nordic-dark/70">デザイン思考・UIデザイン（画面・コンポーネント・デザインシステム）・ユーザー中心設計・人間中心設計・アジャイル</p>
             </div>
             <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">DX</h3>
-              <p className="text-sm text-nordic-dark/70">企画・設計・開発の上流工程</p>
+              <p className="text-sm text-nordic-dark/70">企画・調査・検証・導入・浸透・AIエージェント開発・業務用システム構築・データビジュアライゼーション</p>
             </div>
           </div>
         </div>

@@ -34,7 +34,7 @@ const AboutEN: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-nordic-beige p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">3D Design</h3>
-              <p className="text-sm text-nordic-dark/70">Space & Digital Twin & Character Design</p>
+              <p className="text-sm text-nordic-dark/70">Space & Product & Digital Twin & Metaverse & Character Design</p>
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">XR Development</h3>
@@ -42,11 +42,11 @@ const AboutEN: React.FC = () => {
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">UX Design</h3>
-              <p className="text-sm text-nordic-dark/70">Design Thinking & Human Centered Design</p>
+              <p className="text-sm text-nordic-dark/70">Design Thinking & UI Design (Screens, Components, Design Systems) & User-Centered Design & Agile</p>
             </div>
             <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">DX</h3>
-              <p className="text-sm text-nordic-dark/70">Upstream phases of planning, design, and development</p>
+              <p className="text-sm text-nordic-dark/70">Planning, Research, Validation, Implementation & Adoption, AI Agent Development, Business System Development, Data Visualization</p>
             </div>
           </div>
         </div>
