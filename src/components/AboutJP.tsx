@@ -12,8 +12,8 @@ const AboutJP: React.FC = () => {
           <div className="w-16 h-1 bg-accent-blue mx-auto mb-8" />
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-10">
+        <div className="grid md:grid-cols-5 gap-10 items-center">
+          <div className="space-y-10 md:col-span-2">
             <div>
               <p className="text-lg md:text-xl font-normal text-nordic-dark mb-1">
                 建築学を学んだ後、主にインテリアメーカーで開発や企画、品質管理などの幅広い経験を積みました。
@@ -31,10 +31,10 @@ const AboutJP: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 md:col-span-3">
             <div className="bg-nordic-beige p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">3Dデザイン</h3>
-              <p className="text-sm text-nordic-dark/70">空間・プロダクト・デジタルツイン・メタバース・キャラクターデザイン</p>
+              <p className="text-sm text-nordic-dark/70">プロダクト・空間・メタバース・デジタルツイン・キャラクターデザイン</p>
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">XR開発</h3>
@@ -42,11 +42,11 @@ const AboutJP: React.FC = () => {
             </div>
             <div className="bg-nordic-gray p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">UXデザイン</h3>
-              <p className="text-sm text-nordic-dark/70">デザイン思考・UIデザイン（画面・コンポーネント・デザインシステム）・ユーザー中心設計・人間中心設計・アジャイル</p>
+              <p className="text-sm text-nordic-dark/70">ユーザー中心設計・人間中心設計・デザイン思考・UIデザイン（画面・コンポーネント・デザインシステム・バイブコーディング）・アジャイル</p>
             </div>
             <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
               <h3 className="font-medium text-xl mb-2">DX</h3>
-              <p className="text-sm text-nordic-dark/70">企画・調査・検証・導入・浸透・AIエージェント開発・業務用システム構築・データビジュアライゼーション</p>
+              <p className="text-sm text-nordic-dark/70">調査・企画・検証・導入・浸透・AIエージェント開発・業務用システム構築・データビジュアライゼーション</p>
             </div>
           </div>
         </div>
