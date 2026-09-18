@@ -72,6 +72,12 @@ const TimelineEN: React.FC = () => {
 
   const qualifications = [
     {
+      year: "September 2026",
+      title: "IT Passport Certification",
+      description: "",
+      certifyingBody: "Information-technology Promotion Agency, Japan (IPA)",
+    },
+    {
       year: "April 2026",
       title: "Nissho Bookkeeping Level 3",
       description: "Score 97/100",

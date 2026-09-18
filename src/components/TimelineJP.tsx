@@ -72,6 +72,12 @@ const TimelineJP: React.FC = () => {
 
   const qualifications = [
     {
+      year: "2026年9月",
+      title: "ITパスポート",
+      description: "",
+      certifyingBody: "独立行政法人 情報処理推進機構（IPA）",
+    },
+    {
       year: "2026年4月",
       title: "日商簿記3級",
       description: "97点/100点満点",
