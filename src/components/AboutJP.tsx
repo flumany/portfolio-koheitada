@@ -21,12 +21,12 @@ const AboutJP: React.FC = () => {
             </div>
             <div>
               <p className="text-lg md:text-xl font-normal text-nordic-dark mb-1">
-                その中で得た3Dデータの知見とデザインソフトの経験を活かし、現在は3DデザインやXR開発、AIサービス開発におけるUI/UXデザイン等に携わっています。
+                その中で得た3D技術やその他デジタルアプリケーションの知見を活かし、3DデザインやXR開発、AIサービス開発におけるUI/UXデザイン等に携わってきました。
               </p>
             </div>
           <div>
               <p className="text-lg md:text-xl font-normal text-nordic-dark mb-1">
-                現在は、これまでのデジタルアプリケーションに関する知見や素早い習得等を行ってきた経験と観点からDX推進を行っております。（UXデザインのユーザー志向の考えも活かしたDX推進）
+                現在は、デジタルアプリケーション領域で培った知見と、新しい技術を素早く習得してきた経験を活かし、ユーザー視点に立ったUXデザインの考え方を取り入れながらDX推進を行っております。
               </p>
             </div>
           </div>
