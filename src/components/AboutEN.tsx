@@ -24,9 +24,9 @@ const AboutEN: React.FC = () => {
                 Utilizing my knowledge of 3D data and experience with design software, I now work on 3D design, XR development, and UI/UX design for AI services.
               </p>
             </div>
-            <div>
+          <div>
               <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
-                My goal is to grow with my experiences and create better products and services for society.
+                I currently drive digital transformation (DX), drawing on my experience and perspective gained through knowledge of digital applications and rapid learning. (Promoting DX that also leverages the user-centered thinking of UX design)
               </p>
             </div>
           </div>
