@@ -12,7 +12,7 @@ const HeroEN: React.FC = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center relative pt-20 overflow-hidden">
+    <section className="flex items-center relative pt-28 md:pt-32 pb-4 md:pb-8 overflow-hidden">
       <div className="absolute top-0 right-0 w-1/3 h-full wood-bg opacity-30 hidden lg:block" />
 
       <div className="container-custom relative z-10">
