@@ -3,6 +3,7 @@ import React from 'react';
 import ProjectList from '@/components/editor/ProjectList';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 const ProjectEditIndex: React.FC = () => {
   const navigate = useNavigate();
