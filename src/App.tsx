@@ -13,6 +13,8 @@ import ProjectDetail from "./components/ProjectDetail";
 import ProjectDetailEN from "./components/ProjectDetailEN";
 import ProjectEditor from "./components/ProjectEditor";
 import ProjectEditIndex from "./pages/ProjectEditIndex";
+import Auth from "./pages/Auth";
+import RequireAuth from "./components/RequireAuth";
 
 const queryClient = new QueryClient();
 
@@ -29,8 +31,9 @@ const App = () => (
           <Route path="/anonymous/en" element={<IndexAnonymousEN />} />
           <Route path="/project/:slug" element={<ProjectDetail />} />
           <Route path="/en/project/:slug" element={<ProjectDetailEN />} />
-          <Route path="/edit" element={<ProjectEditIndex />} />
-          <Route path="/edit/:slug" element={<ProjectEditor />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/edit" element={<RequireAuth><ProjectEditIndex /></RequireAuth>} />
+          <Route path="/edit/:slug" element={<RequireAuth><ProjectEditor /></RequireAuth>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
