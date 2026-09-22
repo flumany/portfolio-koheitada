@@ -5,6 +5,30 @@ const AboutEN: React.FC = () => {
   return (
     <section id="about" className="section bg-nordic-white">
       <div className="container-custom">
+        {/* Skill cards (placed above the About Me heading) */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-4 mb-14">
+          <div className="bg-nordic-beige p-6 rounded-lg lg:col-span-3">
+            <h3 className="font-medium text-xl mb-2">R&D</h3>
+            <p className="text-sm text-nordic-dark/70">Technology Research, Competitive Analysis, Overseas Sandbox Validation, PoC, Generative AI / Cutting-edge Tool Evaluation, Manufacturing Process Development, New Material Exploration, 3D Printer Prototyping, Test Evaluation / Data Accumulation, Human Body / Kansei Data Analysis, Industry-Academia Collaboration</p>
+          </div>
+          <div className="bg-nordic-gray p-6 rounded-lg lg:col-span-3">
+            <h3 className="font-medium text-xl mb-2">DX</h3>
+            <p className="text-sm text-nordic-dark/70">Issue Extraction, Business Analysis, Adoption, Retention, Internal Rollout, AI Agent Development, Business System Development, Data Visualization, Talent Development</p>
+          </div>
+          <div className="bg-nordic-gray p-6 rounded-lg lg:col-span-2">
+            <h3 className="font-medium text-xl mb-2">3D Design</h3>
+            <p className="text-sm text-nordic-dark/70">Product & Space & Metaverse & Digital Twin & Character Design</p>
+          </div>
+          <div className="bg-nordic-beige p-6 rounded-lg lg:col-span-2">
+            <h3 className="font-medium text-xl mb-2">XR Development</h3>
+            <p className="text-sm text-nordic-dark/70">Virtual, Augmented & Mixed Reality</p>
+          </div>
+          <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg lg:col-span-2">
+            <h3 className="font-medium text-xl mb-2">UX Design</h3>
+            <p className="text-sm text-nordic-dark/70">User-Centered Design & Human-Centered Design & Design Thinking & UI Design (Screens, Components, Design Systems, Vibe Coding) & Agile</p>
+          </div>
+        </div>
+
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-medium mb-4 tracking-tight">
             About Me
@@ -12,42 +36,21 @@ const AboutEN: React.FC = () => {
           <div className="w-16 h-1 bg-accent-blue mx-auto mb-8" />
         </div>
 
-        <div className="grid md:grid-cols-5 gap-10 items-center">
-          <div className="space-y-10 md:col-span-2">
-            <div>
-              <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
-                After studying architecture, I gained extensive experience in product development, planning, and quality management at an interior manufacturing company.
-              </p>
-            </div>
-            <div>
-              <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
-                Utilizing my knowledge of 3D data and experience with design software, I now work on 3D design, XR development, and UI/UX design for AI services.
-              </p>
-            </div>
+        <div className="max-w-3xl mx-auto space-y-10">
           <div>
-              <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
-                I currently drive digital transformation (DX), drawing on my experience and perspective gained through knowledge of digital applications and rapid learning. (Promoting DX that also leverages the user-centered thinking of UX design)
-              </p>
-            </div>
+            <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
+              After studying architecture, I gained extensive experience in product development, planning, and quality management at an interior manufacturing company.
+            </p>
           </div>
-
-          <div className="grid grid-cols-2 gap-4 md:col-span-3">
-            <div className="bg-nordic-beige p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">3D Design</h3>
-              <p className="text-sm text-nordic-dark/70">Product & Space & Metaverse & Digital Twin & Character Design</p>
-            </div>
-            <div className="bg-nordic-gray p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">XR Development</h3>
-              <p className="text-sm text-nordic-dark/70">Virtual, Augmented & Mixed Reality</p>
-            </div>
-            <div className="bg-nordic-gray p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">UX Design</h3>
-              <p className="text-sm text-nordic-dark/70">User-Centered Design & Human-Centered Design & Design Thinking & UI Design (Screens, Components, Design Systems, Vibe Coding) & Agile</p>
-            </div>
-            <div className="bg-nordic-offwhite border border-nordic-gray/30 p-6 rounded-lg">
-              <h3 className="font-medium text-xl mb-2">DX</h3>
-              <p className="text-sm text-nordic-dark/70">Research, Planning, Validation, Implementation & Adoption, AI Agent Development, Business System Development, Data Visualization</p>
-            </div>
+          <div>
+            <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
+              Utilizing my knowledge of 3D data and experience with design software, I now work on 3D design, XR development, and UI/UX design for AI services.
+            </p>
+          </div>
+          <div>
+            <p className="text-lg md:text-xl font-semibold text-nordic-dark mb-1">
+              I currently drive digital transformation (DX), drawing on my experience and perspective gained through knowledge of digital applications and rapid learning. (Promoting DX that also leverages the user-centered thinking of UX design)
+            </p>
           </div>
         </div>
       </div>
